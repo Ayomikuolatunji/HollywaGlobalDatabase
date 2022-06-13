@@ -18,3 +18,13 @@ export const getPosts=async(req,res)=>{
         res.status(500).json(err);
     }
 }
+export const getPost=async(req,res)=>{
+    try{
+      
+    }catch(err){
+        res.status(500).json(err);
+    }  
+}
+
+
+
