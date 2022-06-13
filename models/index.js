@@ -1,7 +1,7 @@
 const config = require('../dbConfig');
 const {Sequelize,DataTypes} = require('sequelize');
 
-const sequelize=new Sequelize(
+ const sequelize=new Sequelize(
     config.DB,
     config.USER,
     config.PASSWORD,{
@@ -16,21 +16,14 @@ const sequelize=new Sequelize(
     }
 )
 
-sequelize.authenticate().then(()=>{
-    console.log('Connection has been established successfully.');
-})
-.catch(err=>{
-    console.error('Unable to connect to the database:',err.message);
-})
 
 const db={}
 
+
+db.user=require('./user/user.model')(sequelize,DataTypes);
 db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 
-
-db.posts=require('./posts')(sequelize,DataTypes);
-db.user=require('./user')(sequelize,DataTypes);
 
 
 db.sequelize.sync({force:false}).then(()=>{
@@ -40,5 +33,9 @@ db.sequelize.sync({force:false}).then(()=>{
     console.error('Unable to create tables:',err.message);
 })
 
+// send to the controllers
 
-module.exports=db;
+module.exports={
+    sequelize,
+    db
+}
