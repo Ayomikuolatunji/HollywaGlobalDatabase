@@ -1,7 +1,7 @@
-const db=require('../models/index');
+const db=require('./models/Model');
 
 
-export const createPosts=async(req,res)=>{
+const createPosts=async(req,res)=>{
     try{
         const post=await db.posts.create(req.body);
         res.status(200).json(post);
@@ -9,8 +9,7 @@ export const createPosts=async(req,res)=>{
         res.status(500).json(err);
     }
 }
-
-export const getPosts=async(req,res)=>{
+ const getPosts=async(req,res)=>{
     try{
         const posts=await db.posts.findAll({});
         res.status(200).json(posts);
@@ -18,13 +17,19 @@ export const getPosts=async(req,res)=>{
         res.status(500).json(err);
     }
 }
-export const getPost=async(req,res)=>{
+ const getPost=async(req,res)=>{
     try{
-      
+        const post=await db.posts.findOne({
+            where:{id:req.params.id}
+        });
+        res.status(200).json(post)
     }catch(err){
-        res.status(500).json(err);
+        
     }  
 }
 
-
-
+module.exports={
+    createPosts,
+    getPosts,
+    getPost
+}

@@ -17,24 +17,6 @@ module.exports=(sequelise,datatypes)=>{
                 }
             }
         },
-        body:{
-            type:datatypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty:{
-                    msg:"Body is required"
-                }
-            }
-        },
-        userId:{
-            type:datatypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty:{
-                    msg:"UserId is required"
-                }
-            }
-        },
         createdAt:{
             type:datatypes.DATE,
             allowNull:false,

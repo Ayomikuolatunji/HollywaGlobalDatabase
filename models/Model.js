@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../dbConfig');
 const {Sequelize,DataTypes} = require('sequelize');
 
 const sequelize=new Sequelize(
@@ -7,7 +7,6 @@ const sequelize=new Sequelize(
     config.PASSWORD,{
         host:config.HOST,
         dialect:config.dialect,
-        operatorsAliases:false,
         pool:{
             max:config.pool.max,
             min:config.pool.min,
