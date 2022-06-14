@@ -1,7 +1,8 @@
 
-const bcrypt = require('bcrypt')
-const { db } =require("../index")
+const {Sequelize} =require('sequelize');
+const crypto = require("crypto");
 
+const key = crypto.randomBytes(16).toString("hex");
 
 const user=(sequelize,DataTypes)=>{
     return sequelize.define('user',{
@@ -12,7 +13,7 @@ const user=(sequelize,DataTypes)=>{
         },
         name:{
             type:DataTypes.STRING,
-            allowNull:true,
+            allowNull:false,
             validate:{
                 customValidator:(name)=>{
                     if(!name.length){  
@@ -42,6 +43,15 @@ const user=(sequelize,DataTypes)=>{
         password:{
             type:DataTypes.STRING,
             allowNull:false,
+        },
+        role:{
+            type:DataTypes.STRING,
+            allowNull:false,
+        },
+        userId:{
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV1,
+            primaryKey: true
         },
         createdAt:{
             type:DataTypes.DATE,
