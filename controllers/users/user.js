@@ -65,3 +65,23 @@ module.exports.getUser = async(req, res,next) => {
 }
 
 
+module.exports.updateUserName= async(req, res,next) => {
+    try{
+        const userId=req.params.userId;
+        const name = req.body.name;
+
+        const updateName=await db.user.update({
+                name:name
+          },{
+            where:{
+               userId:userId,
+            }
+         })
+        res.status(200).json({updateName})
+    }catch(error){
+        if(!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+}
