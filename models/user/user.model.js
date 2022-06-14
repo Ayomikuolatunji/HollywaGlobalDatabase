@@ -1,4 +1,6 @@
 
+const bcrypt = require('bcrypt');
+
 
 const user=(sequelize,DataTypes)=>{
     return sequelize.define('user',{
@@ -9,7 +11,10 @@ const user=(sequelize,DataTypes)=>{
         },
         name:{
             type:DataTypes.STRING,
-            allowNull:false
+            allowNull:false,
+            noName:()=>{
+                throw new Error("Please provide your name")
+            }
         },
         email:{
             type:DataTypes.STRING,
@@ -18,7 +23,7 @@ const user=(sequelize,DataTypes)=>{
         },
         password:{
             type:DataTypes.STRING,
-            allowNull:false
+            allowNull:false,
         },
         createdAt:{
             type:DataTypes.DATE,
