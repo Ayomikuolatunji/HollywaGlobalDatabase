@@ -63,6 +63,17 @@ const userAddressModel=(sequelise, datatypes)=>{
                 }
             }
         },
+        telephone:{
+            type:datatypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(telephone)=>{
+                    if(!telephone){
+                        throw new Error("Please provide your telephone")
+                    }
+                }
+            }
+        },
         createdAt:{
             type:datatypes.DATE,
             allowNull:false,
