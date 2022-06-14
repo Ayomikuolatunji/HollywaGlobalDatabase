@@ -16,12 +16,6 @@ const {Sequelize,DataTypes} = require('sequelize');
     }
 )
 
-sequelize.authenticate().then(()=>{
-    console.log('Connection has been established successfully.');
-})
-.catch(err=>{
-    console.error('Unable to connect to the database:',err.message);
-})
 
 
 const db={}
@@ -33,12 +27,18 @@ db.Sequelize=Sequelize;
 
 
 
-db.sequelize.sync({force:false}).then(()=>{
-    console.log('Tables created successfully.');
-})
-.catch(err=>{
-    console.error('Unable to create tables:',err.message);
-})
+
+const DB=async()=>{
+    try {
+        await db.sequelize.sync({force:false})  
+        console.log('Tables created successfully.');
+      } catch (error) {
+          console.error('Unable to create tables:',err.message);
+      }
+}
+
+DB()
+
 
 // send to the controllers
 

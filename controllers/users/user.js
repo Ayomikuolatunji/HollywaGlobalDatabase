@@ -4,7 +4,7 @@ const { db } = require("../../models")
 
 
 
-const createUser = async(req, res,next) => {
+module.exports.createUser = async(req, res,next) => {
     try {
         const name = req.body.name;
         const email = req.body.email;
@@ -23,6 +23,7 @@ const createUser = async(req, res,next) => {
         });
         res.status(201).json({newUser})
     }catch(error){
+        console.log(error.message);
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -30,6 +31,19 @@ const createUser = async(req, res,next) => {
     }
 }
 
-module.exports = {
-    createUser
+
+module.exports.getUsers = async(req, res,next) => {
+    try {
+        const allusers = await db.user.findAll({
+            attributes:["name"]
+        });
+        res.status(200).json({allusers})
+    } catch (error) {
+        if(!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
 }
+
+
