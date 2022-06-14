@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const router = require('./router');
 const { sequelize } = require('./models');
+const api = require('./services/v1Api');
 
 const app=express()
 
@@ -15,12 +15,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors());
 
+app.use((error, req, res, next) => {
+    const status = error.statusCode || 500;
+    const message = error.message;
+    const data = error.data;
+    res.status(status).json({ message, data }); 
+})
+
+
+
+app.use('/api',api)
 
 
 
 
-
-app.listen(8001, () => {
+app.listen(8080, () => {
     sequelize.authenticate().then(()=>{
         console.log('Connection has been established successfully.');
     })
