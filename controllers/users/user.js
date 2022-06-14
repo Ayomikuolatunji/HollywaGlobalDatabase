@@ -1,4 +1,6 @@
+const bcrypt = require('bcrypt');
 const { db } = require("../../models")
+
 
 
 
@@ -13,7 +15,12 @@ module.exports.createUser = async(req, res,next) => {
             error.statusCode = 400;
             throw error;
         }
-        const newUser=await db.user.create(req.body);
+        const hashPassword = await bcrypt.hash(password, 40);
+        const newUser=await db.user.create({
+            name,
+            email,
+            password:hashPassword
+        });
         res.status(201).json({newUser})
     }catch(error){
         if(!error.statusCode) {
