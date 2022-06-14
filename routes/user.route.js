@@ -13,7 +13,7 @@ router.patch("/update_user_email/:userId",updateUserEmail)
 
 
 // user address routes
-router.post("/create_address",createAdress)
+router.post("/create_user_address",createAdress)
 
 
 

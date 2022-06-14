@@ -6,7 +6,7 @@ const key = crypto.randomBytes(16).toString("hex");
 
 const user=(sequelize,DataTypes)=>{
     return sequelize.define('user',{
-        id:{
+        userId:{
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV1,
             primaryKey: true
