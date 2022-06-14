@@ -40,6 +40,40 @@ const userAddressModel=(sequelise, datatypes)=>{
                     }
                 }
             }
+        },
+        postal_code:{
+            type:datatypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(postal_code)=>{
+                    if(!postal_code){
+                        throw new Error("Please provide your postal code")
+                    }
+                }
+            }
+        },
+        country:{
+            type:datatypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(country)=>{
+                    if(!country){
+                        throw new Error("Please provide your country")
+                    }
+                }
+            }
+        },
+        createdAt:{
+            type:datatypes.DATE,
+            allowNull:false,
+            defaultValue:datatypes.NOW
+        },
+        updatedAt:{
+            type:datatypes.DATE,
+            allowNull:false,
+            defaultValue:datatypes.NOW
         }
+
+        
     })
 }
