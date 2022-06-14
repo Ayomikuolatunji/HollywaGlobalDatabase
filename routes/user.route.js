@@ -18,7 +18,7 @@ router.patch("/update_user_email/:userId",updateUserEmail)
 
 // user address routes
 router.post("/create_user_address",createAdress)
-router.get("/user_address/:userId",getUserAdress)
+router.get("/get_user_address/:userId",getUserAdress)
 
 
 
