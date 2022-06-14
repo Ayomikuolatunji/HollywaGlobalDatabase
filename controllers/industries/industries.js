@@ -1,11 +1,12 @@
 const { db } = require("../../models")
-const data =require('./industries/data.json')
+const data =require('../../data.json')
 
 
 
 module.exports.createIndustries=async(req,res,next)=>{
     try {
-        const industries=await db.industries.bulkCreate([...data])
+        const industries=await db.industries.bulkCreate([...data],
+            { validate: true })
         return res.status(201).json({industries})
     } catch (error) {
         if(!error.statusCode) {
