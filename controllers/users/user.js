@@ -69,7 +69,21 @@ module.exports.updateUserName= async(req, res,next) => {
     try{
         const userId=req.params.userId;
         const name = req.body.name;
-
+        if(!userId){
+            const error=new Error('User not found');
+            error.statusCode=404;
+            throw error;
+        }
+        const findUser=await db.user.findOne({
+            where:{
+                userId:userId
+            }
+        })
+        if(!findUser){
+            const error=new Error('User not found');
+            error.statusCode=404;
+            throw error;
+        }
         const updateName=await db.user.update({
                 name:name
           },{
@@ -90,7 +104,6 @@ module.exports.updateUserEmail= async(req, res,next) => {
     try{
         const userId=req.params.userId;
         const email = req.body.email;
-
         const updateName=await db.user.update({
                 name:email
           },{
@@ -98,7 +111,7 @@ module.exports.updateUserEmail= async(req, res,next) => {
                userId:userId,
             }
          })
-        res.status(200).json({updateName})
+        res.status(200).json({updateName:updateName, message:"Email updated successfully"})
     }catch(error){
         if(!error.statusCode) {
             error.statusCode = 500;
