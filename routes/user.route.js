@@ -5,6 +5,7 @@ const router=express.Router();
 const { getUsers, createUser, getUser, updateUserName, updateUserEmail } = require('../controllers/users/user');
 
 const { createAdress, getUserAdress, updateUserAddress } = require('../controllers/users/userAddress');
+const { createUserPayment, updateUserPayment } = require('../controllers/users/userPayment');
 
 
 
@@ -21,6 +22,10 @@ router.post("/create_user_address",createAdress)
 router.get("/get_user_address/:userId",getUserAdress)
 router.patch("/update_user_address/:userId",updateUserAddress)
 
+// user payement routes
+
+router.post("/create_user_payment",createUserPayment)
+router.patch("/update_user_payment/:userId",updateUserPayment)
 
 
 
