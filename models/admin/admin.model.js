@@ -22,15 +22,6 @@ const adminModel = (sequelise, Datatypes)=>{
             type: Datatypes.STRING,
             allowNull: false,
         },
-        products: {
-            type: Datatypes.STRING,
-            allowNull: false,
-        },
-        adminId:{
-            type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV1,
-            primaryKey: true
-        },
         createdAt:{
             type:Datatypes.DATE,
             allowNull:false,

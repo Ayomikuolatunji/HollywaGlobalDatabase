@@ -1,4 +1,5 @@
 const express=require('express');
+const { createAdmin } = require('./controllers/admin/admin');
 const { createIndustries } = require('./controllers/industries/industries');
 const { createProducts } = require('./controllers/products/product');
 const { createUser, getUsers, getUser, updateUserName, updateUserEmail } = require('./controllers/users/user');
@@ -17,8 +18,12 @@ router.patch("/update_user_email/:userId",updateUserEmail)
 
 // products routes
 router.post("/products", createProducts)
-
 // products routes ends here
+
+
+// admin routes
+
+router.post("/admin", createAdmin)
 
 
 

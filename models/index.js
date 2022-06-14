@@ -40,14 +40,14 @@ db.products.belongsTo(db.admin,{
 })
 
 db.admin.hasMany(db.admin,{
-    foreignKey:'adminId',
+    foreignKey:'productId',
 })
 
 
 
 const DB=async()=>{
     try {
-        await db.sequelize.sync({force:false})  
+        await db.sequelize.sync({force:true})  
         console.log('Tables created successfully.');
       } catch (error) {
           console.error('Unable to create tables:',err.message);
