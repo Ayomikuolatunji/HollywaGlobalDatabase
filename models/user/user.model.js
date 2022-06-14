@@ -26,24 +26,17 @@ const user=(sequelize,DataTypes)=>{
         email:{
             type:DataTypes.STRING,
             allowNull:true,
-            unique:true,
             validate:{
                 customValidator:async(email)=>{
                     if(!email){
                         throw new Error("Please provide your email")
                     }
-                    const user=await db.user.findOne({
-                        where:{
-                            email:email
-                        }
-                    })
-                    if(user){
-                        const error=new Error("User created successfully");
-                        error.statusCode=201;
-                        throw new Error("Email already exist")
-                    }
                 },
-                
+                isEmail:true
+            },
+            unique:{
+                args:true,
+                msg:"Email already exists" 
             }
         },
         password:{
