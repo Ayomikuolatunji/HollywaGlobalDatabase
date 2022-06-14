@@ -23,7 +23,7 @@ router.post("/products", createProducts)
 
 // admin routes
 
-router.post("/admin", createAdmin)
+router.post("/create_admin", createAdmin)
 
 
 

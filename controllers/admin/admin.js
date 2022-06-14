@@ -1,15 +1,16 @@
-const adminModel = require("../../models/admin/admin.model");
+const bcrypt=require('bcrypt');
+const {db} = require('../../models');
 
 
 const createAdmin=async (req, res,next) => {
     try {
-        const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-    
-     const admin=await adminModel.create({
+     const hashedPassword=await bcrypt.hash(password,12);
+     const admin=await db.admin.create({
             name,
             email,
-            password
+            password:hashedPassword
      }) 
      res.status(201).json({admin, message:"Admin created successfully"})
     } catch (error) {

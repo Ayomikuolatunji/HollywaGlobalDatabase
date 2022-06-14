@@ -1,7 +1,28 @@
+const { db } = require("../../models");
 
 
-const createProducts=()=>{
-
+const createProducts=async(req,res,next)=>{
+    try {
+       // find an admin to create a product
+         const admin=await db.admin.findOne({
+                where:{
+                    id:req.body.id
+                }
+         })
+        const products=await db.products.create({
+            name:req.body.name,
+            price:req.body.price,
+            description:req.body.description,
+            image:req.body.image,
+            adminId:req.body.id
+        })
+       res.status(201).json({message:"Product created successfully",products})
+    } catch (error) {
+        if(!error.statusCode){
+            error.statusCode=500;
+        }
+        next(error);
+    }
 }
 
 

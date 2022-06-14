@@ -4,9 +4,9 @@ const {Sequelize} = require('sequelize');
 const adminModel = (sequelise, Datatypes)=>{
     const Admin = sequelise.define('admin', {
         id: {
-            type: Datatypes.INTEGER,
+            type: Sequelize.UUID,
             primaryKey: true,
-            autoIncrement: true
+            defaultValue: Sequelize.UUIDV1
         },
         name: {
             type: Datatypes.STRING,

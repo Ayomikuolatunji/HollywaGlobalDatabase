@@ -36,20 +36,19 @@ db.Sequelize=Sequelize;
 db.products.belongsTo(db.admin,{
     foreignKey:'adminId',
     onDelete:'CASCADE',
-    onUpdate:'CASCADE'
 })
 
 db.admin.hasMany(db.admin,{
-    foreignKey:'productId',
+    onDelete:"CASCADE"
 })
 
 
 
 const DB=async()=>{
     try {
-        await db.sequelize.sync({force:true})  
+        await db.sequelize.sync({force:false})  
         console.log('Tables created successfully.');
-      } catch (error) {
+      } catch (err) {
           console.error('Unable to create tables:',err.message);
       }
 }
