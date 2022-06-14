@@ -39,7 +39,7 @@ db.products.belongsTo(db.admin,{
     onUpdate:'CASCADE'
 })
 
-db.hasMany(db.admin,{
+db.admin.hasMany(db.admin,{
     foreignKey:'adminId',
 })
 
