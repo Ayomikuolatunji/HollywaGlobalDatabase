@@ -1,5 +1,7 @@
 const config = require('../database/dbConfig');
 const {Sequelize,DataTypes} = require('sequelize');
+const user = require('./user/user.model');
+const productModel = require('./products/products.model');
 
  const sequelize=new Sequelize(
     config.DB,
@@ -24,9 +26,14 @@ const db={}
 db.user=require('./user/user.model')(sequelize,DataTypes);
 db.products=require('./products/products.model')(sequelize,DataTypes);
 db.industries=require('./industries/industry.model')(sequelize,DataTypes);
+db.admin=require('./admin/admin.model')(sequelize,DataTypes);
+
+// initialize the database
 db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 
+// associate the models here
+db.products.belongsTo(db.admin,{foreignKey:'adminId'})
 
 
 

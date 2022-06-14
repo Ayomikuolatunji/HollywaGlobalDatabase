@@ -1,11 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { sequelize } = require('./models');
+const { sequelize,db } = require('./models');
 const api = require('./services/v1Api');
+const productModel = require('./models/products/products.model');
+const adminModel=require('./models/admin/admin.model');
 
 const app=express()
-
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -31,6 +32,8 @@ app.use('/api/',api)
 
 
 
+
+
 app.use((error, req, res, next) => {
     let data={}
     if(error.name==="SequelizeUniqueConstraintError"){
@@ -44,6 +47,8 @@ app.use((error, req, res, next) => {
     const message = error.message;
     res.status(status).json({ message,data});
 });
+
+// datbase table associations
 
 
 

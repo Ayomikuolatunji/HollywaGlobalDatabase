@@ -1,7 +1,7 @@
+const adminModel = require("../admin/admin.model")
 
 
 const productModel=(sequelize,DataTypes)=>{
-
     return sequelize.define("products",{
          id:{
                 type:DataTypes.INTEGER,
@@ -25,7 +25,7 @@ const productModel=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false
         },
-        industryId:{
+        adminId:{
             type:DataTypes.INTEGER,
             allowNull:false
         },
@@ -40,7 +40,12 @@ const productModel=(sequelize,DataTypes)=>{
             defaultValue:DataTypes.NOW
         }
     })
+    
 }
 
 
+// associate the models here
+
 module.exports=productModel
+
+
