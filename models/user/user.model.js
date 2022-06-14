@@ -1,5 +1,6 @@
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
+const { db } =require("../index")
 
 
 const user=(sequelize,DataTypes)=>{
@@ -11,15 +12,39 @@ const user=(sequelize,DataTypes)=>{
         },
         name:{
             type:DataTypes.STRING,
-            allowNull:false,
-            noName:()=>{
-                throw new Error("Please provide your name")
+            allowNull:true,
+            validate:{
+                customValidator:(name)=>{
+                    if(!name.length){  
+                        const error = new Error('Name is required');
+                          error.statusCode=422;             
+                          throw error;
+                     }
+                }
             }
         },
         email:{
             type:DataTypes.STRING,
-            allowNull:false,
-            unique:true
+            allowNull:true,
+            unique:true,
+            validate:{
+                customValidator:async(email)=>{
+                    if(!email){
+                        throw new Error("Please provide your email")
+                    }
+                    const user=await db.user.findOne({
+                        where:{
+                            email:email
+                        }
+                    })
+                    if(user){
+                        const error=new Error("User created successfully");
+                        error.statusCode=201;
+                        throw new Error("Email already exist")
+                    }
+                },
+                
+            }
         },
         password:{
             type:DataTypes.STRING,

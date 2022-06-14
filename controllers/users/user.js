@@ -10,16 +10,13 @@ module.exports.createUser = async(req, res,next) => {
         const name = req.body.name;
         const email = req.body.email;
         const password = req.body.password;
+      
 
-        if(!email || !password) {
-            const error = new Error("Please provide all the required fields");
-            error.statusCode = 400;
-            throw error;
-        }
+        const hashedPassword = await bcrypt.hash(password, 12);
         const newUser=await db.user.create({
             name,
             email,
-            password
+            password:hashedPassword
         });
         res.status(201).json({newUser})
     }catch(error){
