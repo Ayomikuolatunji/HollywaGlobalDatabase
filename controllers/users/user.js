@@ -119,20 +119,25 @@ module.exports.updateUserEmail= async(req, res,next) => {
             error.statusCode=404;
             throw error;
         }
-        const updateName=await db.user.update({
-                name:email
+        const updateEmail=await db.user.update({
+                email:email
           },{
             where:{
                userId:userId,
             }
          })
-        res.status(200).json({updateName:updateName, message:"Email updated successfully"})
+        res.status(200).json({updateEmail:updateEmail, message:"Email updated successfully"})
     }catch(error){
         if(!error.statusCode) {
             error.statusCode = 500;
         }
         next(error);
     }
+}
+
+
+module.exports.restPassword= async(req, res,next) => {
+    
 }
 
 module.exports.deleteUser = async(req, res,next) => {
