@@ -2,7 +2,7 @@
 
 const UserPaymentModel=(sequelize,datatypes)=>{
      return sequelize.define("userPayment",{
-            id:{
+            userId:{
                 type:datatypes.UUID,
                 primaryKey:true,
                 defaultValue:datatypes.UUIDV1

@@ -34,12 +34,11 @@ db.userPaymentModel=require('./user/payment.model')(sequelize,DataTypes);
 db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 
-// associate the models here
+//products  association   here
 db.products.belongsTo(db.admin,{
     foreignKey:'adminId',
     onDelete:'CASCADE',
 })
-
 db.admin.hasMany(db.products,{
     onDelete:"CASCADE"
 })
