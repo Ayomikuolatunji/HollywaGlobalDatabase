@@ -50,6 +50,30 @@ const UserPaymentModel=(sequelize,datatypes)=>{
                         }
                     }
                 }
+            },
+            card_holder_name:{
+                type:datatypes.STRING,
+                allowNull:false,
+                validate:{
+                    customValidator:async(card_holder_name)=>{
+                        if(!card_holder_name){
+                            throw new Error("Please provide your card holder name")
+                        }
+                    }
+                }
+            },
+            created_at:{
+                type:datatypes.DATE,
+                allowNull:false,
+                defaultValue:datatypes.NOW
+            },
+            updated_at:{
+                type:datatypes.DATE,
+                allowNull:false,
+                defaultValue:datatypes.NOW
             }
      })
 }
+
+
+module.exports=UserPaymentModel

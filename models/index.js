@@ -1,7 +1,6 @@
 const config = require('../database/dbConfig');
 const {Sequelize,DataTypes} = require('sequelize');
-const user = require('./user/user.model');
-const productModel = require('./products/products.model');
+
 
  const sequelize=new Sequelize(
     config.DB,
@@ -27,6 +26,9 @@ db.user=require('./user/user.model')(sequelize,DataTypes);
 db.products=require('./products/products.model')(sequelize,DataTypes);
 db.industries=require('./industries/industry.model')(sequelize,DataTypes);
 db.admin=require('./admin/admin.model')(sequelize,DataTypes);
+db.userAddressModel=require('./user/userAddress.model')(sequelize,DataTypes);
+db.userPaymentModel=require('./user/payment.model')(sequelize,DataTypes);
+
 
 // initialize the database
 db.sequelize=sequelize;
@@ -42,6 +44,16 @@ db.admin.hasMany(db.products,{
     onDelete:"CASCADE"
 })
 
+
+// user association here
+db.user.hasOne(db.userAddressModel,{
+    foreignKey:'userId',
+    onDelete:'CASCADE'
+})
+db.user.hasOne(db.userPaymentModel,{
+    foreignKey:'userId',
+    onDelete:'CASCADE'
+})
 
 
 const DB=async()=>{

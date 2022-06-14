@@ -83,8 +83,8 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.DATE,
             allowNull:false,
             defaultValue:datatypes.NOW
-        }
-
-        
+        }  
     })
 }
+
+module.exports=userAddressModel;
