@@ -58,7 +58,7 @@ db.user.hasOne(db.userPaymentModel,{
 
 const DB=async()=>{
     try {
-        await db.sequelize.sync({force:true})  
+        await db.sequelize.sync({force:false})  
         console.log('Tables created successfully.');
       } catch (err) {
           console.error('Unable to create tables:',err.message);
