@@ -9,10 +9,14 @@ module.exports.createUser = async(req, res,next) => {
         const username = req.body.username;
         const email = req.body.email;
         const password = req.body.password;
+        const first_name = req.body.first_name;
+        const last_name = req.body.last_name;
         const role=req.body.role;
         const hashedPassword = await bcrypt.hash(password, 12);
         const newUser=await db.user.create({
             username,
+            first_name,
+            last_name,
             email,
             role,
             password:hashedPassword

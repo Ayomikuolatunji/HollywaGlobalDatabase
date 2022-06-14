@@ -1,5 +1,6 @@
 const express=require('express');
 const { getUsers, createUser, getUser, updateUserName, updateUserEmail } = require('../controllers/users/user');
+const { createAdress } = require('../controllers/users/userAddress');
 const router=express.Router();
 
 
@@ -12,7 +13,7 @@ router.patch("/update_user_email/:userId",updateUserEmail)
 
 
 // user address routes
-
+router.post("/create_address",createAdress)
 
 
 

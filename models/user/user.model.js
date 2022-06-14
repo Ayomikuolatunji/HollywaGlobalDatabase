@@ -73,6 +73,17 @@ const user=(sequelize,DataTypes)=>{
                 }
             }
         },
+        role:{
+            type:DataTypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(role)=>{
+                    if(!role){
+                        throw new Error("Please provide your role")
+                    }
+                }
+            }
+        },
         createdAt:{
             type:DataTypes.DATE,
             allowNull:false
