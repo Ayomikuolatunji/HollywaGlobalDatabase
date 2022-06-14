@@ -1,7 +1,11 @@
 const express=require('express');
-const { getUsers, createUser, getUser, updateUserName, updateUserEmail } = require('../controllers/users/user');
-const { createAdress } = require('../controllers/users/userAddress');
 const router=express.Router();
+
+
+const { getUsers, createUser, getUser, updateUserName, updateUserEmail } = require('../controllers/users/user');
+
+const { createAdress, getUserAdress } = require('../controllers/users/userAddress');
+
 
 
 // users routes
@@ -14,6 +18,7 @@ router.patch("/update_user_email/:userId",updateUserEmail)
 
 // user address routes
 router.post("/create_user_address",createAdress)
+router.get("/user_address/:userId",getUserAdress)
 
 
 
