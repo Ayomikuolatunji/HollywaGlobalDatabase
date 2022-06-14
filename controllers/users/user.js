@@ -85,3 +85,28 @@ module.exports.updateUserName= async(req, res,next) => {
         next(error);
     }
 }
+
+module.exports.updateUserEmail= async(req, res,next) => {
+    try{
+        const userId=req.params.userId;
+        const email = req.body.email;
+
+        const updateName=await db.user.update({
+                name:email
+          },{
+            where:{
+               userId:userId,
+            }
+         })
+        res.status(200).json({updateName})
+    }catch(error){
+        if(!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+}
+
+module.exports.deleteUser = async(req, res,next) => {
+
+}
