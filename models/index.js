@@ -20,8 +20,9 @@ const {Sequelize,DataTypes} = require('sequelize');
 
 const db={}
 
-
+// defind all the models here
 db.user=require('./user/user.model')(sequelize,DataTypes);
+db.industries=require('./industries/industry.model')(sequelize,DataTypes);
 db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 

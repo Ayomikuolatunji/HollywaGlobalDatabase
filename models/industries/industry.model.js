@@ -1,7 +1,7 @@
 
 
 
-module.exports.industries=(sequelize,DataTypes)=>{
+const industries=(sequelize,DataTypes)=>{
     return sequelize.define('industries',{
         id:{
             type:DataTypes.INTEGER,
@@ -23,3 +23,6 @@ module.exports.industries=(sequelize,DataTypes)=>{
     })
     
 }
+
+
+module.exports=industries;
