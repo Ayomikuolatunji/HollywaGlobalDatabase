@@ -26,7 +26,7 @@ const adminModel = (sequelise, Datatypes)=>{
             type: Datatypes.STRING,
             allowNull: false,
         },
-        userId:{
+        adminId:{
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV1,
             primaryKey: true

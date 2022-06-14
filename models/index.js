@@ -33,7 +33,15 @@ db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 
 // associate the models here
-db.products.belongsTo(db.admin,{foreignKey:'adminId'})
+db.products.belongsTo(db.admin,{
+    foreignKey:'adminId',
+    onDelete:'CASCADE',
+    onUpdate:'CASCADE'
+})
+
+db.hasMany(db.admin,{
+    foreignKey:'adminId',
+})
 
 
 
