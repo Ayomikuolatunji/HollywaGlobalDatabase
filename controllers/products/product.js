@@ -3,12 +3,6 @@ const { db } = require("../../models");
 
 const createProducts=async(req,res,next)=>{
     try {
-       // find an admin to create a product
-         const admin=await db.admin.findOne({
-                where:{
-                    id:req.body.id
-                }
-         })
         const products=await db.products.create({
             name:req.body.name,
             price:req.body.price,
