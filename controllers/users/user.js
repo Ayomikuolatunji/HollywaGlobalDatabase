@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const { Op } = require("sequelize");
 const { db } = require("../../models")
 
 
@@ -35,7 +36,12 @@ module.exports.createUser = async(req, res,next) => {
 module.exports.getUsers = async(req, res,next) => {
     try {
         const allusers = await db.user.findAll({
-            attributes:["name"]
+            where:{
+                [Op.or]:[
+                    {id:1},
+                    {id:2}
+                ]
+            }
         });
         res.status(200).json({allusers})
     } catch (error) {
