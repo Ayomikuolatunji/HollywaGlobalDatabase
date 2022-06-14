@@ -65,17 +65,6 @@ const getUserAdress=async(req,res,next)=>{
 
 const updateUserAddress=async(req,res,next)=>{
     try {     
-        // check if user already has an adress using userid
-        const findUser=await  db.userAddressModel.findOne({
-            where:{
-                userId:req.params.userId
-            }
-        })
-        if(!findUser){
-            const error=new Error('User does not have an adress');
-            error.statusCode=404;
-            throw error;
-        }
         const address_line1=req.body.address_line1;
         const address_line2=req.body.address_line2;
         const city=req.body.city;

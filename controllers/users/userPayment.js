@@ -52,19 +52,22 @@ const updateUserPayment=async(req,res,next)=>{
         const card_cvv = req.body.card_cvv;
         const card_holder_name = req.body.card_holder_name;
         if(!userId){
-            const error=new Error('User with provided not found or empty id was provided');
+            const error=new Error('User with provided not found or empty user id was provided');
             error.statusCode=404;
             throw error;
         }
-        const updateUserCard=await db.userPaymentModel({
-             userId,
-             payment_type,
-             card_number,
-             card_expiry_date,
-             card_cvv,
-             card_holder_name
+        const updateUserCard=await db.userPaymentModel.update({
+            userId:userId,
+            payment_type:payment_type,
+            card_number:card_number,
+            card_expiry_date:card_expiry_date,
+            card_cvv:card_cvv,
+            card_holder_name:card_holder_name
+        },{
+            where:{
+                userId:userId
+            }
         })
-
         res.status(201).json({
             updateUserCard,
             message:"card details updated successfully"
@@ -75,8 +78,6 @@ const updateUserPayment=async(req,res,next)=>{
         }
         next(err)
     }
-
-
 }
 
 

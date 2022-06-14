@@ -49,7 +49,7 @@ db.user.hasOne(db.userAddressModel,{
     foreignKey:'userId',
     onDelete:'CASCADE'
 })
-db.user.hasOne(db.userPaymentModel,{
+db.userPaymentModel.belongsTo(db.user,{
     foreignKey:'userId',
     onDelete:'CASCADE'
 })
@@ -57,7 +57,7 @@ db.user.hasOne(db.userPaymentModel,{
 
 const DB=async()=>{
     try {
-        await db.sequelize.sync({force:false})  
+        await db.sequelize.sync({force:true})  
         console.log('Tables created successfully.');
       } catch (err) {
           console.error('Unable to create tables:',err.message);
