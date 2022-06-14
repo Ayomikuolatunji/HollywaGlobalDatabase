@@ -30,11 +30,7 @@ module.exports.createUser = async(req, res,next) => {
 
 module.exports.getUsers = async(req, res,next) => {
     try {
-        const allusers = await db.user.findAll({
-            where:{
-                id:[1,2,3]
-            }
-        });
+        const allusers = await db.user.findAll({});
         res.status(200).json({allusers})
     } catch (error) {
         if(!error.statusCode) {
@@ -53,7 +49,12 @@ module.exports.getUser = async(req, res,next) => {
                 userId:userId
             }
       })
-        res.status(200).json({findUser})
+      if(!userId){
+            const error=new Error('User not found');
+            error.statusCode=404;
+            throw error;
+      }
+      res.status(200).json({findUser})
 
     }catch(error){
         if(!error.statusCode) {
