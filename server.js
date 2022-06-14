@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use((error, req, res, next) => {
+    console.log(error.message);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;
@@ -24,18 +25,11 @@ app.use((error, req, res, next) => {
 
 
 
-app.use('/api',api)
+app.use('/api/',api)
 
 
 
 
-app.listen(8080, () => {
-    sequelize.authenticate().then(()=>{
-        console.log('Connection has been established successfully.');
-    })
-    .catch(err=>{
-        console.error('Unable to connect to the database:',err.message);
-    })
-    
+app.listen(8080, () => {    
     console.log("Server is running on port 8080");
 })

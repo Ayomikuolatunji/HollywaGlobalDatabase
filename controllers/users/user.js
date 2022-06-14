@@ -4,7 +4,7 @@ const { db } = require("../../models")
 
 
 
-module.exports.createUser = async(req, res,next) => {
+const createUser = async(req, res,next) => {
     try {
         const name = req.body.name;
         const email = req.body.email;
@@ -15,7 +15,7 @@ module.exports.createUser = async(req, res,next) => {
             error.statusCode = 400;
             throw error;
         }
-        const hashPassword = await bcrypt.hash(password, 40);
+        const hashPassword = await bcrypt.hash(password, 12);
         const newUser=await db.user.create({
             name,
             email,
@@ -30,3 +30,6 @@ module.exports.createUser = async(req, res,next) => {
     }
 }
 
+module.exports = {
+    createUser
+}
