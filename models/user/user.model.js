@@ -7,11 +7,11 @@ const key = crypto.randomBytes(16).toString("hex");
 const user=(sequelize,DataTypes)=>{
     return sequelize.define('user',{
         id:{
-            type:DataTypes.INTEGER,
-            primaryKey:true,
-            autoIncrement:true
+            type: Sequelize.UUID,
+            defaultValue: Sequelize.UUIDV1,
+            primaryKey: true
         },
-        name:{
+        username:{
             type:DataTypes.STRING,
             allowNull:false,
             validate:{
@@ -40,18 +40,38 @@ const user=(sequelize,DataTypes)=>{
                 msg:"Email already exists" 
             }
         },
+        first_name:{
+            type:DataTypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(first_name)=>{
+                    if(!first_name){
+                        throw new Error("Please provide your first name")
+                    }
+                }
+            }
+        },
+        last_name:{
+            type:DataTypes.STRING,
+            allowNull:false,
+            validate:{
+                customValidator:async(last_name)=>{
+                    if(!last_name){
+                        throw new Error("Please provide your last name")
+                    }
+                }
+            }
+        },
         password:{
             type:DataTypes.STRING,
             allowNull:false,
-        },
-        role:{
-            type:DataTypes.STRING,
-            allowNull:false,
-        },
-        userId:{
-            type: Sequelize.UUID,
-            defaultValue: Sequelize.UUIDV1,
-            primaryKey: true
+            validate:{
+                customValidator:async(password)=>{
+                    if(!password){
+                        throw new Error("Please provide your password")
+                    }
+                }
+            }
         },
         createdAt:{
             type:DataTypes.DATE,

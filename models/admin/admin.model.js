@@ -32,7 +32,6 @@ const adminModel = (sequelise, Datatypes)=>{
             allowNull:false,
             defaultValue:Datatypes.NOW
         }
-        
     })
 
     return Admin;

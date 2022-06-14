@@ -6,13 +6,13 @@ const { db } = require("../../models")
 
 module.exports.createUser = async(req, res,next) => {
     try {
-        const name = req.body.name;
+        const username = req.body.username;
         const email = req.body.email;
         const password = req.body.password;
         const role=req.body.role;
         const hashedPassword = await bcrypt.hash(password, 12);
         const newUser=await db.user.create({
-            name,
+            username,
             email,
             role,
             password:hashedPassword
@@ -68,7 +68,7 @@ module.exports.getUser = async(req, res,next) => {
 module.exports.updateUserName= async(req, res,next) => {
     try{
         const userId=req.params.userId;
-        const name = req.body.name;
+        const username = req.body.username;
         if(!userId){
             const error=new Error('User not found');
             error.statusCode=404;
@@ -84,14 +84,14 @@ module.exports.updateUserName= async(req, res,next) => {
             error.statusCode=404;
             throw error;
         }
-        const updateName=await db.user.update({
-                name:name
+        const updateuserName=await db.user.update({
+                username:username
           },{
             where:{
                userId:userId,
             }
          })
-        res.status(200).json({updateName})
+        res.status(200).json({updateuserName})
     }catch(error){
         if(!error.statusCode) {
             error.statusCode = 500;

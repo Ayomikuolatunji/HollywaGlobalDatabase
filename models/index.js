@@ -38,7 +38,7 @@ db.products.belongsTo(db.admin,{
     onDelete:'CASCADE',
 })
 
-db.admin.hasMany(db.admin,{
+db.admin.hasMany(db.products,{
     onDelete:"CASCADE"
 })
 
@@ -46,7 +46,7 @@ db.admin.hasMany(db.admin,{
 
 const DB=async()=>{
     try {
-        await db.sequelize.sync({force:false})  
+        await db.sequelize.sync({force:true})  
         console.log('Tables created successfully.');
       } catch (err) {
           console.error('Unable to create tables:',err.message);
