@@ -50,11 +50,11 @@ app.use((error, req, res, next) => {
 
 
 app.listen(8080, () => {    
-        sequelize.authenticate().then(()=>{
-            console.log('Connection has been established successfully.');
-        })
-        .catch(err=>{
-            console.error('Unable to connect to the database:',err.message);
-        })
+    sequelize.authenticate().then(()=>{
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err=>{
+        console.error('Unable to connect to the database:',err.message);
+    })
     console.log("Server is running on port 8080");
 })
