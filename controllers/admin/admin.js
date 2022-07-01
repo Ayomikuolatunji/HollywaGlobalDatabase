@@ -5,7 +5,6 @@ const {db} = require('../../models');
 const createAdmin=async (req, res,next) => {
     try {
      const { name, email, password } = req.body;
-
       const hashedPassword=await bcrypt.hash(password,12);
       await db.admin.create({
             name,
