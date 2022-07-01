@@ -57,12 +57,12 @@ const updateUserPayment=async(req,res,next)=>{
             throw error;
         }
         const updateUserCard=await db.userPaymentModel.update({
-            userId:userId,
             payment_type:payment_type,
             card_number:card_number,
             card_expiry_date:card_expiry_date,
             card_cvv:card_cvv,
-            card_holder_name:card_holder_name
+            card_holder_name:card_holder_name,
+            userId:userId,
         },{
             where:{
                 userId:userId
