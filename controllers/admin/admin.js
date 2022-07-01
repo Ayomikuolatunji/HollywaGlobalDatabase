@@ -4,15 +4,15 @@ const {db} = require('../../models');
 
 const createAdmin=async (req, res,next) => {
     try {
-    const { name, email, password } = req.body;
+     const { name, email, password } = req.body;
 
-     const hashedPassword=await bcrypt.hash(password,12);
-     const admin=await db.admin.create({
+      const hashedPassword=await bcrypt.hash(password,12);
+      await db.admin.create({
             name,
             email,
             password:hashedPassword
-     }) 
-     res.status(201).json({admin, message:"Admin created successfully"})
+      }) 
+     res.status(201).json({message:"Admin created successfully"})
     } catch (error) {
         if(!error.statusCode){
             error.statusCode=500;

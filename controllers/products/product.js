@@ -8,7 +8,7 @@ const createProducts=async(req,res,next)=>{
             price:req.body.price,
             description:req.body.description,
             image:req.body.image,
-            adminId:req.body.id
+            adminId:req.body.adminid
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error) {
