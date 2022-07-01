@@ -16,7 +16,17 @@ const adminModel = (sequelise, Datatypes)=>{
         email: {
             type: Datatypes.STRING,
             allowNull: false,
-            unique: true,
+            unique: {
+                args: true,
+                msg: "Admin already exists with this email"
+            },
+            validate: {
+               customValidator: async (email)=>{
+                     if(!email){
+                          throw new Error("Please provide your email")
+                     }
+               }
+            }
         },
         password: {
             type: Datatypes.STRING,

@@ -37,7 +37,7 @@ const user=(sequelize,DataTypes)=>{
             },
             unique:{
                 args:true,
-                msg:"Email already exists" 
+                msg:"User already exists with this email" 
             }
         },
         first_name:{
