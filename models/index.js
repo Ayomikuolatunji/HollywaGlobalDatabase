@@ -1,5 +1,5 @@
 const config = require('../database/dbConfig');
-const {Sequelize,DataTypes} = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 
  const sequelize=new Sequelize(
@@ -44,6 +44,9 @@ db.admin.hasMany(db.products,{
     onDelete:"CASCADE"
 })
 
+db.products.hasMany(db.product_category,{
+    foreignKey:'categoryId',
+})
 
 // user association here
 db.user.hasOne(db.userAddressModel,{
@@ -54,6 +57,8 @@ db.userPaymentModel.belongsTo(db.user,{
     foreignKey:'userId',
     onDelete:'CASCADE'
 })
+
+
 
 
 const DB=async()=>{
