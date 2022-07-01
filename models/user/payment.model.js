@@ -36,6 +36,8 @@ const UserPaymentModel=(sequelize,datatypes)=>{
                     customValidator:async(card_expiry_date)=>{
                         if(!card_expiry_date){
                             throw new Error("Please provide your card expiry date")
+                        }else if(!moment(card_expiry_date).isValid()){
+                            throw new Error("Please provide a valid card expiry date")
                         }
                     }
                 }
@@ -47,7 +49,10 @@ const UserPaymentModel=(sequelize,datatypes)=>{
                     customValidator:async(card_cvv)=>{
                         if(!card_cvv){
                             throw new Error("Please provide your card cvv")
+                        }else if(card_cvv.length!==3){
+                            throw new Error("Please provide your card cvv with 3 digits")
                         }
+
                     }
                 }
             },
