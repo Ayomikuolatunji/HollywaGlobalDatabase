@@ -3,9 +3,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { sequelize,db } = require('./models');
 const api = require('./services/v1Api');
-const productModel = require('./models/products/products.model');
-const adminModel=require('./models/admin/admin.model');
-
 const app=express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));

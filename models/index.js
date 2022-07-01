@@ -21,21 +21,42 @@ const { Sequelize, DataTypes } = require('sequelize');
 
 const db={}
 
+
+/*=============================================
+=            all models          =
+=============================================*/
+
 // defind all the models here
 db.user=require('./user/user.model')(sequelize,DataTypes);
+
 db.products=require('./products/products.model')(sequelize,DataTypes);
+
 db.industries=require('./industries/industry.model')(sequelize,DataTypes);
+
 db.admin=require('./admin/admin.model')(sequelize,DataTypes);
+
 db.userAddressModel=require('./user/userAddress.model')(sequelize,DataTypes);
+
 db.userPaymentModel=require('./user/payment.model')(sequelize,DataTypes);
 db.product_category=require('./products/product_category.model')(sequelize,DataTypes);
+
+
+/*=====  End of all models======*/
+
+
 
 
 // initialize the database
 db.sequelize=sequelize;
 db.Sequelize=Sequelize;
 
-//products  association   here
+
+/*=============================================
+=            All table associations          =
+=============================================*/
+
+
+//products  association  here
 db.products.belongsTo(db.admin,{
     foreignKey:'adminId',
     onDelete:'CASCADE',
@@ -60,7 +81,16 @@ db.userPaymentModel.belongsTo(db.user,{
 
 
 
+/*=====  End of All table associations======*/
 
+
+
+
+
+
+/*=============================================
+=             create tables           =
+=============================================*/
 const DB=async()=>{
     try {
         await db.sequelize.sync({force:false})  
@@ -73,7 +103,12 @@ const DB=async()=>{
 DB()
 
 
-// send to the controllers
+/*=====  End of  create tables ======*/
+
+
+
+
+// send to the controllers and server
 
 module.exports={
     sequelize,
