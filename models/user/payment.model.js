@@ -1,3 +1,4 @@
+const moment = require('moment');  
 
 
 const UserPaymentModel=(sequelize,datatypes)=>{
@@ -14,6 +15,8 @@ const UserPaymentModel=(sequelize,datatypes)=>{
                     customValidator:async(payment_type)=>{
                         if(!payment_type){
                             throw new Error("Please provide your payment type")
+                        }else if(payment_type!=='credit'&&payment_type!=='debit'){
+                            throw new Error("Please provide valid payment type")
                         }
                     }
                 }
