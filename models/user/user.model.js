@@ -78,6 +78,11 @@ const user=(sequelize,DataTypes)=>{
             allowNull:false,
            defaultValue:"customer",
         },
+        user_profile_image:{
+            type:DataTypes.STRING,
+            allowNull:true,
+            defaultValue:"https://res.cloudinary.com/dzqbzqgjy/image/upload/v1599098981/default_profile_image_qjqjqj.png"
+        },
         createdAt:{
             type:DataTypes.DATE,
             allowNull:false

@@ -28,6 +28,7 @@ db.industries=require('./industries/industry.model')(sequelize,DataTypes);
 db.admin=require('./admin/admin.model')(sequelize,DataTypes);
 db.userAddressModel=require('./user/userAddress.model')(sequelize,DataTypes);
 db.userPaymentModel=require('./user/payment.model')(sequelize,DataTypes);
+db.product_category=require('./products/product_category.model')(sequelize,DataTypes);
 
 
 // initialize the database
