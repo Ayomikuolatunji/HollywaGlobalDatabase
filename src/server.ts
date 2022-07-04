@@ -31,8 +31,8 @@ app.use('/api/',api)
 
 interface Error {
     name: string; 
-    errors: { message: any; }[]
-    message: any
+    errors: { message: string; }[]
+    message: string
     statusCode: number
 }
 
