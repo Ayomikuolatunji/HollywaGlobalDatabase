@@ -1,6 +1,3 @@
-const { db } = require("../../src/models");
-
-
 
 
 const createUserPayment=async(req,res,next)=>{

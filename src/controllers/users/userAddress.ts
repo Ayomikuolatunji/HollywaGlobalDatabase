@@ -1,7 +1,8 @@
-const { db } = require("../../src/models")
+import { RequestHandler } from "express";
+import { db } from "../../models";
 
 
-const createAdress=async(req,res,next)=>{
+const createAdress:RequestHandler=async(req,res,next)=>{
     try {     
         // check if user already has an adress using userid
         const findUser=await  db.userAddressModel.findOne({
@@ -10,7 +11,7 @@ const createAdress=async(req,res,next)=>{
             }
         })
         if(findUser){
-            const error=new Error('User already has an adress');
+            const error:any=new Error('User already has an adress');
             error.statusCode=404;
             throw error;
         }
@@ -31,7 +32,7 @@ const createAdress=async(req,res,next)=>{
             userId:req.body.userId
         })
         res.status(201).json({userAdress, message:"Address created successfully"})
-    } catch (error) {
+    } catch (error:any) {
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -40,7 +41,7 @@ const createAdress=async(req,res,next)=>{
 }
 
 
-const getUserAdress=async(req,res,next)=>{
+const getUserAdress:RequestHandler=async(req,res,next)=>{
     try {     
         // check if user already has an adress using userid
         const findUser=await  db.userAddressModel.findOne({
@@ -49,12 +50,12 @@ const getUserAdress=async(req,res,next)=>{
             }
         })
         if(!findUser){
-            const error=new Error('User does not have an adress');
+            const error:any=new Error('User does not have an adress');
             error.statusCode=404;
             throw error;
         }
         res.status(200).json({findUser})
-    } catch (error) {
+    } catch (error:any) {
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -63,7 +64,7 @@ const getUserAdress=async(req,res,next)=>{
 }
 
 
-const updateUserAddress=async(req,res,next)=>{
+const updateUserAddress:RequestHandler=async(req,res,next)=>{
     try {     
         const address_line1=req.body.address_line1;
         const address_line2=req.body.address_line2;
@@ -85,8 +86,8 @@ const updateUserAddress=async(req,res,next)=>{
                 userId:req.params.userId,
             }
         })
-        res.status(200).json({updateUserAddress, message:"Address updated successfully", findUser})
-    } catch (error) {
+        res.status(200).json({updateUserAddress, message:"Address updated successfully"})
+    } catch (error:any) {
         if(!error.statusCode) {
             error.statusCode = 500;
         }

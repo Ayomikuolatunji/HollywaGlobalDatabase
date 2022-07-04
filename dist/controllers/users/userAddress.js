@@ -8,11 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { db } = require("../../src/models");
+Object.defineProperty(exports, "__esModule", { value: true });
+const models_1 = require("../../models");
 const createAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // check if user already has an adress using userid
-        const findUser = yield db.userAddressModel.findOne({
+        const findUser = yield models_1.db.userAddressModel.findOne({
             where: {
                 userId: req.body.userId
             }
@@ -28,7 +29,7 @@ const createAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const postal_code = req.body.postal_code;
         const country = req.body.country;
         const telephone = req.body.telephone;
-        const userAdress = yield db.userAddressModel.create({
+        const userAdress = yield models_1.db.userAddressModel.create({
             address_line1,
             address_line2,
             city,
@@ -49,7 +50,7 @@ const createAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 const getUserAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // check if user already has an adress using userid
-        const findUser = yield db.userAddressModel.findOne({
+        const findUser = yield models_1.db.userAddressModel.findOne({
             where: {
                 userId: req.params.userId
             }
@@ -76,7 +77,7 @@ const updateUserAddress = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         const postal_code = req.body.postal_code;
         const country = req.body.country;
         const telephone = req.body.telephone;
-        const updateUserAddress = yield db.userAddressModel.update({
+        const updateUserAddress = yield models_1.db.userAddressModel.update({
             address_line1,
             address_line2,
             city,
@@ -89,7 +90,7 @@ const updateUserAddress = (req, res, next) => __awaiter(void 0, void 0, void 0, 
                 userId: req.params.userId,
             }
         });
-        res.status(200).json({ updateUserAddress, message: "Address updated successfully", findUser });
+        res.status(200).json({ updateUserAddress, message: "Address updated successfully" });
     }
     catch (error) {
         if (!error.statusCode) {

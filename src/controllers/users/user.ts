@@ -69,12 +69,12 @@ export const getUser:RequestHandler = async(req, res,next) => {
 }
 
 
-module.exports.updateUserName= async(req, res,next) => {
+export const updateUserName:RequestHandler= async(req, res,next) => {
     try{
         const userId=req.params.userId;
         const username = req.body.username;
         if(!userId){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
         }
@@ -84,7 +84,7 @@ module.exports.updateUserName= async(req, res,next) => {
             }
         })
         if(!findUser){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
         }
@@ -96,7 +96,7 @@ module.exports.updateUserName= async(req, res,next) => {
             }
          })
         res.status(200).json({updateuserName})
-    }catch(error){
+    }catch(error:any){
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -104,12 +104,12 @@ module.exports.updateUserName= async(req, res,next) => {
     }
 }
 
-module.exports.updateUserEmail= async(req, res,next) => {
+export const updateUserEmail:RequestHandler= async(req, res,next) => {
     try{
         const userId=req.params.userId;
         const email = req.body.email;
         if(!userId){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
         }
@@ -119,7 +119,7 @@ module.exports.updateUserEmail= async(req, res,next) => {
             }
         })
         if(!findUser){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
         }
@@ -131,7 +131,7 @@ module.exports.updateUserEmail= async(req, res,next) => {
             }
          })
         res.status(200).json({updateEmail:updateEmail, message:"Email updated successfully"})
-    }catch(error){
+    }catch(error:any){
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -140,10 +140,9 @@ module.exports.updateUserEmail= async(req, res,next) => {
 }
 
 
-module.exports.restPassword= async(req, res,next) => {
+const restPassword:RequestHandler= async(req, res,next) => {
     
 }
-
-module.exports.deleteUser = async(req, res,next) => {
+export const deleteUser:RequestHandler = async(req, res,next) => {
 
 }

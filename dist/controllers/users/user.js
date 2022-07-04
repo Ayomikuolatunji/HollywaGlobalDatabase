@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.getUsers = exports.createUser = void 0;
+exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = require("../../models");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -77,7 +77,7 @@ const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getUser = getUser;
-module.exports.updateUserName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUserName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const username = req.body.username;
@@ -112,7 +112,8 @@ module.exports.updateUserName = (req, res, next) => __awaiter(void 0, void 0, vo
         next(error);
     }
 });
-module.exports.updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateUserName = updateUserName;
+const updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const email = req.body.email;
@@ -147,7 +148,9 @@ module.exports.updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, v
         next(error);
     }
 });
-module.exports.restPassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateUserEmail = updateUserEmail;
+const restPassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
 });
-module.exports.deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
 });
+exports.deleteUser = deleteUser;
