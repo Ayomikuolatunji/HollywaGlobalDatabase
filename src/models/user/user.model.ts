@@ -1,10 +1,9 @@
 
-const {Sequelize} =require('sequelize');
-const crypto = require("crypto");
+import Sequelize  from 'sequelize';
+import { randomBytes } from "crypto";
 
-const key = crypto.randomBytes(16).toString("hex");
 
-const user=(sequelize,DataTypes)=>{
+const userModel=(sequelize: Sequelize.Sequelize,DataTypes: typeof import("sequelize/types/data-types"))=>{
     return sequelize.define('user',{
         userId:{
             type: Sequelize.UUID,
@@ -15,9 +14,9 @@ const user=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:(name)=>{
+                customValidator:(name:any)=>{
                     if(!name.length){  
-                        const error = new Error('Name is required');
+                        const error:any = new Error('Name is required');
                           error.statusCode=422;             
                           throw error;
                      }
@@ -28,7 +27,7 @@ const user=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:true,
             validate:{
-                customValidator:async(email)=>{
+                customValidator:async(email: any)=>{
                     if(!email){
                         throw new Error("Please provide your email")
                     }
@@ -36,7 +35,7 @@ const user=(sequelize,DataTypes)=>{
                 isEmail:true
             },
             unique:{
-                args:true,
+                name:'email_unique',
                 msg:"User already exists with this email" 
             }
         },
@@ -44,7 +43,7 @@ const user=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(first_name)=>{
+                customValidator:async(first_name: any)=>{
                     if(!first_name){
                         throw new Error("Please provide your first name")
                     }
@@ -55,7 +54,7 @@ const user=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(last_name)=>{
+                customValidator:async(last_name: any)=>{
                     if(!last_name){
                         throw new Error("Please provide your last name")
                     }
@@ -66,7 +65,7 @@ const user=(sequelize,DataTypes)=>{
             type:DataTypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(password)=>{
+                customValidator:async(password: any)=>{
                     if(!password){
                         throw new Error("Please provide your password")
                     }
@@ -94,4 +93,4 @@ const user=(sequelize,DataTypes)=>{
     })
 }
         
-module.exports=user;
+export default userModel;

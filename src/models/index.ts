@@ -1,5 +1,12 @@
 import config from '../database/dbConfig';
 import { Sequelize, DataTypes } from 'sequelize';
+import userModel from './user/user.model';
+import productModel from './products/products.model';
+import userPaymentModel from './user/payment.model';
+import industryModel from './industries/industry.model';
+import userAddressModel from './user/userAddress.model';
+import produtCategory from './products/product_category.model';
+import adminModel from './admin/admin.model';
 
 
  const sequelize=new Sequelize(
@@ -19,37 +26,21 @@ import { Sequelize, DataTypes } from 'sequelize';
 
 
 
-const db={}
 
-
-/*=============================================
-=            all models          =
-=============================================*/
-
-// defind all the models here
-db.user=require('./user/user.model')(sequelize,DataTypes);
-
-db.products=require('./products/products.model')(sequelize,DataTypes);
-
-db.industries=require('./industries/industry.model')(sequelize,DataTypes);
-
-db.admin=require('./admin/admin.model')(sequelize,DataTypes);
-
-db.userAddressModel=require('./user/userAddress.model')(sequelize,DataTypes);
-
-db.userPaymentModel=require('./user/payment.model')(sequelize,DataTypes);
-db.product_category=require('./products/product_category.model')(sequelize,DataTypes);
-
-
-/*=====  End of all models======*/
+const db={
+    sequelize,
+    user:userModel(sequelize,DataTypes),
+    products:productModel(sequelize,DataTypes),
+    userPaymentModel:userPaymentModel(sequelize,DataTypes),
+    industries:industryModel(sequelize,DataTypes),
+    userAddressModel:userAddressModel(sequelize,DataTypes),
+    product_category:produtCategory(sequelize,DataTypes),
+    admin:adminModel(sequelize,DataTypes)
+}
 
 
 
-
-// initialize the database
-db.sequelize=sequelize;
-db.Sequelize=Sequelize;
-
+// initilize the tables
 
 /*=============================================
 =            All table associations          =
@@ -91,11 +82,12 @@ db.userPaymentModel.belongsTo(db.user,{
 /*=============================================
 =             create tables           =
 =============================================*/
+
 const DB=async()=>{
     try {
         await db.sequelize.sync({force:false})  
         console.log('Tables created successfully.');
-      } catch (err) {
+      } catch (err:any) {
           console.error('Unable to create tables:',err.message);
       }
 }

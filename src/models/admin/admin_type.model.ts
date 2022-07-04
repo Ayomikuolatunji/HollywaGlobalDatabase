@@ -1,6 +1,6 @@
 
 
-const adminType = (sequelize, DataTypes) => {
+const adminType = (sequelize:any, DataTypes:any) => {
     return sequelize.define('admin_type', {
         id: {
             type: DataTypes.UUID,
@@ -8,3 +8,5 @@ const adminType = (sequelize, DataTypes) => {
         }
     })
 }
+
+export default adminType

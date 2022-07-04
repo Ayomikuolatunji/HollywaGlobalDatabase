@@ -1,7 +1,7 @@
 
 
 
-const userAddressModel=(sequelise, datatypes)=>{
+const userAddressModel=(sequelise:any, datatypes:any)=>{
     return sequelise.define('userAddress',{
         id:{
             type:datatypes.UUID,
@@ -12,7 +12,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(address_line1)=>{
+                customValidator:async(address_line1: string)=>{
                     if(!address_line1){
                         throw new Error("Please provide your address line 1")
                     }
@@ -23,7 +23,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(address_line2)=>{
+                customValidator:async(address_line2: string)=>{
                     if(!address_line2){
                         throw new Error("Please provide your address line 2")
                     }
@@ -34,7 +34,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(city)=>{
+                customValidator:async(city: any)=>{
                     if(!city){
                         throw new Error("Please provide your city")
                     }
@@ -45,7 +45,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(postal_code)=>{
+                customValidator:async(postal_code: any)=>{
                     if(!postal_code){
                         throw new Error("Please provide your postal code")
                     }
@@ -56,7 +56,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(country)=>{
+                customValidator:async(country: any)=>{
                     if(!country){
                         throw new Error("Please provide your country")
                     }
@@ -67,7 +67,7 @@ const userAddressModel=(sequelise, datatypes)=>{
             type:datatypes.STRING,
             allowNull:false,
             validate:{
-                customValidator:async(telephone)=>{
+                customValidator:async(telephone: any)=>{
                     if(!telephone){
                         throw new Error("Please provide your telephone")
                     }
@@ -87,4 +87,4 @@ const userAddressModel=(sequelise, datatypes)=>{
     })
 }
 
-module.exports=userAddressModel;
+export default userAddressModel;

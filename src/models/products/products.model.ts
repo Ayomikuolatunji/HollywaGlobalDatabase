@@ -1,7 +1,5 @@
-const adminModel = require("../admin/admin.model")
 
-
-const productModel=(sequelize,DataTypes)=>{
+const productModel=(sequelize: { define: (arg0: string, arg1: { id: { type: any; primaryKey: boolean; autoIncrement: boolean }; name: { type: any; allowNull: boolean; unique: boolean }; price: { type: any; allowNull: boolean }; description: { type: any; allowNull: boolean }; image: { type: any; allowNull: boolean }; createdAt: { type: any; allowNull: boolean; defaultValue: any }; updatedAt: { type: any; allowNull: boolean; defaultValue: any } }) => any },DataTypes: { INTEGER: any; STRING: any; DATE: any; NOW: any })=>{
     return sequelize.define("products",{
          id:{
                 type:DataTypes.INTEGER,
@@ -42,6 +40,6 @@ const productModel=(sequelize,DataTypes)=>{
 
 // associate the models here
 
-module.exports=productModel
+export default productModel;
 
 

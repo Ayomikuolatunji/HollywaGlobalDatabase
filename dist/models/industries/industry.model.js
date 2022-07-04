@@ -1,5 +1,6 @@
 "use strict";
-const industries = (sequelize, DataTypes) => {
+Object.defineProperty(exports, "__esModule", { value: true });
+const industryModel = (sequelize, DataTypes) => {
     return sequelize.define('industries', {
         id: {
             type: DataTypes.INTEGER,
@@ -20,4 +21,4 @@ const industries = (sequelize, DataTypes) => {
         }
     });
 };
-module.exports = industries;
+exports.default = industryModel;

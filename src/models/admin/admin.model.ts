@@ -1,7 +1,7 @@
 const {Sequelize} = require('sequelize');
 
 
-const adminModel = (sequelise, Datatypes)=>{
+const adminModel = (sequelise:any, Datatypes:any)=>{
     const Admin = sequelise.define('admin', {
         id: {
             type: Sequelize.UUID,
@@ -21,7 +21,7 @@ const adminModel = (sequelise, Datatypes)=>{
                 msg: "Admin already exists with this email"
             },
             validate: {
-               customValidator: async (email)=>{
+               customValidator: async (email:string)=>{
                      if(!email){
                           throw new Error("Please provide your email")
                      }
@@ -48,4 +48,4 @@ const adminModel = (sequelise, Datatypes)=>{
 }
 
 
-module.exports = adminModel;
+export  default adminModel;

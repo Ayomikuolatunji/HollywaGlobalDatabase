@@ -1,7 +1,7 @@
 
 
 
-const produtCategory=(sequelize, DataTypes) => {
+const produtCategory=(sequelize:any, DataTypes:any) => {
     return sequelize.define('product_category', {
         id: {
             type: DataTypes.UUID,
@@ -25,4 +25,4 @@ const produtCategory=(sequelize, DataTypes) => {
     })
 }
 
-module.exports = produtCategory;
+export default  produtCategory;

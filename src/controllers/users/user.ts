@@ -36,7 +36,7 @@ export const getUsers:RequestHandler = async(req, res,next) => {
     try {
         const allusers = await db.user.findAll({});
         res.status(200).json({allusers})
-    } catch (error) {
+    } catch (error:any) {
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -45,7 +45,7 @@ export const getUsers:RequestHandler = async(req, res,next) => {
 }
 
 
-module.exports.getUser = async(req, res,next) => {
+export const getUser:RequestHandler = async(req, res,next) => {
     try{
       const userId=req.params.userId;
       const findUser=await db.user.findOne({
@@ -54,13 +54,13 @@ module.exports.getUser = async(req, res,next) => {
             }
       })
       if(!userId){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
       }
       res.status(200).json({findUser})
 
-    }catch(error){
+    }catch(error:any){
         if(!error.statusCode) {
             error.statusCode = 500;
         }

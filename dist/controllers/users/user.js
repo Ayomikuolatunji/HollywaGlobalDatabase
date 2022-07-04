@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUsers = exports.createUser = void 0;
+exports.getUser = exports.getUsers = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = require("../../models");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,7 +54,7 @@ const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getUsers = getUsers;
-module.exports.getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
         const findUser = yield models_1.db.user.findOne({
@@ -76,6 +76,7 @@ module.exports.getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         next(error);
     }
 });
+exports.getUser = getUser;
 module.exports.updateUserName = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;

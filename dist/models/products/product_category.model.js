@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const produtCategory = (sequelize, DataTypes) => {
     return sequelize.define('product_category', {
         id: {
@@ -21,4 +22,4 @@ const produtCategory = (sequelize, DataTypes) => {
         }
     });
 };
-module.exports = produtCategory;
+exports.default = produtCategory;

@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const { Sequelize } = require('sequelize');
 const adminModel = (sequelise, Datatypes) => {
     const Admin = sequelise.define('admin', {
@@ -53,4 +54,4 @@ const adminModel = (sequelise, Datatypes) => {
     });
     return Admin;
 };
-module.exports = adminModel;
+exports.default = adminModel;

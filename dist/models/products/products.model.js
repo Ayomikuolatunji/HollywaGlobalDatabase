@@ -1,5 +1,5 @@
 "use strict";
-const adminModel = require("../admin/admin.model");
+Object.defineProperty(exports, "__esModule", { value: true });
 const productModel = (sequelize, DataTypes) => {
     return sequelize.define("products", {
         id: {
@@ -37,4 +37,4 @@ const productModel = (sequelize, DataTypes) => {
     });
 };
 // associate the models here
-module.exports = productModel;
+exports.default = productModel;

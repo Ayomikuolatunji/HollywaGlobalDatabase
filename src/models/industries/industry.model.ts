@@ -1,7 +1,7 @@
 
 
 
-const industries=(sequelize,DataTypes)=>{
+const industryModel=(sequelize:any,DataTypes:any)=>{
     return sequelize.define('industries',{
         id:{
             type:DataTypes.INTEGER,
@@ -25,4 +25,4 @@ const industries=(sequelize,DataTypes)=>{
 }
 
 
-module.exports=industries;
+export default industryModel;
