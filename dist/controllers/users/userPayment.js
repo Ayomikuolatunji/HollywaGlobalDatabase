@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserPayment = exports.createUserPayment = void 0;
 const models_1 = require("../../models");
 const createUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -50,6 +51,7 @@ const createUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         next(error);
     }
 });
+exports.createUserPayment = createUserPayment;
 const updateUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
@@ -87,7 +89,4 @@ const updateUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         next(err);
     }
 });
-exports.default = {
-    createUserPayment,
-    updateUserPayment
-};
+exports.updateUserPayment = updateUserPayment;

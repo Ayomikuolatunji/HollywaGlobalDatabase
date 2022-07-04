@@ -1,7 +1,9 @@
+import { RequestHandler } from "express";
+import { db } from "../../models";
 
 
 
-const createProducts=async(req,res,next)=>{
+const createProducts:RequestHandler=async(req,res,next)=>{
     try {
         const products=await db.products.create({
             name:req.body.name,
@@ -11,7 +13,7 @@ const createProducts=async(req,res,next)=>{
             adminId:req.body.adminid
         })
        res.status(201).json({message:"Product created successfully",products})
-    } catch (error) {
+    } catch (error:any) {
         if(!error.statusCode){
             error.statusCode=500;
         }

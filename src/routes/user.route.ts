@@ -1,11 +1,8 @@
-const express=require('express');
-const router=express.Router();
-
-
-const { getUsers, createUser, getUser, updateUserName, updateUserEmail } = require('../controllers/users/user');
-
-const { createAdress, getUserAdress, updateUserAddress } = require('../controllers/users/userAddress');
-const { createUserPayment, updateUserPayment } = require('../controllers/users/userPayment');
+import express from 'express';
+import { createUser, getUser, getUsers, updateUserEmail, updateUserName } from '../controllers/users/user';
+import { createAdress, getUserAdress, updateUserAddress } from '../controllers/users/userAddress';
+import { createUserPayment, updateUserPayment } from '../controllers/users/userPayment';
+const router=express.Router();;
 
 
 
@@ -30,4 +27,4 @@ router.patch("/update_user_payment/:userId",updateUserPayment)
 
 
 
-module.exports=router;
+export default router;

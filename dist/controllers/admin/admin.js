@@ -8,13 +8,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const bcrypt = require('bcrypt');
-const { db } = require('../../models');
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const models_1 = require("../../models");
 const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, password } = req.body;
-        const hashedPassword = yield bcrypt.hash(password, 12);
-        yield db.admin.create({
+        const hashedPassword = yield bcrypt_1.default.hash(password, 12);
+        yield models_1.db.admin.create({
             name,
             email,
             password: hashedPassword

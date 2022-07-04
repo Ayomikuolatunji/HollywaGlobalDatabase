@@ -96,7 +96,7 @@ const updateUserAddress:RequestHandler=async(req,res,next)=>{
 }
 
 
-module.exports={
+export {
     createAdress,
     getUserAdress,
     updateUserAddress

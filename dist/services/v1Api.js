@@ -1,8 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const api = require('express').Router();
-const router = require('../router');
-const userRouter = require("../routes/user.route");
+const user_route_1 = __importDefault(require("../routes/user.route"));
 // user routes
-api.use("/v1", userRouter);
-api.use('/v1', router);
+api.use("/v1", user_route_1.default);
 module.exports = api;

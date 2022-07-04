@@ -8,11 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { db } = require("../../src/models");
-const data = require('../../data.json');
-module.exports.createIndustries = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.createIndustries = void 0;
+const data_1 = require("../../data");
+const models_1 = require("../../models");
+const createIndustries = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const industries = yield db.industries.bulkCreate([...data]);
+        const industries = yield models_1.db.industries.bulkCreate([...data_1.data]);
         return res.status(201).json({ industries });
     }
     catch (error) {
@@ -22,3 +24,4 @@ module.exports.createIndustries = (req, res, next) => __awaiter(void 0, void 0, 
         next(error);
     }
 });
+exports.createIndustries = createIndustries;

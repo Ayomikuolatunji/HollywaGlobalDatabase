@@ -80,7 +80,7 @@ const updateUserPayment:RequestHandler=async(req,res,next)=>{
 }
 
 
-export default{
+export {
     createUserPayment,
     updateUserPayment
 }

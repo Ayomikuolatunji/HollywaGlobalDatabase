@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateUserAddress = exports.getUserAdress = exports.createAdress = void 0;
 const models_1 = require("../../models");
 const createAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -47,6 +48,7 @@ const createAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         next(error);
     }
 });
+exports.createAdress = createAdress;
 const getUserAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // check if user already has an adress using userid
@@ -69,6 +71,7 @@ const getUserAdress = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         next(error);
     }
 });
+exports.getUserAdress = getUserAdress;
 const updateUserAddress = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const address_line1 = req.body.address_line1;
@@ -99,8 +102,4 @@ const updateUserAddress = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         next(error);
     }
 });
-module.exports = {
-    createAdress,
-    getUserAdress,
-    updateUserAddress
-};
+exports.updateUserAddress = updateUserAddress;
