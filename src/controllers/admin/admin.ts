@@ -22,6 +22,6 @@ const createAdmin:RequestHandler=async (req, res,next) => {
 }
 
 
-module.exports = {
+export  {
     createAdmin
 }

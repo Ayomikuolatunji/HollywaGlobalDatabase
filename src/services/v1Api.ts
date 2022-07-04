@@ -8,4 +8,4 @@ api.use("/v1", userRouter)
 
 
 
-module.exports=api;
+export default api;

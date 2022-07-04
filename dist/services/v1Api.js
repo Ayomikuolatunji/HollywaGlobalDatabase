@@ -7,4 +7,4 @@ const api = require('express').Router();
 const user_route_1 = __importDefault(require("../routes/user.route"));
 // user routes
 api.use("/v1", user_route_1.default);
-module.exports = api;
+exports.default = api;

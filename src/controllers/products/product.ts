@@ -22,6 +22,6 @@ const createProducts:RequestHandler=async(req,res,next)=>{
 }
 
 
-module.exports={
+export {
     createProducts
 }
