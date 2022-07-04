@@ -1,8 +1,8 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const { sequelize,db } = require('./models');
-const api = require('./services/v1Api');
+import express, { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { sequelize, db } from './models';
+import api from './services/v1Api';
 const app=express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,9 +29,15 @@ app.use('/api/',api)
 
 
 
+interface Error {
+    name: string; 
+    errors: { message: any; }[]
+    message: any
+    statusCode: number
+}
 
 
-app.use((error, req, res, next) => {
+app.use((error:Error , req:Request, res:Response, next:NextFunction) => {
     let data={}
     if(error.name==="SequelizeUniqueConstraintError"){
         data={
@@ -53,7 +59,7 @@ app.listen(8080, () => {
     sequelize.authenticate().then(()=>{
         console.log('Connection has been established successfully.');
     })
-    .catch(err=>{
+    .catch((err: { message: any; })=>{
         console.error('Unable to connect to the database:',err.message);
     })
     console.log("Server is running on port 8080");
