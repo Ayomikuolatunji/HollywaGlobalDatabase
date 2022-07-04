@@ -1,4 +1,4 @@
-const { db } = require("../../models")
+const { db } = require("../../src/models")
 
 
 const createAdress=async(req,res,next)=>{
