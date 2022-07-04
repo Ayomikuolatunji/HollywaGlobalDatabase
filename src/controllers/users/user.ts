@@ -1,10 +1,12 @@
-const bcrypt = require('bcrypt');
-const { db } = require("../../src/models")
+import bcrypt from 'bcrypt';
+import { RequestHandler } from 'express';
+import { db } from '../../models';
 
 
 
 
-module.exports.createUser = async(req, res,next) => {
+
+export const createUser:RequestHandler= async(req, res,next) => {
     try {
         const username = req.body.username;
         const email = req.body.email;
@@ -20,7 +22,7 @@ module.exports.createUser = async(req, res,next) => {
             password:hashedPassword
         });
         res.status(201).json({newUser})
-    }catch(error){
+    }catch(error:any){
         console.log(error.message);
         if(!error.statusCode) {
             error.statusCode = 500;
@@ -30,7 +32,7 @@ module.exports.createUser = async(req, res,next) => {
 }
 
 
-module.exports.getUsers = async(req, res,next) => {
+export const getUsers:RequestHandler = async(req, res,next) => {
     try {
         const allusers = await db.user.findAll({});
         res.status(200).json({allusers})

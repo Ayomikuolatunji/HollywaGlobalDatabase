@@ -8,17 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const bcrypt = require('bcrypt');
-const { db } = require("../../src/models");
-module.exports.createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getUsers = exports.createUser = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
+const models_1 = require("../../models");
+const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const username = req.body.username;
         const email = req.body.email;
         const password = req.body.password;
         const first_name = req.body.first_name;
         const last_name = req.body.last_name;
-        const hashedPassword = yield bcrypt.hash(password, 12);
-        const newUser = yield db.user.create({
+        const hashedPassword = yield bcrypt_1.default.hash(password, 12);
+        const newUser = yield models_1.db.user.create({
             username,
             first_name,
             last_name,
@@ -35,9 +40,10 @@ module.exports.createUser = (req, res, next) => __awaiter(void 0, void 0, void 0
         next(error);
     }
 });
-module.exports.getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createUser = createUser;
+const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allusers = yield db.user.findAll({});
+        const allusers = yield models_1.db.user.findAll({});
         res.status(200).json({ allusers });
     }
     catch (error) {
@@ -47,10 +53,11 @@ module.exports.getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         next(error);
     }
 });
+exports.getUsers = getUsers;
 module.exports.getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
-        const findUser = yield db.user.findOne({
+        const findUser = yield models_1.db.user.findOne({
             where: {
                 userId: userId
             }
@@ -78,7 +85,7 @@ module.exports.updateUserName = (req, res, next) => __awaiter(void 0, void 0, vo
             error.statusCode = 404;
             throw error;
         }
-        const findUser = yield db.user.findOne({
+        const findUser = yield models_1.db.user.findOne({
             where: {
                 userId: userId
             }
@@ -88,7 +95,7 @@ module.exports.updateUserName = (req, res, next) => __awaiter(void 0, void 0, vo
             error.statusCode = 404;
             throw error;
         }
-        const updateuserName = yield db.user.update({
+        const updateuserName = yield models_1.db.user.update({
             username: username
         }, {
             where: {
@@ -113,7 +120,7 @@ module.exports.updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, v
             error.statusCode = 404;
             throw error;
         }
-        const findUser = yield db.user.findOne({
+        const findUser = yield models_1.db.user.findOne({
             where: {
                 userId: userId
             }
@@ -123,7 +130,7 @@ module.exports.updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, v
             error.statusCode = 404;
             throw error;
         }
-        const updateEmail = yield db.user.update({
+        const updateEmail = yield models_1.db.user.update({
             email: email
         }, {
             where: {

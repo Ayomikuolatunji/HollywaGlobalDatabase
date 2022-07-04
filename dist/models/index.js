@@ -8,34 +8,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const config = require('../database/dbConfig');
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize(config.DB, config.USER, config.PASSWORD, {
-    host: config.HOST,
-    dialect: config.dialect,
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sequelize = exports.db = void 0;
+const dbConfig_1 = __importDefault(require("../database/dbConfig"));
+const sequelize_1 = require("sequelize");
+const sequelize = new sequelize_1.Sequelize(dbConfig_1.default.DB, dbConfig_1.default.USER, dbConfig_1.default.PASSWORD, {
+    host: dbConfig_1.default.HOST,
+    dialect: "mysql",
     pool: {
-        max: config.pool.max,
-        min: config.pool.min,
-        acquire: config.pool.acquire,
-        idle: config.pool.idle
+        max: dbConfig_1.default.pool.max,
+        min: dbConfig_1.default.pool.min,
+        acquire: dbConfig_1.default.pool.acquire,
+        idle: dbConfig_1.default.pool.idle
     }
 });
+exports.sequelize = sequelize;
 const db = {};
+exports.db = db;
 /*=============================================
 =            all models          =
 =============================================*/
 // defind all the models here
-db.user = require('./user/user.model')(sequelize, DataTypes);
-db.products = require('./products/products.model')(sequelize, DataTypes);
-db.industries = require('./industries/industry.model')(sequelize, DataTypes);
-db.admin = require('./admin/admin.model')(sequelize, DataTypes);
-db.userAddressModel = require('./user/userAddress.model')(sequelize, DataTypes);
-db.userPaymentModel = require('./user/payment.model')(sequelize, DataTypes);
-db.product_category = require('./products/product_category.model')(sequelize, DataTypes);
+db.user = require('./user/user.model')(sequelize, sequelize_1.DataTypes);
+db.products = require('./products/products.model')(sequelize, sequelize_1.DataTypes);
+db.industries = require('./industries/industry.model')(sequelize, sequelize_1.DataTypes);
+db.admin = require('./admin/admin.model')(sequelize, sequelize_1.DataTypes);
+db.userAddressModel = require('./user/userAddress.model')(sequelize, sequelize_1.DataTypes);
+db.userPaymentModel = require('./user/payment.model')(sequelize, sequelize_1.DataTypes);
+db.product_category = require('./products/product_category.model')(sequelize, sequelize_1.DataTypes);
 /*=====  End of all models======*/
 // initialize the database
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+db.Sequelize = sequelize_1.Sequelize;
 /*=============================================
 =            All table associations          =
 =============================================*/
@@ -73,9 +80,3 @@ const DB = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 DB();
-/*=====  End of  create tables ======*/
-// send to the controllers and server
-module.exports = {
-    sequelize,
-    db
-};

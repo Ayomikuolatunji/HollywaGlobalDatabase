@@ -1,5 +1,6 @@
 "use strict";
-module.exports = {
+Object.defineProperty(exports, "__esModule", { value: true });
+const config = {
     HOST: "localhost",
     USER: "root",
     PASSWORD: "Ayoscript222@",
@@ -12,3 +13,4 @@ module.exports = {
         idle: 10000
     }
 };
+exports.default = config;

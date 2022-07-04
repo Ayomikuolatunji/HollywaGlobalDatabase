@@ -7,7 +7,7 @@ import { Sequelize, DataTypes } from 'sequelize';
     config.USER,
     config.PASSWORD,{
         host:config.HOST,
-        dialect:config.dialect.toString(),
+        dialect:"mysql",
         pool:{
             max:config.pool.max,
             min:config.pool.min,
@@ -110,7 +110,7 @@ DB()
 
 // send to the controllers and server
 
-module.exports={
+export {
+    db,
     sequelize,
-    db
 }
