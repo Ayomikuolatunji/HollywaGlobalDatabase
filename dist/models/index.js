@@ -44,7 +44,6 @@ const db = {
     admin: (0, admin_model_1.default)(sequelize, sequelize_1.DataTypes)
 };
 exports.db = db;
-// initilize the tables
 /*=============================================
 =            All table associations          =
 =============================================*/

@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+const models_1 = require("../../models");
 const createUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.body.userId;
@@ -21,7 +23,7 @@ const createUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             error.statusCode = 404;
             throw error;
         }
-        const findUser = yield db.userPaymentModel.findOne({
+        const findUser = yield models_1.db.userPaymentModel.findOne({
             where: {
                 userId: userId
             }
@@ -31,7 +33,7 @@ const createUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             error.statusCode = 404;
             throw error;
         }
-        const createUserPayment = yield db.userPaymentModel.create({
+        const createUserPayment = yield models_1.db.userPaymentModel.create({
             userId: userId,
             payment_type: payment_type,
             card_number: card_number,
@@ -61,7 +63,7 @@ const updateUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             error.statusCode = 404;
             throw error;
         }
-        const updateUserCard = yield db.userPaymentModel.update({
+        const updateUserCard = yield models_1.db.userPaymentModel.update({
             payment_type: payment_type,
             card_number: card_number,
             card_expiry_date: card_expiry_date,
@@ -85,7 +87,7 @@ const updateUserPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         next(err);
     }
 });
-module.exports = {
+exports.default = {
     createUserPayment,
     updateUserPayment
 };

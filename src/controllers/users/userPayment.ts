@@ -1,6 +1,8 @@
+import { RequestHandler } from "express";
+import { db } from "../../models";
 
 
-const createUserPayment=async(req,res,next)=>{
+const createUserPayment:RequestHandler=async(req,res,next)=>{
     try{
         const userId=req.body.userId;
         const payment_type = req.body.payment_type;
@@ -9,7 +11,7 @@ const createUserPayment=async(req,res,next)=>{
         const card_cvv = req.body.card_cvv;
         const card_holder_name = req.body.card_holder_name;
         if(!userId){
-            const error=new Error('User not found');
+            const error:any=new Error('User not found');
             error.statusCode=404;
             throw error;
         }
@@ -19,7 +21,7 @@ const createUserPayment=async(req,res,next)=>{
             }
         })
         if(findUser){
-            const error=new Error('This card already exist on this user');
+            const error:any=new Error('This card already exist on this user');
             error.statusCode=404;
             throw error;
         }
@@ -32,7 +34,7 @@ const createUserPayment=async(req,res,next)=>{
                 card_holder_name:card_holder_name
         })
         res.status(201).json({createUserPayment})
-    }catch(error){
+    }catch(error:any){
         if(!error.statusCode) {
             error.statusCode = 500;
         }
@@ -40,7 +42,7 @@ const createUserPayment=async(req,res,next)=>{
     }
 }
 
-const updateUserPayment=async(req,res,next)=>{
+const updateUserPayment:RequestHandler=async(req,res,next)=>{
     try{
         const userId=req.params.userId;
         const payment_type = req.body.payment_type;
@@ -49,7 +51,7 @@ const updateUserPayment=async(req,res,next)=>{
         const card_cvv = req.body.card_cvv;
         const card_holder_name = req.body.card_holder_name;
         if(!userId){
-            const error=new Error('User with provided not found or empty user id was provided');
+            const error:any=new Error('User with provided not found or empty user id was provided');
             error.statusCode=404;
             throw error;
         }
@@ -69,7 +71,7 @@ const updateUserPayment=async(req,res,next)=>{
             updateUserCard,
             message:"card details updated successfully"
         })
-    }catch(err){
+    }catch(err:any){
         if(!err.statusCode){
             err.statusCode=422
         }
@@ -78,7 +80,7 @@ const updateUserPayment=async(req,res,next)=>{
 }
 
 
-module.exports={
+export default{
     createUserPayment,
     updateUserPayment
 }

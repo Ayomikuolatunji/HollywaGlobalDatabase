@@ -40,7 +40,6 @@ const db={
 
 
 
-// initilize the tables
 
 /*=============================================
 =            All table associations          =

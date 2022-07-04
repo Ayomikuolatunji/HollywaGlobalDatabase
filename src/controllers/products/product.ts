@@ -1,4 +1,4 @@
-const { db } = require("../../src/models");
+
 
 
 const createProducts=async(req,res,next)=>{

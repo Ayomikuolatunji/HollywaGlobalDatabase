@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const { db } = require("../../src/models");
 const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield db.products.create({
