@@ -1,5 +1,5 @@
-const config = require('../database/dbConfig');
-const { Sequelize, DataTypes } = require('sequelize');
+import config from '../database/dbConfig';
+import { Sequelize, DataTypes } from 'sequelize';
 
 
  const sequelize=new Sequelize(
@@ -7,7 +7,7 @@ const { Sequelize, DataTypes } = require('sequelize');
     config.USER,
     config.PASSWORD,{
         host:config.HOST,
-        dialect:config.dialect,
+        dialect:config.dialect.toString(),
         pool:{
             max:config.pool.max,
             min:config.pool.min,
