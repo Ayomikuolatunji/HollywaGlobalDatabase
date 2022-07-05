@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.createUser = void 0;
+exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.loginUser = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = require("../../models");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -23,14 +23,14 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         const first_name = req.body.first_name;
         const last_name = req.body.last_name;
         const hashedPassword = yield bcrypt_1.default.hash(password, 12);
-        const newUser = yield models_1.db.user.create({
+        yield models_1.db.user.create({
             username,
             first_name,
             last_name,
             email,
             password: hashedPassword
         });
-        res.status(201).json({ newUser });
+        res.status(201).json({ message: "user account created successfully" });
     }
     catch (error) {
         console.log(error.message);
@@ -41,6 +41,13 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createUser = createUser;
+const loginUser = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+    }
+    catch (error) {
+    }
+});
+exports.loginUser = loginUser;
 const getUsers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allusers = yield models_1.db.user.findAll({});

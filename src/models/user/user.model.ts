@@ -31,11 +31,10 @@ const userModel=(sequelize: Sequelize.Sequelize,DataTypes: typeof import("sequel
                     if(!email){
                         throw new Error("Please provide your email")
                     }
-                },
-                isEmail:true
+                }
             },
             unique:{
-                name:'email_unique',
+                name:'email already exits',
                 msg:"User already exists with this email" 
             }
         },

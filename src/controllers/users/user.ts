@@ -14,20 +14,29 @@ export const createUser:RequestHandler= async(req, res,next) => {
         const first_name = req.body.first_name;
         const last_name = req.body.last_name;
         const hashedPassword = await bcrypt.hash(password, 12);
-        const newUser=await db.user.create({
+        await db.user.create({
             username,
             first_name,
             last_name,
             email,
             password:hashedPassword
         });
-        res.status(201).json({newUser})
+        res.status(201).json({message:"user account created successfully"})
     }catch(error:any){
         console.log(error.message);
         if(!error.statusCode) {
             error.statusCode = 500;
         }
         next(error);
+    }
+}
+
+
+export const loginUser:RequestHandler=async()=>{
+    try {
+        
+    } catch (error) {
+        
     }
 }
 

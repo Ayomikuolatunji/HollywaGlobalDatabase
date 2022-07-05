@@ -25,8 +25,6 @@ import adminModel from './admin/admin.model';
 )
 
 
-
-
 const db={
     sequelize,
     user:userModel(sequelize,DataTypes),
@@ -37,8 +35,6 @@ const db={
     product_category:produtCategory(sequelize,DataTypes),
     admin:adminModel(sequelize,DataTypes)
 }
-
-
 
 
 /*=============================================
@@ -69,14 +65,7 @@ db.userPaymentModel.belongsTo(db.user,{
     onDelete:'CASCADE'
 })
 
-
-
 /*=====  End of All table associations======*/
-
-
-
-
-
 
 /*=============================================
 =             create tables           =
@@ -93,11 +82,7 @@ const DB=async()=>{
 
 DB()
 
-
 /*=====  End of  create tables ======*/
-
-
-
 
 // send to the controllers and server
 

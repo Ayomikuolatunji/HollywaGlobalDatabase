@@ -9,13 +9,16 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const models_1 = require("./models");
 const v1Api_1 = __importDefault(require("./services/v1Api"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)());
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.set("Methods", "GET, POST, PUT, DELETE");
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("content-type", "application/json");
     next();
 });
 app.use('/api/', v1Api_1.default);

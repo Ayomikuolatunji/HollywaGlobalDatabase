@@ -3,15 +3,20 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { sequelize, db } from './models';
 import api from './services/v1Api';
+
+
+
+
+
 const app=express()
+
+app.use(cors());
+
+
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-
-
-
-app.use(cors());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,6 +25,10 @@ app.use((req, res, next) => {
       'OPTIONS, GET, POST, PUT, PATCH, DELETE'
     );
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.set("Methods", "GET, POST, PUT, DELETE");
+    res.set("Access-Control-Allow-Credentials", "true");
+    res.set("content-type", "application/json");
+
     next();
 });
 
