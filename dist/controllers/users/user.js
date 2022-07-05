@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.loginUser = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const models_1 = require("../../models");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -41,10 +42,31 @@ const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.createUser = createUser;
-const loginUser = () => __awaiter(void 0, void 0, void 0, function* () {
+const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const email = req.body.email;
+        const password = req.body.password;
+        const findUser = yield models_1.db.user.findOne({
+            where: {
+                email: email
+            }
+        });
+        const passwordCorrect = yield bcrypt_1.default.compare(password, findUser.password);
+        if (!passwordCorrect) {
+            throw new Error('Invalid credentials');
+        }
+        const token = jsonwebtoken_1.default.sign({
+            email: findUser.email,
+            userId: findUser.userId
+        }, 'somesupersecretsecret', { expiresIn: '30d' });
+        res.status(200).json({ message: "user logged in successfully", token });
     }
     catch (error) {
+        console.log(error.message);
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
     }
 });
 exports.loginUser = loginUser;

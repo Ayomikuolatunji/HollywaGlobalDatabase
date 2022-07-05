@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUser, getUsers, updateUserEmail, updateUserName } from '../controllers/users/user';
+import { createUser, getUser, getUsers, loginUser, updateUserEmail, updateUserName } from '../controllers/users/user';
 import { createAdress, getUserAdress, updateUserAddress } from '../controllers/users/userAddress';
 import { createUserPayment, updateUserPayment } from '../controllers/users/userPayment';
 const router=express.Router();;
@@ -9,6 +9,7 @@ const router=express.Router();;
 // users routes
 router.get("/all_users",getUsers)
 router.post("/create_account",createUser)
+router.post("/login",loginUser)
 router.get("/single_user/:userId",getUser)
 router.patch("/update_user_name/:userId",updateUserName)
 router.patch("/update_user_email/:userId",updateUserEmail)

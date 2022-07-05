@@ -12,6 +12,7 @@ const router = express_1.default.Router();
 // users routes
 router.get("/all_users", user_1.getUsers);
 router.post("/create_account", user_1.createUser);
+router.post("/login", user_1.loginUser);
 router.get("/single_user/:userId", user_1.getUser);
 router.patch("/update_user_name/:userId", user_1.updateUserName);
 router.patch("/update_user_email/:userId", user_1.updateUserEmail);

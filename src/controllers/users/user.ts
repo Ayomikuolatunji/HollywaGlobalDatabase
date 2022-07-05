@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
+import jwt from "jsonwebtoken"
 import { db } from '../../models';
 
 
@@ -32,11 +33,34 @@ export const createUser:RequestHandler= async(req, res,next) => {
 }
 
 
-export const loginUser:RequestHandler=async()=>{
+export const loginUser:RequestHandler=async(req,res,next)=>{
     try {
-        
-    } catch (error) {
-        
+        const email = req.body.email;
+        const password = req.body.password;
+        const findUser:any=await db.user.findOne({
+            where:{
+                email:email
+            }
+        })
+        const passwordCorrect=await bcrypt.compare(password, findUser.password);
+        if(!passwordCorrect){
+            throw new Error('Invalid credentials')
+        }
+        const token = jwt.sign(
+            {
+              email: findUser.email,
+              userId: findUser.userId
+            },
+            'somesupersecretsecret',
+            { expiresIn: '30d' }
+          );
+        res.status(200).json({message:"user logged in successfully",token})
+    } catch (error:any) {
+        console.log(error.message);
+        if(!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
     }
 }
 

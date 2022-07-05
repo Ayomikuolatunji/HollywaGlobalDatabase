@@ -1,6 +1,5 @@
 
 import Sequelize  from 'sequelize';
-import { randomBytes } from "crypto";
 
 
 const userModel=(sequelize: Sequelize.Sequelize,DataTypes: typeof import("sequelize/types/data-types"))=>{
