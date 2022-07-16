@@ -1,5 +1,20 @@
 
-const productModel=(sequelize: { define: (arg0: string, arg1: { id: { type: any; primaryKey: boolean; autoIncrement: boolean }; name: { type: any; allowNull: boolean; unique: boolean }; price: { type: any; allowNull: boolean }; description: { type: any; allowNull: boolean }; image: { type: any; allowNull: boolean }; createdAt: { type: any; allowNull: boolean; defaultValue: any }; updatedAt: { type: any; allowNull: boolean; defaultValue: any } }) => any },DataTypes: { INTEGER: any; STRING: any; DATE: any; NOW: any })=>{
+import Sequelize  from 'sequelize';
+
+export interface  productTypings {
+    define: any;
+    id:number;
+    name:string;
+    price:number;
+    description:string;
+    type:string;
+    image:string;
+    createdAt:Date;
+    updatedAt:Date;
+}
+
+
+const productModel=(sequelize:Sequelize.Sequelize,DataTypes: typeof import("sequelize/types/data-types"))=>{
     return sequelize.define("products",{
          id:{
                 type:DataTypes.INTEGER,
@@ -16,6 +31,10 @@ const productModel=(sequelize: { define: (arg0: string, arg1: { id: { type: any;
             allowNull:false
         },
         description:{
+            type:DataTypes.STRING,
+            allowNull:false
+        },
+        type:{
             type:DataTypes.STRING,
             allowNull:false
         },
