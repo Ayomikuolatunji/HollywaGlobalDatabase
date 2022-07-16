@@ -9,6 +9,7 @@ const createProducts:RequestHandler=async(req,res,next)=>{
             name:req.body.name,
             price:req.body.price,
             description:req.body.description,
+            type:req.body.type,
             image:req.body.image,
             adminId:req.body.adminid
         })
