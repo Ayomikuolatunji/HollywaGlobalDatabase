@@ -6,8 +6,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const models_1 = require("./models");
 const v1Api_1 = __importDefault(require("./services/v1Api"));
+dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -35,7 +37,7 @@ app.use((error, req, res, next) => {
     res.status(status).json({ message, data });
 });
 // datbase table associations
-app.listen(8080, () => {
+app.listen(process.env.SERVER_PORT, () => {
     models_1.sequelize.authenticate().then(() => {
         console.log('Connection has been established successfully.');
     })

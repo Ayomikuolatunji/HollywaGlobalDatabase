@@ -35,10 +35,10 @@ const signInAdmin:RequestHandler=async (req, res,next) => {
                 email:email
             }
         })
-        const token=jwt.sign({
+        const token=Jwt.sign({
             email:loginAdmin.email,
             adminId:loginAdmin.adminId
-          },'somesupersecretsecret',{expiresIn:'30d'})
+          },`${process.env.JWT_SECRET}`,{expiresIn:'30d'})
     }catch(error){
 
     }

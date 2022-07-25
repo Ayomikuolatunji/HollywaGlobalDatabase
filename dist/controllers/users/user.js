@@ -58,7 +58,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         const token = jsonwebtoken_1.default.sign({
             email: findUser.email,
             userId: findUser.userId
-        }, 'somesupersecretsecret', { expiresIn: '30d' });
+        }, `${process.env.JWT_SECRET}`, { expiresIn: '30d' });
         res.status(200).json({ message: "user logged in successfully", token });
     }
     catch (error) {

@@ -1,11 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import { sequelize, db } from './models';
 import api from './services/v1Api';
 import { ControllerErrors } from './middleware/ControllerErrors';
 
 
+dotenv.config()
 
 
 
@@ -57,7 +59,7 @@ app.use((error: ControllerErrors, req: Request, res: Response, next: NextFunctio
 
 
 
-app.listen(8080, () => {
+app.listen(process.env.SERVER_PORT, () => {
     sequelize.authenticate().then(() => {
         console.log('Connection has been established successfully.');
     })

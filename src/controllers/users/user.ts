@@ -51,7 +51,7 @@ export const loginUser:RequestHandler=async(req,res,next)=>{
               email: findUser.email,
               userId: findUser.userId
             },
-            'somesupersecretsecret',
+            `${process.env.JWT_SECRET}`,
             { expiresIn: '30d' }
           );
         res.status(200).json({message:"user logged in successfully",token})

@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sequelize = exports.db = void 0;
-const dbConfig_1 = __importDefault(require("../database/dbConfig"));
 const sequelize_1 = require("sequelize");
+const dbConfig_1 = __importDefault(require("../database/dbConfig"));
 const user_model_1 = __importDefault(require("./user/user.model"));
 const products_model_1 = __importDefault(require("./products/products.model"));
 const payment_model_1 = __importDefault(require("./user/payment.model"));
