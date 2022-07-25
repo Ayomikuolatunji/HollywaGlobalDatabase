@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
+import  Jwt  from 'jsonwebtoken';
 import { db } from '../../models';
 
 
@@ -22,6 +23,28 @@ const createAdmin:RequestHandler=async (req, res,next) => {
 }
 
 
+const signInAdmin:RequestHandler=async (req, res,next) => {
+    try{
+         const {email,password}=req.body
+         const comparePassword=await bcrypt.compare(password,db.admin.password);
+            if(!comparePassword){
+                throw new Error('Invalid password');
+            }
+        const loginAdmin=await db.admin.findOne({
+            where:{
+                email:email
+            }
+        })
+        const token=jwt.sign({
+            email:loginAdmin.email,
+            adminId:loginAdmin.adminId
+          },'somesupersecretsecret',{expiresIn:'30d'})
+    }catch(error){
+
+    }
+}
+
 export  {
-    createAdmin
+    createAdmin,
+    signInAdmin
 }

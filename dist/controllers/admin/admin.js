@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createAdmin = void 0;
+exports.signInAdmin = exports.createAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const models_1 = require("../../models");
 const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -34,3 +34,24 @@ const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.createAdmin = createAdmin;
+const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, password } = req.body;
+        const comparePassword = yield bcrypt_1.default.compare(password, models_1.db.admin.password);
+        if (!comparePassword) {
+            throw new Error('Invalid password');
+        }
+        const loginAdmin = yield models_1.db.admin.findOne({
+            where: {
+                email: email
+            }
+        });
+        const token = jwt.sign({
+            email: loginAdmin.email,
+            adminId: loginAdmin.adminId
+        }, 'somesupersecretsecret', { expiresIn: '30d' });
+    }
+    catch (error) {
+    }
+});
+exports.signInAdmin = signInAdmin;

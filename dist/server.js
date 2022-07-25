@@ -27,7 +27,6 @@ app.use((error, req, res, next) => {
     if (error.name === "SequelizeUniqueConstraintError") {
         data = {
             message: error.errors[0].message,
-            statusCode: 422
         };
     }
     console.log(error.message);
