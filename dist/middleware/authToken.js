@@ -13,9 +13,7 @@ exports.default = (req, res, next) => {
         }
         let decode;
         const token = authHeader === null || authHeader === void 0 ? void 0 : authHeader.split(" ")[1];
-        if (token) {
-            decode = jsonwebtoken_1.default.verify(token, `${process.env.JWT_SECRET}`);
-        }
+        decode = jsonwebtoken_1.default.verify(token, `${process.env.JWT_SECRET}`);
         if (!token || !decode) {
             (0, cachError_1.throwError)("Invalid token", 401);
         }

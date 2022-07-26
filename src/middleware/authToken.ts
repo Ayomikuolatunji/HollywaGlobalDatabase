@@ -11,9 +11,8 @@ export default (req:Request | any, res:Response, next:NextFunction) => {
         }
         let decode:any;
         const token=authHeader?.split(" ")[1];
-        if(token){
-            decode=Jwt.verify(token, `${process.env.JWT_SECRET}`);
-        }
+        decode=Jwt.verify(token, `${process.env.JWT_SECRET}`);
+        
         if(!token || !decode){
             throwError("Invalid token",401);
         }
