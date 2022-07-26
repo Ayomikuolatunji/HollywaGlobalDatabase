@@ -5,8 +5,12 @@ import { throwError } from "./cachError";
 
 export default (req:Request | any, res:Response, next:NextFunction) => {
     try {
+        const authHeader=req.get("Authorization");
+        if(!authHeader){
+            throwError("No token provided",401);
+        }
         let decode:any;
-        const token=req.get("Authorization")?.split(" ")[1];
+        const token=authHeader?.split(" ")[1];
         if(token){
             decode=Jwt.verify(token, `${process.env.JWT_SECRET}`);
         }
