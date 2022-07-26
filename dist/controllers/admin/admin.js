@@ -49,7 +49,7 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         });
         const token = jsonwebtoken_1.default.sign({
             email: loginAdmin.email,
-            adminId: loginAdmin.adminId
+            id: loginAdmin.adminId
         }, `${process.env.JWT_SECRET}`, { expiresIn: '1hr' });
         res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.adminId.toString() });
     }
