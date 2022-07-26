@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import jwt from "jsonwebtoken"
+import { throwError } from '../../middleware/cachError';
 import { db } from '../../models';
 
 
@@ -44,7 +45,7 @@ export const loginUser:RequestHandler=async(req,res,next)=>{
         })
         const passwordCorrect=await bcrypt.compare(password, findUser.password);
         if(!passwordCorrect){
-            throw new Error('Invalid credentials')
+            throwError("Invalid password",401);
         }
         const token = jwt.sign(
             {

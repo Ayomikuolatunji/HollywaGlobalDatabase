@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.loginUser = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const cachError_1 = require("../../middleware/cachError");
 const models_1 = require("../../models");
 const createUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -53,7 +54,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
         });
         const passwordCorrect = yield bcrypt_1.default.compare(password, findUser.password);
         if (!passwordCorrect) {
-            throw new Error('Invalid credentials');
+            (0, cachError_1.throwError)("Invalid password", 401);
         }
         const token = jsonwebtoken_1.default.sign({
             email: findUser.email,

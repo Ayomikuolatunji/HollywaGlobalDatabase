@@ -38,7 +38,9 @@ const signInAdmin:RequestHandler=async (req, res,next) => {
         const token=Jwt.sign({
             email:loginAdmin.email,
             adminId:loginAdmin.adminId
-          },`${process.env.JWT_SECRET}`,{expiresIn:'30d'})
+          },`${process.env.JWT_SECRET}`,{expiresIn:'1hr'})
+
+          res.status(200).json({message:"Admin logged in successfully",token, adminId:loginAdmin.adminId.toString()})
     }catch(error){
 
     }

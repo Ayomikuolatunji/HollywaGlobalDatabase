@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import { sequelize, db } from './models';
 import api from './services/v1Api';
-import { ControllerErrors } from './middleware/ControllerErrors';
+import { requestErrorTypings } from './typings/requestErrorTypings';
 
 
 dotenv.config()
@@ -42,14 +42,14 @@ app.use('/api/', api)
 
 
 
-app.use((error: ControllerErrors, req: Request, res: Response, next: NextFunction) => {
+app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunction) => {
     let data = {}
     if (error.name === "SequelizeUniqueConstraintError") {
         data = {
             message: error.errors[0].message,
         }
     }
-    console.log(error.message);
+    console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
     res.status(status).json({ message, data });

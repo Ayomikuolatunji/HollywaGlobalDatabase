@@ -31,7 +31,7 @@ app.use((error, req, res, next) => {
             message: error.errors[0].message,
         };
     }
-    console.log(error.message);
+    console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
     res.status(status).json({ message, data });
