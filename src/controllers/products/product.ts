@@ -6,17 +6,16 @@ import { db } from "../../models";
 
 const createProducts:RequestHandler=async(req,res,next)=>{
     try {
-        if(!req.file){
-            throwError("No image provided",400);
+        if(!req.body.adminId){
+            throwError("admin is not found",404)
         }
-        const imageUrl = req.file?.path;
         const products=await db.products.create({
             name:req.body.name,
             price:req.body.price,
             description:req.body.description,
             type:req.body.type,
-            image:imageUrl,
-            adminId:req.body.adminid
+            image:req.body.image,
+            adminId:req.body.adminId
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error:any) {

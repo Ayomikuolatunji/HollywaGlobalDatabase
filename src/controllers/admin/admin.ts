@@ -38,16 +38,37 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
         const token = Jwt.sign({
             email: loginAdmin.email,
             id: loginAdmin.adminId
-        }, `${process.env.JWT_SECRET}`, { expiresIn: "30d" })
+        }, `${process.env.JWT_SECRET}`, { expiresIn: "30 days" })
 
         res.status(200).json({ message: "Admin logged in successfully",token, adminId: loginAdmin.id })
-    } catch (error) {
+    } catch (error:any) {
+        if(!error.statusCode){
+            error.statusCode=500
+        }
          next(error);
     }
+}
+
+const singleAdmin:RequestHandler=async(req,res,next)=>{ 
+    try {
+        const adminId=req.params
+        const findAdmin=await db.admin.findOne({
+          where:{
+              adminId:adminId
+          }
+        })
+        res.status(200).json({adminid:findAdmin.adminId})
+    } catch (error:any) {
+        if(!error.statusCode){
+            error.statusCode=500
+        }
+        next(error)
+    }    
 }
 
 
 export {
     createAdmin,
-    signInAdmin
+    signInAdmin,
+    singleAdmin
 }

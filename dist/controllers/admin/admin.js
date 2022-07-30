@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signInAdmin = exports.createAdmin = void 0;
+exports.singleAdmin = exports.signInAdmin = exports.createAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const models_1 = require("../../models");
@@ -50,11 +50,32 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const token = jsonwebtoken_1.default.sign({
             email: loginAdmin.email,
             id: loginAdmin.adminId
-        }, `${process.env.JWT_SECRET}`, { expiresIn: "30d" });
+        }, `${process.env.JWT_SECRET}`, { expiresIn: "30 days" });
         res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.id });
     }
     catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
         next(error);
     }
 });
 exports.signInAdmin = signInAdmin;
+const singleAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const adminId = req.params;
+        const findAdmin = yield models_1.db.admin.findOne({
+            where: {
+                adminId: adminId
+            }
+        });
+        res.status(200).json({ adminid: findAdmin.adminId });
+    }
+    catch (error) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    }
+});
+exports.singleAdmin = singleAdmin;

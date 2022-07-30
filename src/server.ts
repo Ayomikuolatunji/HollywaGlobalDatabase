@@ -5,8 +5,8 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { sequelize, db } from './models';
 import api from './services/v1Api';
+import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from './typings/requestErrorTypings';
-import multer from 'multer';
 
 dotenv.config()
 
@@ -14,23 +14,10 @@ const app = express()
 
 app.use(cors());
 
-// multer config
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "src/images");
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + '-' + file.originalname);
-    },
-});
-
-const upload = multer({ storage: storage });
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.post("/images", upload.single("file"), (req, res) => {
-    res.status(200).json(req.file);
-})
+app.use(uploadFile)
 app.use("/images", express.static(path.join(__dirname, "images")))
 
 

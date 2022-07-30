@@ -10,25 +10,13 @@ const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const models_1 = require("./models");
 const v1Api_1 = __importDefault(require("./services/v1Api"));
-const multer_1 = __importDefault(require("multer"));
+const uploadFile_1 = __importDefault(require("./uploads/uploadFile"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
-// multer config
-const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "src/images");
-    },
-    filename: (req, file, cb) => {
-        cb(null, new Date().toISOString() + '-' + file.originalname);
-    },
-});
-const upload = (0, multer_1.default)({ storage: storage });
 app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.post("/images", upload.single("file"), (req, res) => {
-    res.status(200).json(req.file);
-});
+app.use(uploadFile_1.default);
 app.use("/images", express_1.default.static(path_1.default.join(__dirname, "images")));
 // set headers for all requests
 app.use((req, res, next) => {

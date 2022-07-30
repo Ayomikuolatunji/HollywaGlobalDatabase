@@ -26,7 +26,7 @@ const sequelize = new Sequelize(
 )
 
 
-const db:any = {
+const db = {
     sequelize,
     user: userModel(sequelize, DataTypes),
     products: productModel(sequelize, DataTypes),

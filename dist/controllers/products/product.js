@@ -13,19 +13,17 @@ exports.getProducts = exports.createProducts = void 0;
 const cachError_1 = require("../../middleware/cachError");
 const models_1 = require("../../models");
 const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
-        if (!req.file) {
-            (0, cachError_1.throwError)("No image provided", 400);
+        if (!req.body.adminId) {
+            (0, cachError_1.throwError)("admin is not found", 404);
         }
-        const imageUrl = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
         const products = yield models_1.db.products.create({
             name: req.body.name,
             price: req.body.price,
             description: req.body.description,
             type: req.body.type,
-            image: imageUrl,
-            adminId: req.body.adminid
+            image: req.body.image,
+            adminId: req.body.adminId
         });
         res.status(201).json({ message: "Product created successfully", products });
     }

@@ -7,7 +7,7 @@ import { createProducts, getProducts } from "../controllers/products/product";
 
 
 router.get("/products",authToken,getProducts);
-router.post("/products", createProducts)
+router.post("/products",authToken, createProducts)
 
 
 export default router;
