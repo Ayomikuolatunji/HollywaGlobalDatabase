@@ -9,11 +9,21 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const models_1 = require("./models");
 const v1Api_1 = __importDefault(require("./services/v1Api"));
+const multer_1 = __importDefault(require("multer"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+// multer config
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toDateString() + '-' + file.originalname);
+    }
+});
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');

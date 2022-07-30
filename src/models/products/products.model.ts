@@ -56,9 +56,6 @@ const productModel=(sequelize:Sequelize.Sequelize,DataTypes: typeof import("sequ
     
 }
 
-
-// associate the models here
-
 export default productModel;
 
 

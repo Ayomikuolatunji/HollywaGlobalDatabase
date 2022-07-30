@@ -40,5 +40,4 @@ const productModel = (sequelize, DataTypes) => {
         }
     });
 };
-// associate the models here
 exports.default = productModel;
