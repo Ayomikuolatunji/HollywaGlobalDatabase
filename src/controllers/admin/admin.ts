@@ -40,35 +40,35 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
             id: loginAdmin.adminId
         }, `${process.env.JWT_SECRET}`, { expiresIn: "30 days" })
 
-        res.status(200).json({ message: "Admin logged in successfully",token, adminId: loginAdmin.id })
-    } catch (error:any) {
-        if(!error.statusCode){
-            error.statusCode=500
+        res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.id })
+    } catch (error: any) {
+        if (!error.statusCode) {
+            error.statusCode = 500
         }
-         next(error);
+        next(error);
     }
 }
 
-const singleAdmin:RequestHandler=async(req,res,next)=>{ 
+const oneAdmin: RequestHandler = async (req, res, next) => {
     try {
-        const adminId=req.params
-        const findAdmin=await db.admin.findOne({
-          where:{
-              adminId:adminId
-          }
+        const adminId = req.params
+        const findAdmin = await db.admin.findOne({
+            where: {
+                adminId: adminId
+            }
         })
-        res.status(200).json({adminid:findAdmin.adminId})
-    } catch (error:any) {
-        if(!error.statusCode){
-            error.statusCode=500
+        res.status(200).json({ adminid: findAdmin.adminId })
+    } catch (error: any) {
+        if (!error.statusCode) {
+            error.statusCode = 500
         }
         next(error)
-    }    
+    }
 }
 
 
 export {
     createAdmin,
     signInAdmin,
-    singleAdmin
+    oneAdmin
 }

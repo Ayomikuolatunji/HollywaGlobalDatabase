@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.singleAdmin = exports.signInAdmin = exports.createAdmin = void 0;
+exports.oneAdmin = exports.signInAdmin = exports.createAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const models_1 = require("../../models");
@@ -61,7 +61,7 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.signInAdmin = signInAdmin;
-const singleAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const oneAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const adminId = req.params;
         const findAdmin = yield models_1.db.admin.findOne({
@@ -78,4 +78,4 @@ const singleAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         next(error);
     }
 });
-exports.singleAdmin = singleAdmin;
+exports.oneAdmin = oneAdmin;

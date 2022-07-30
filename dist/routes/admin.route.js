@@ -9,4 +9,5 @@ const router = express_1.default.Router();
 // admin routes
 router.post("/create_admin", admin_1.createAdmin);
 router.post("/admin_signin", admin_1.signInAdmin);
+router.get("/admin/:id", admin_1.oneAdmin);
 exports.default = router;

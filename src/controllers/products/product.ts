@@ -1,10 +1,13 @@
 import { RequestHandler } from "express";
+const fs = require('fs');
+const path = require('path');
 import { throwError } from "../../middleware/cachError";
 import { db } from "../../models";
 
 
 
 const createProducts:RequestHandler=async(req,res,next)=>{
+    let imageUrl=req.body.image
     try {
         if(!req.body.adminId){
             throwError("admin is not found",404)
@@ -19,6 +22,10 @@ const createProducts:RequestHandler=async(req,res,next)=>{
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error:any) {
+        if(imageUrl){
+            console.log(imageUrl)
+        }
+        clearImage(imageUrl)
         if(!error.statusCode){
             error.statusCode=500;
         }
@@ -43,7 +50,14 @@ const getProducts:RequestHandler=async(req,res,next)=>{
 }
 
 
+const clearImage = (filePath:string)=> {
+    filePath = path.join(__dirname,"../../../",filePath);
+    fs.unlink(filePath, (err:any) => console.log(err));
+  };
+
+
 export {
     createProducts,
-    getProducts
+    getProducts,
+    
 }

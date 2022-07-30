@@ -10,9 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProducts = exports.createProducts = void 0;
+const fs = require('fs');
+const path = require('path');
 const cachError_1 = require("../../middleware/cachError");
 const models_1 = require("../../models");
 const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    let imageUrl = req.body.image;
     try {
         if (!req.body.adminId) {
             (0, cachError_1.throwError)("admin is not found", 404);
@@ -28,6 +31,10 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         res.status(201).json({ message: "Product created successfully", products });
     }
     catch (error) {
+        if (imageUrl) {
+            console.log(imageUrl);
+        }
+        clearImage(imageUrl);
         if (!error.statusCode) {
             error.statusCode = 500;
         }
@@ -52,3 +59,7 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getProducts = getProducts;
+const clearImage = (filePath) => {
+    filePath = path.join(__dirname, "../../../", filePath);
+    fs.unlink(filePath, (err) => console.log(err));
+};
