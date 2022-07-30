@@ -18,10 +18,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const models_1 = require("../../models");
 const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, email, password } = req.body;
+        const { username, email, password } = req.body;
         const hashedPassword = yield bcrypt_1.default.hash(password, 12);
         yield models_1.db.admin.create({
-            name,
+            username,
             email,
             password: hashedPassword
         });
@@ -38,20 +38,20 @@ exports.createAdmin = createAdmin;
 const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
-        const comparePassword = yield bcrypt_1.default.compare(password, models_1.db.admin.password);
-        if (!comparePassword) {
-            throw new Error('Invalid password');
-        }
         const loginAdmin = yield models_1.db.admin.findOne({
             where: {
                 email: email
             }
         });
+        const comparePassword = yield bcrypt_1.default.compare(password, loginAdmin.password);
+        if (!comparePassword) {
+            throw new Error('Invalid password');
+        }
         const token = jsonwebtoken_1.default.sign({
             email: loginAdmin.email,
             id: loginAdmin.adminId
         }, `${process.env.JWT_SECRET}`, { expiresIn: '1hr' });
-        res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.adminId.toString() });
+        res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.id });
     }
     catch (error) {
     }

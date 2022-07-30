@@ -6,8 +6,6 @@ import { db } from '../../models';
 
 
 
-
-
 export const createUser:RequestHandler= async(req, res,next) => {
     try {
         const username = req.body.username;
@@ -55,7 +53,7 @@ export const loginUser:RequestHandler=async(req,res,next)=>{
             `${process.env.JWT_SECRET}`,
             { expiresIn: '30d' }
           );
-        res.status(200).json({message:"user logged in successfully",token})
+        res.status(200).json({message:"user logged in successfully",token, })
     } catch (error:any) {
         console.log(error.message);
         if(!error.statusCode) {
@@ -174,9 +172,9 @@ export const updateUserEmail:RequestHandler= async(req, res,next) => {
 }
 
 
-const restPassword:RequestHandler= async(req, res,next) => {
-    
+export const restPassword:RequestHandler= async(req, res,next) => {
+         
 }
 export const deleteUser:RequestHandler = async(req, res,next) => {
-
+    
 }

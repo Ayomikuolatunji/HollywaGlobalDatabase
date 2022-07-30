@@ -8,7 +8,7 @@ const adminModel = (sequelise:any, Datatypes:any)=>{
             primaryKey: true,
             defaultValue: Sequelize.UUIDV1
         },
-        name: {
+        username: {
             type: Datatypes.STRING,
             allowNull: false,
             unique: true,

@@ -1,53 +1,53 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
-import  Jwt  from 'jsonwebtoken';
+import Jwt from 'jsonwebtoken';
 import { db } from '../../models';
 
 
-const createAdmin:RequestHandler=async (req, res,next) => {
+const createAdmin: RequestHandler = async (req, res, next) => {
     try {
-     const { name, email, password } = req.body;
-      const hashedPassword=await bcrypt.hash(password,12);
-      await db.admin.create({
-            name,
+        const { username, email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 12);
+        await db.admin.create({
+            username,
             email,
-            password:hashedPassword
-      }) 
-     res.status(201).json({message:"Admin created successfully"})
-    } catch (error:any) {
-        if(!error.statusCode){
-            error.statusCode=500;
+            password: hashedPassword
+        })
+        res.status(201).json({ message: "Admin created successfully" })
+    } catch (error: any) {
+        if (!error.statusCode) {
+            error.statusCode = 500;
         }
         next(error);
     }
 }
 
 
-const signInAdmin:RequestHandler=async (req, res,next) => {
-    try{
-         const {email,password}=req.body
-         const comparePassword=await bcrypt.compare(password,db.admin.password);
-            if(!comparePassword){
-                throw new Error('Invalid password');
-            }
-        const loginAdmin=await db.admin.findOne({
-            where:{
-                email:email
+const signInAdmin: RequestHandler = async (req, res, next) => {
+    try {
+        const { email, password } = req.body
+        const loginAdmin = await db.admin.findOne({
+            where: {
+                email: email
             }
         })
-        const token=Jwt.sign({
-            email:loginAdmin.email,
-             id:loginAdmin.adminId
-          },`${process.env.JWT_SECRET}`,{expiresIn:'1hr'})
+        const comparePassword = await bcrypt.compare(password, loginAdmin.password);
+        if (!comparePassword) {
+            throw new Error('Invalid password');
+        }
+        const token = Jwt.sign({
+            email: loginAdmin.email,
+            id: loginAdmin.adminId
+        }, `${process.env.JWT_SECRET}`, { expiresIn: '1hr' })
 
-          res.status(200).json({message:"Admin logged in successfully",token, adminId:loginAdmin.adminId.toString()})
-    }catch(error){
+        res.status(200).json({ message: "Admin logged in successfully",token, adminId: loginAdmin.id })
+    } catch (error) {
 
     }
 }
 
 
-export  {
+export {
     createAdmin,
     signInAdmin
 }

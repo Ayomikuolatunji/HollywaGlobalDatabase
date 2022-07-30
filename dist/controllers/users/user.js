@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.loginUser = exports.createUser = void 0;
+exports.deleteUser = exports.restPassword = exports.updateUserEmail = exports.updateUserName = exports.getUser = exports.getUsers = exports.loginUser = exports.createUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const cachError_1 = require("../../middleware/cachError");
@@ -60,7 +60,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             email: findUser.email,
             userId: findUser.userId
         }, `${process.env.JWT_SECRET}`, { expiresIn: '30d' });
-        res.status(200).json({ message: "user logged in successfully", token });
+        res.status(200).json({ message: "user logged in successfully", token, });
     }
     catch (error) {
         console.log(error.message);
@@ -181,6 +181,7 @@ const updateUserEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 exports.updateUserEmail = updateUserEmail;
 const restPassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
 });
+exports.restPassword = restPassword;
 const deleteUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deleteUser = deleteUser;

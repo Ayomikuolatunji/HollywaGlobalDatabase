@@ -17,7 +17,7 @@ const adminModel = (sequelise, Datatypes) => {
             primaryKey: true,
             defaultValue: Sequelize.UUIDV1
         },
-        name: {
+        username: {
             type: Datatypes.STRING,
             allowNull: false,
             unique: true,
