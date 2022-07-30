@@ -7,5 +7,6 @@ const express_1 = __importDefault(require("express"));
 const authToken_1 = __importDefault(require("../middleware/authToken"));
 const router = express_1.default.Router();
 const product_1 = require("../controllers/products/product");
+router.get("products", authToken_1.default, product_1.getProducts);
 router.post("/products", authToken_1.default, product_1.createProducts);
 exports.default = router;

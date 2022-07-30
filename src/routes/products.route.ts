@@ -3,10 +3,10 @@ import authToken from "../middleware/authToken";
 const router=express.Router();
 
 
-import { createProducts } from "../controllers/products/product";
+import { createProducts, getProducts } from "../controllers/products/product";
 
 
-
+router.get("products",authToken,getProducts);
 router.post("/products", authToken, createProducts)
 
 

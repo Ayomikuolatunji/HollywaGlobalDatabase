@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import path from 'path';
 import dotenv from 'dotenv';
 import { sequelize, db } from './models';
 import api from './services/v1Api';
@@ -11,27 +12,39 @@ import multer from 'multer';
 dotenv.config()
 
 
-
 const app = express()
+
 
 app.use(cors());
 
 
-app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }));
-
 // multer config
-const storage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './uploads')
+        cb(null, 'images')
     },
     filename: function (req, file, cb) {
         cb(null, new Date().toDateString() + '-' + file.originalname)
     }
 })
 
+const filefilter = (req: Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => void) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+        cb(null, true)
+    } else {
+        cb(null, false)
+    }
+}
 
 
+app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/images", express.static(path.join(__dirname, "images")))
+
+
+app.use(multer({ storage: fileStorage, fileFilter: filefilter }).single('image'))
+
+// set headers for all requests
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -47,12 +60,12 @@ app.use((req, res, next) => {
 });
 
 
-
+// version 1 api
 app.use('/api/', api)
 
 
 
-
+// error handling
 app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunction) => {
     let data = {}
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -66,14 +79,14 @@ app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunc
     res.status(status).json({ message, data });
 });
 
-// datbase table associations
 
 
-
+// server start and listen
 app.listen(process.env.SERVER_PORT, () => {
-    sequelize.authenticate().then(() => {
-        console.log('Connection has been established successfully.');
-    })
+    sequelize.authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.');
+        })
         .catch((err: { message: string; }) => {
             console.error('Unable to connect to the database:', err.message);
         })
