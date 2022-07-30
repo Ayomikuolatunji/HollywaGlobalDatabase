@@ -1,12 +1,18 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import Jwt from 'jsonwebtoken';
+import { throwError } from '../../middleware/cachError';
 import { db } from '../../models';
 
 
 const createAdmin: RequestHandler = async (req, res, next) => {
     try {
-        const { username, email, password } = req.body;
+        const password = req.body.password;
+        const username = req.body.username;
+        const email = req.body.email;
+        if(!password || !username || !email) {
+            throwError("Please fill all the fields", 400);
+        }
         const hashedPassword = await bcrypt.hash(password, 12);
         await db.admin.create({
             username,
@@ -15,9 +21,6 @@ const createAdmin: RequestHandler = async (req, res, next) => {
         })
         res.status(201).json({ message: "Admin created successfully" })
     } catch (error: any) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
         next(error);
     }
 }
@@ -25,12 +28,16 @@ const createAdmin: RequestHandler = async (req, res, next) => {
 
 const signInAdmin: RequestHandler = async (req, res, next) => {
     try {
-        const { email, password } = req.body
+        const password = req.body.password
+        const email = req.body.email
         const loginAdmin = await db.admin.findOne({
             where: {
                 email: email
             }
         })
+        if(!loginAdmin) {
+            throwError("Admin not found", 404);
+        }
         const comparePassword = await bcrypt.compare(password, loginAdmin.password);
         if (!comparePassword) {
             throw new Error('Invalid password');
@@ -42,9 +49,6 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
 
         res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.id })
     } catch (error: any) {
-        if (!error.statusCode) {
-            error.statusCode = 500
-        }
         next(error);
     }
 }

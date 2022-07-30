@@ -15,10 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.oneAdmin = exports.signInAdmin = exports.createAdmin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const cachError_1 = require("../../middleware/cachError");
 const models_1 = require("../../models");
 const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { username, email, password } = req.body;
+        const password = req.body.password;
+        const username = req.body.username;
+        const email = req.body.email;
+        if (!password || !username || !email) {
+            (0, cachError_1.throwError)("Please fill all the fields", 400);
+        }
         const hashedPassword = yield bcrypt_1.default.hash(password, 12);
         yield models_1.db.admin.create({
             username,
@@ -28,21 +34,22 @@ const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.status(201).json({ message: "Admin created successfully" });
     }
     catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
         next(error);
     }
 });
 exports.createAdmin = createAdmin;
 const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { email, password } = req.body;
+        const password = req.body.password;
+        const email = req.body.email;
         const loginAdmin = yield models_1.db.admin.findOne({
             where: {
                 email: email
             }
         });
+        if (!loginAdmin) {
+            (0, cachError_1.throwError)("Admin not found", 404);
+        }
         const comparePassword = yield bcrypt_1.default.compare(password, loginAdmin.password);
         if (!comparePassword) {
             throw new Error('Invalid password');
@@ -54,9 +61,6 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         res.status(200).json({ message: "Admin logged in successfully", token, adminId: loginAdmin.id });
     }
     catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
         next(error);
     }
 });

@@ -1,7 +1,9 @@
-const {Sequelize} = require('sequelize');
+import { throwError } from "../../middleware/cachError";
+
+const { Sequelize } = require('sequelize');
 
 
-const adminModel = (sequelise:any, Datatypes:any)=>{
+const adminModel = (sequelise: any, Datatypes: any) => {
     const Admin = sequelise.define('admin', {
         id: {
             type: Sequelize.UUID,
@@ -11,36 +13,26 @@ const adminModel = (sequelise:any, Datatypes:any)=>{
         username: {
             type: Datatypes.STRING,
             allowNull: false,
-            unique: true,
         },
         email: {
             type: Datatypes.STRING,
             allowNull: false,
-            unique: {
-                args: true,
-                msg: "Admin already exists with this email"
-            },
-            validate: {
-               customValidator: async (email:string)=>{
-                     if(!email){
-                          throw new Error("Please provide your email")
-                     }
-               }
-            }
+            unique: true,
         },
         password: {
             type: Datatypes.STRING,
+            allowNull: true,
+            // write my  custom validation here to check if password is at least 8 characters long
+        },
+        createdAt: {
+            type: Datatypes.DATE,
             allowNull: false,
+            defaultValue: Datatypes.NOW
         },
-        createdAt:{
-            type:Datatypes.DATE,
-            allowNull:false,
-            defaultValue:Datatypes.NOW
-        },
-        updatedAt:{
-            type:Datatypes.DATE,
-            allowNull:false,
-            defaultValue:Datatypes.NOW
+        updatedAt: {
+            type: Datatypes.DATE,
+            allowNull: false,
+            defaultValue: Datatypes.NOW
         }
     })
 
@@ -48,4 +40,4 @@ const adminModel = (sequelise:any, Datatypes:any)=>{
 }
 
 
-export  default adminModel;
+export default adminModel;

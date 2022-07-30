@@ -45,12 +45,6 @@ app.use('/api/', api)
 
 // error handling
 app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunction) => {
-    // let data = {}
-    // if (error.name === "SequelizeUniqueConstraintError") {
-    //     data = {
-    //         message: error.errors[0].message,
-    //     }
-    // }
     console.log(error.message);
     const status = error.statusCode || 500;
     const message = error.message;
