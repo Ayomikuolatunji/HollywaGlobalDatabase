@@ -18,13 +18,13 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!req.file) {
             (0, cachError_1.throwError)("No image provided", 400);
         }
-        const image = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
+        const imageUrl = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
         const products = yield models_1.db.products.create({
             name: req.body.name,
             price: req.body.price,
             description: req.body.description,
             type: req.body.type,
-            image: image,
+            image: imageUrl,
             adminId: req.body.adminid
         });
         res.status(201).json({ message: "Product created successfully", products });

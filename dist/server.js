@@ -15,26 +15,21 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 // multer config
-const fileStorage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'images');
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "src/images");
     },
-    filename: function (req, file, cb) {
-        cb(null, new Date().toDateString() + '-' + file.originalname);
-    }
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    },
 });
-const filefilter = (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-        cb(null, true);
-    }
-    else {
-        cb(null, false);
-    }
-};
+const upload = (0, multer_1.default)({ storage: storage });
 app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+app.post("/images", upload.single("file"), (req, res) => {
+    res.status(200).json(req.file);
+});
 app.use("/images", express_1.default.static(path_1.default.join(__dirname, "images")));
-app.use((0, multer_1.default)({ storage: fileStorage, fileFilter: filefilter }).single('image'));
 // set headers for all requests
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -49,16 +44,16 @@ app.use((req, res, next) => {
 app.use('/api/', v1Api_1.default);
 // error handling
 app.use((error, req, res, next) => {
-    let data = {};
-    if (error.name === "SequelizeUniqueConstraintError") {
-        data = {
-            message: error.errors[0].message,
-        };
-    }
-    console.log(error);
+    // let data = {}
+    // if (error.name === "SequelizeUniqueConstraintError") {
+    //     data = {
+    //         message: error.errors[0].message,
+    //     }
+    // }
+    console.log(error.message);
     const status = error.statusCode || 500;
     const message = error.message;
-    res.status(status).json({ message, data });
+    res.status(status).json({ message });
 });
 // server start and listen
 app.listen(process.env.SERVER_PORT, () => {

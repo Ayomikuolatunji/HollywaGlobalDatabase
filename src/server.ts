@@ -8,41 +8,32 @@ import api from './services/v1Api';
 import { requestErrorTypings } from './typings/requestErrorTypings';
 import multer from 'multer';
 
-
 dotenv.config()
-
 
 const app = express()
 
-
 app.use(cors());
 
-
 // multer config
-const fileStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'images')
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "src/images");
     },
-    filename: function (req, file, cb) {
-        cb(null, new Date().toDateString() + '-' + file.originalname)
-    }
-})
+    filename: (req, file, cb) => {
+        cb(null, new Date().toISOString() + '-' + file.originalname);
+    },
+});
 
-const filefilter = (req: Request, file: { mimetype: string; }, cb: (arg0: null, arg1: boolean) => void) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
-        cb(null, true)
-    } else {
-        cb(null, false)
-    }
-}
-
+const upload = multer({ storage: storage });
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }));
+app.post("/images", upload.single("file"), (req, res) => {
+    res.status(200).json(req.file);
+})
 app.use("/images", express.static(path.join(__dirname, "images")))
 
 
-app.use(multer({ storage: fileStorage, fileFilter: filefilter }).single('image'))
 
 // set headers for all requests
 app.use((req, res, next) => {
@@ -67,16 +58,16 @@ app.use('/api/', api)
 
 // error handling
 app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunction) => {
-    let data = {}
-    if (error.name === "SequelizeUniqueConstraintError") {
-        data = {
-            message: error.errors[0].message,
-        }
-    }
-    console.log(error);
+    // let data = {}
+    // if (error.name === "SequelizeUniqueConstraintError") {
+    //     data = {
+    //         message: error.errors[0].message,
+    //     }
+    // }
+    console.log(error.message);
     const status = error.statusCode || 500;
     const message = error.message;
-    res.status(status).json({ message, data });
+    res.status(status).json({ message });
 });
 
 

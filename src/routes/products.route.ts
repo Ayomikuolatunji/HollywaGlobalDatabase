@@ -6,8 +6,8 @@ const router=express.Router();
 import { createProducts, getProducts } from "../controllers/products/product";
 
 
-router.get("products",authToken,getProducts);
-router.post("/products", authToken, createProducts)
+router.get("/products",authToken,getProducts);
+router.post("/products", createProducts)
 
 
 export default router;
