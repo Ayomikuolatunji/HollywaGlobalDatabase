@@ -53,7 +53,7 @@ const getProducts:RequestHandler=async(req,res,next)=>{
 const clearImage = (filePath:string)=> {
     filePath = path.join(__dirname,"../../../",filePath);
     fs.unlink(filePath, (err:any) => console.log(err));
-  };
+};
 
 
 export {

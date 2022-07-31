@@ -10,7 +10,7 @@ const router = express.Router();
 // admin routes
 router.post("/create_admin", createAdmin)
 router.post("/admin_signin", signInAdmin)
-router.get("/admin/:id", oneAdmin)
+router.get("/admin/:adminId", oneAdmin)
 
 
 

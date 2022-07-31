@@ -67,13 +67,13 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 exports.signInAdmin = signInAdmin;
 const oneAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const adminId = req.params;
+        const adminId = req.params.adminId;
         const findAdmin = yield models_1.db.admin.findOne({
             where: {
-                adminId: adminId
+                id: adminId
             }
         });
-        res.status(200).json({ adminid: findAdmin.adminId });
+        res.status(200).json({ adminid: findAdmin.id, message: "Admin fetch successfully" });
     }
     catch (error) {
         if (!error.statusCode) {

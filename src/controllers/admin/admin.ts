@@ -55,13 +55,13 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
 
 const oneAdmin: RequestHandler = async (req, res, next) => {
     try {
-        const adminId = req.params
+        const adminId = req.params.adminId
         const findAdmin = await db.admin.findOne({
             where: {
-                adminId: adminId
+                id: adminId
             }
         })
-        res.status(200).json({ adminid: findAdmin.adminId })
+        res.status(200).json({ adminid: findAdmin.id, message:"Admin fetch successfully" })
     } catch (error: any) {
         if (!error.statusCode) {
             error.statusCode = 500
