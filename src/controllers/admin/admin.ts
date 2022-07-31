@@ -36,7 +36,7 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
             }
         })
         if(!loginAdmin) {
-            throwError("Admin not found", 404);
+            throwError("Admin not found with the email provided", 404);
         }
         const comparePassword = await bcrypt.compare(password, loginAdmin.password);
         if (!comparePassword) {

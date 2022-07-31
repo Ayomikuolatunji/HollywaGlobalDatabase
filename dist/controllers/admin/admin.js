@@ -48,7 +48,7 @@ const signInAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             }
         });
         if (!loginAdmin) {
-            (0, cachError_1.throwError)("Admin not found", 404);
+            (0, cachError_1.throwError)("Admin not found with the email provided", 404);
         }
         const comparePassword = yield bcrypt_1.default.compare(password, loginAdmin.password);
         if (!comparePassword) {

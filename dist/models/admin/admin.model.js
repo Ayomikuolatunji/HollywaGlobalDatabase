@@ -20,7 +20,13 @@ const adminModel = (sequelise, Datatypes) => {
         password: {
             type: Datatypes.STRING,
             allowNull: true,
-            // write my  custom validation here to check if password is at least 8 characters long
+            validate: {
+                customValidator(value) {
+                    if (value === null) {
+                        throw new Error("name can't be null unless age is 10");
+                    }
+                }
+            }
         },
         createdAt: {
             type: Datatypes.DATE,

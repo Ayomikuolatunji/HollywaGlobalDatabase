@@ -18,9 +18,9 @@ const productModel = (
 ) => {
   return sequelize.define("products", {
     id: {
-      type: DataTypes.UUIDV4,
+      type: Sequelize.UUID,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
+      defaultValue: Sequelize.UUIDV1,
     },
     name: {
       type: DataTypes.STRING,

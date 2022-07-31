@@ -1,11 +1,15 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const sequelize_1 = __importDefault(require("sequelize"));
 const productModel = (sequelize, DataTypes) => {
     return sequelize.define("products", {
         id: {
-            type: DataTypes.UUIDV4,
+            type: sequelize_1.default.UUID,
             primaryKey: true,
-            defaultValue: DataTypes.UUIDV4,
+            defaultValue: sequelize_1.default.UUIDV1,
         },
         name: {
             type: DataTypes.STRING,
