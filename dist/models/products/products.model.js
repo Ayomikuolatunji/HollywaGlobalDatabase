@@ -24,8 +24,11 @@ const productModel = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
             validate: {
-                len: [0, 100],
-                notEmpty: true,
+                customValidator(value) {
+                    if (value === null) {
+                        throw new Error("name can't be null unless age is 10");
+                    }
+                }
             },
         },
         type: {

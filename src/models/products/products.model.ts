@@ -35,8 +35,11 @@ const productModel = (
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 100],
-        notEmpty: true,
+        customValidator(value: string) {
+          if (value === null) {
+            throw new Error("name can't be null unless age is 10");
+          }
+        }
       },
     },
     type: {

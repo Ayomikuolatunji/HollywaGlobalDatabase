@@ -25,12 +25,16 @@ const fileFilter = (req: any, file: { mimetype: string; }, cb: (arg0: null, arg1
   }
 };
 
-const upload = multer({ storage: storage, fileFilter });
+const upload = multer({ storage: storage, fileFilter});
 
 
-router.post("/images", upload.single("file"), (req, res) => {
-  // serve file to controller and return image url
-  res.status(200).json({ imageUrl: req.file?.path })
+router.post("/images", upload.single("file"), (req, res,next) => {
+   try {
+     // serve file to controller and return image url
+     res.status(200).json({ imageUrl: req.file?.path })
+   } catch (error) {
+       next(error);
+   }
 })
 
 

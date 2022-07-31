@@ -26,9 +26,14 @@ const fileFilter = (req, file, cb) => {
     }
 };
 const upload = (0, multer_1.default)({ storage: storage, fileFilter });
-router.post("/images", upload.single("file"), (req, res) => {
+router.post("/images", upload.single("file"), (req, res, next) => {
     var _a;
-    // serve file to controller and return image url
-    res.status(200).json({ imageUrl: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
+    try {
+        // serve file to controller and return image url
+        res.status(200).json({ imageUrl: (_a = req.file) === null || _a === void 0 ? void 0 : _a.path });
+    }
+    catch (error) {
+        next(error);
+    }
 });
 exports.default = router;
