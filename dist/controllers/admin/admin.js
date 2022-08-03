@@ -68,6 +68,9 @@ exports.signInAdmin = signInAdmin;
 const oneAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const adminId = req.params.adminId;
+        if (!adminId) {
+            (0, cachError_1.throwError)("Admin id is not found", 404);
+        }
         const findAdmin = yield models_1.db.admin.findOne({
             where: {
                 id: adminId

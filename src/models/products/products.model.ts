@@ -1,17 +1,5 @@
 import Sequelize from "sequelize";
 
-export interface productTypings {
-  define: any;
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  type: string;
-  image: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 const productModel = (
   sequelize: Sequelize.Sequelize,
   DataTypes: typeof import("sequelize/types/data-types")
@@ -44,6 +32,10 @@ const productModel = (
     },
     type: {
       type: DataTypes.STRING,
+      allowNull: false,
+    },
+    productAvailable: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     image: {

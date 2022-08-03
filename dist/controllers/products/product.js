@@ -26,7 +26,8 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             description: req.body.description,
             type: req.body.type,
             image: req.body.image,
-            adminId: req.body.adminId
+            adminId: req.body.adminId,
+            productAvailable: req.body.productAvailable
         });
         res.status(201).json({ message: "Product created successfully", products });
     }
@@ -46,9 +47,12 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const products = yield models_1.db.products.findAll({
             where: {
-                adminId: req.body.adminid
+                adminId: req.query.adminId
             }
         });
+        if (!products) {
+            (0, cachError_1.throwError)("Products not found", 404);
+        }
         res.status(200).json({ message: "Products retrieved successfully", products });
     }
     catch (error) {

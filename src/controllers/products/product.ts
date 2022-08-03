@@ -18,7 +18,9 @@ const createProducts:RequestHandler=async(req,res,next)=>{
             description:req.body.description,
             type:req.body.type,
             image:req.body.image,
-            adminId:req.body.adminId
+            adminId:req.body.adminId,
+            productAvailable:req.body.productAvailable
+
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error:any) {
@@ -37,9 +39,12 @@ const getProducts:RequestHandler=async(req,res,next)=>{
     try {
         const products=await db.products.findAll({
             where:{
-                adminId:req.body.adminid
+                adminId:req.query.adminId
             }
         })
+        if(!products){
+            throwError("Products not found",404)
+        }
         res.status(200).json({message:"Products retrieved successfully",products})
     } catch (error:any) {
         if(!error.statusCode){

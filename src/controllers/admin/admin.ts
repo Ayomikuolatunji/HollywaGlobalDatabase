@@ -56,6 +56,9 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
 const oneAdmin: RequestHandler = async (req, res, next) => {
     try {
         const adminId = req.params.adminId
+        if(!adminId){
+            throwError("Admin id is not found", 404)
+        }
         const findAdmin = await db.admin.findOne({
             where: {
                 id: adminId
