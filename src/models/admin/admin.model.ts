@@ -16,8 +16,16 @@ const adminModel = (sequelise: any, Datatypes: any) => {
         },
         email: {
             type: Datatypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
+            validate: {
+                customValidator: async (email: string) => {
+                    //  allow only email format
+                    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                        throwError("Please provide a valid email", 422);
+                    }
+                }
+            }
         },
         password: {
             type: Datatypes.STRING,

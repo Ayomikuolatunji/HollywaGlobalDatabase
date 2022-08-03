@@ -45,10 +45,18 @@ app.use('/api/', api)
 
 // error handling
 app.use((error: requestErrorTypings, req: Request, res: Response, next: NextFunction) => {
-    console.log(error.message);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    res.status(status).json({ message });
+    // check if it is sequelize error
+    if (error.name === 'SequelizeValidationError') {
+        console.log(error.errors[0].message)
+        const status = error.statusCode || 500;
+        const message = error.message;
+        res.status(status).json({ message:error.errors[0].message})
+    }else{
+        console.log(error.message)
+        const status = error.statusCode || 500;
+        const message = error.message;
+        res.status(status).json({ message })
+    };
 });
 
 

@@ -32,10 +32,20 @@ app.use((req, res, next) => {
 app.use('/api/', v1Api_1.default);
 // error handling
 app.use((error, req, res, next) => {
-    console.log(error.message);
-    const status = error.statusCode || 500;
-    const message = error.message;
-    res.status(status).json({ message });
+    // check if it is sequelize error
+    if (error.name === 'SequelizeValidationError') {
+        console.log(error.errors[0].message);
+        const status = error.statusCode || 500;
+        const message = error.message;
+        res.status(status).json({ message: error.errors[0].message });
+    }
+    else {
+        console.log(error.message);
+        const status = error.statusCode || 500;
+        const message = error.message;
+        res.status(status).json({ message });
+    }
+    ;
 });
 // server start and listen
 app.listen(process.env.SERVER_PORT, () => {

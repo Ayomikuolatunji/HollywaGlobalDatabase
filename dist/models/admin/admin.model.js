@@ -1,5 +1,15 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const cachError_1 = require("../../middleware/cachError");
 const { Sequelize } = require('sequelize');
 const adminModel = (sequelise, Datatypes) => {
     const Admin = sequelise.define('admin', {
@@ -14,8 +24,16 @@ const adminModel = (sequelise, Datatypes) => {
         },
         email: {
             type: Datatypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
+            validate: {
+                customValidator: (email) => __awaiter(void 0, void 0, void 0, function* () {
+                    //  allow only email format
+                    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                        (0, cachError_1.throwError)("Please provide a valid email", 422);
+                    }
+                })
+            }
         },
         password: {
             type: Datatypes.STRING,
