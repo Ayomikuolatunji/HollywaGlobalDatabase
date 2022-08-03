@@ -36,7 +36,7 @@ const productModel = (sequelize, DataTypes) => {
             allowNull: false,
         },
         productAvailable: {
-            type: DataTypes.BOOLEAN,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         image: {

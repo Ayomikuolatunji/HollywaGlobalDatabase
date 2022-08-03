@@ -20,6 +20,7 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!req.body.adminId) {
             (0, cachError_1.throwError)("admin is not found", 404);
         }
+        const productAvailable = req.body.productAvailable === true ? "onsale" : "notsale";
         const products = yield models_1.db.products.create({
             name: req.body.name,
             price: req.body.price,
@@ -27,7 +28,7 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             type: req.body.type,
             image: req.body.image,
             adminId: req.body.adminId,
-            productAvailable: req.body.productAvailable
+            productAvailable: productAvailable
         });
         res.status(201).json({ message: "Product created successfully", products });
     }

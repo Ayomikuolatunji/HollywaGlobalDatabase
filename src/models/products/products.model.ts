@@ -35,7 +35,7 @@ const productModel = (
       allowNull: false,
     },
     productAvailable: {
-      type: DataTypes.BOOLEAN,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     image: {

@@ -12,6 +12,7 @@ const createProducts:RequestHandler=async(req,res,next)=>{
         if(!req.body.adminId){
             throwError("admin is not found",404)
         }
+        const productAvailable =req.body.productAvailable === true ? "onsale" : "notsale";
         const products=await db.products.create({
             name:req.body.name,
             price:req.body.price,
@@ -19,7 +20,7 @@ const createProducts:RequestHandler=async(req,res,next)=>{
             type:req.body.type,
             image:req.body.image,
             adminId:req.body.adminId,
-            productAvailable:req.body.productAvailable
+            productAvailable:productAvailable
 
         })
        res.status(201).json({message:"Product created successfully",products})
