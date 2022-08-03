@@ -20,24 +20,24 @@ app.use(uploadFile_1.default);
 app.use("/images", express_1.default.static(path_1.default.join(__dirname, "images")));
 // set headers for all requests
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.set("Methods", "GET, POST, PUT, DELETE");
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("content-type", "application/json");
     next();
 });
 // version 1 api
-app.use('/api/', v1Api_1.default);
+app.use("/api/", v1Api_1.default);
 // error handling
 app.use((error, req, res, next) => {
     // check if it is sequelize error
-    if (error.name === 'SequelizeValidationError') {
+    if (error.name === "SequelizeValidationError") {
         console.log(error.errors[0].message);
         const status = error.statusCode || 500;
-        const message = error.message;
-        res.status(status).json({ message: error.errors[0].message });
+        const message = error.errors[0].message;
+        res.status(status).json({ message });
     }
     else {
         console.log(error.message);
@@ -45,16 +45,16 @@ app.use((error, req, res, next) => {
         const message = error.message;
         res.status(status).json({ message });
     }
-    ;
 });
 // server start and listen
 app.listen(process.env.SERVER_PORT, () => {
-    models_1.sequelize.authenticate()
+    models_1.sequelize
+        .authenticate()
         .then(() => {
-        console.log('Connection has been established successfully.');
+        console.log("Connection has been established successfully.");
     })
         .catch((err) => {
-        console.error('Unable to connect to the database:', err.message);
+        console.error("Unable to connect to the database:", err.message);
     });
     console.log("Server is running on port 8080");
 });
