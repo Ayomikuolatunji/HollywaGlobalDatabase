@@ -16,12 +16,12 @@ const createProducts:RequestHandler=async(req,res,next)=>{
         const products=await db.products.create({
             name:req.body.name,
             price:req.body.price,
-            description:req.body.description,
+            description:req.body.description.trim(),
             type:req.body.type,
             image:req.body.image,
             adminId:req.body.adminId,
-            productAvailable:productAvailable
-
+            productAvailable:productAvailable,
+            currency:req.body.currency,
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error:any) {

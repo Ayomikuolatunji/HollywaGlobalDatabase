@@ -24,11 +24,12 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         const products = yield models_1.db.products.create({
             name: req.body.name,
             price: req.body.price,
-            description: req.body.description,
+            description: req.body.description.trim(),
             type: req.body.type,
             image: req.body.image,
             adminId: req.body.adminId,
-            productAvailable: productAvailable
+            productAvailable: productAvailable,
+            currency: req.body.currency,
         });
         res.status(201).json({ message: "Product created successfully", products });
     }
