@@ -17,7 +17,7 @@ const createProducts:RequestHandler=async(req,res,next)=>{
             name:req.body.name,
             price:req.body.price,
             description:req.body.description.trim(),
-            type:req.body.type,
+            type:req.body.type || "general",
             image:req.body.image,
             adminId:req.body.adminId,
             productAvailable:productAvailable,
@@ -25,9 +25,6 @@ const createProducts:RequestHandler=async(req,res,next)=>{
         })
        res.status(201).json({message:"Product created successfully",products})
     } catch (error:any) {
-        if(imageUrl){
-            console.log(imageUrl)
-        }
         clearImage(imageUrl)
         if(!error.statusCode){
             error.statusCode=500;

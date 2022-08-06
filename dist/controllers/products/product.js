@@ -25,7 +25,7 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             name: req.body.name,
             price: req.body.price,
             description: req.body.description.trim(),
-            type: req.body.type,
+            type: req.body.type || "general",
             image: req.body.image,
             adminId: req.body.adminId,
             productAvailable: productAvailable,
@@ -34,9 +34,6 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         res.status(201).json({ message: "Product created successfully", products });
     }
     catch (error) {
-        if (imageUrl) {
-            console.log(imageUrl);
-        }
         clearImage(imageUrl);
         if (!error.statusCode) {
             error.statusCode = 500;

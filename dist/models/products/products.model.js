@@ -14,7 +14,6 @@ const productModel = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true,
         },
         price: {
             type: DataTypes.INTEGER,

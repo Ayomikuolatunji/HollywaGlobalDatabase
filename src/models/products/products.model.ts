@@ -13,7 +13,6 @@ const productModel = (
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     price: {
       type: DataTypes.INTEGER,
