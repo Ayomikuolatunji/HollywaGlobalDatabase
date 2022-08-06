@@ -52,6 +52,32 @@ const getProducts:RequestHandler=async(req,res,next)=>{
     }
 }
 
+const deleteProduct:RequestHandler=async(req,res,next)=>{
+      try{
+         const productId=req.params.productId;
+         const adminId=req.query.adminId;
+           await db.products.destroy({
+            where:{
+                id:productId,
+                adminId:adminId
+            }
+         })
+        // remove image from folder
+        const productImage:any=await db.products.findOne({
+            where:{
+                id:productId,
+                adminId:adminId
+            }
+        })
+        if(productImage){
+            clearImage(productImage.image)
+        }
+        res.status(200).json({message:"Product deleted successfully", productId}) 
+
+      }catch(error){
+        next(error)
+      }
+}
 
 const clearImage = (filePath:string)=> {
     filePath = path.join(__dirname,"../../../",filePath);
@@ -62,5 +88,5 @@ const clearImage = (filePath:string)=> {
 export {
     createProducts,
     getProducts,
-    
+    deleteProduct
 }

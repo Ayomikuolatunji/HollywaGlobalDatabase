@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProducts = exports.createProducts = void 0;
+exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
 const fs = require('fs');
 const path = require('path');
 const cachError_1 = require("../../middleware/cachError");
@@ -62,6 +62,33 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getProducts = getProducts;
+const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productId = req.params.productId;
+        const adminId = req.query.adminId;
+        yield models_1.db.products.destroy({
+            where: {
+                id: productId,
+                adminId: adminId
+            }
+        });
+        // remove image from folder
+        const productImage = yield models_1.db.products.findOne({
+            where: {
+                id: productId,
+                adminId: adminId
+            }
+        });
+        if (productImage) {
+            clearImage(productImage.image);
+        }
+        res.status(200).json({ message: "Product deleted successfully", productId });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteProduct = deleteProduct;
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));

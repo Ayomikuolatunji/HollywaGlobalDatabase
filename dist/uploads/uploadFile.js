@@ -13,7 +13,7 @@ const storage = multer_1.default.diskStorage({
         cb(null, "images");
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname);
+        cb(null, new Date() + "-" + file.originalname);
     },
 });
 const fileTypes = ["image/png", "image/jpg", "image/jpeg"];
