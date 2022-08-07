@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 const cachError_1 = require("../../middleware/cachError");
 const models_1 = require("../../models");
 const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,13 +46,15 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     try {
         const products = yield models_1.db.products.findAll({
             where: {
-                adminId: req.query.adminId
-            }
+                adminId: req.query.adminId,
+            },
         });
         if (!products) {
             (0, cachError_1.throwError)("Products not found", 404);
         }
-        res.status(200).json({ message: "Products retrieved successfully", products });
+        res
+            .status(200)
+            .json({ message: "Products retrieved successfully", products });
     }
     catch (error) {
         if (!error.statusCode) {
@@ -66,23 +68,26 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     try {
         const productId = req.params.productId;
         const adminId = req.query.adminId;
-        yield models_1.db.products.destroy({
-            where: {
-                id: productId,
-                adminId: adminId
-            }
-        });
         // remove image from folder
         const productImage = yield models_1.db.products.findOne({
             where: {
                 id: productId,
-                adminId: adminId
-            }
+                adminId: adminId,
+            },
         });
-        if (productImage) {
-            clearImage(productImage.image);
+        if (!productImage) {
+            (0, cachError_1.throwError)("Product not found", 404);
         }
-        res.status(200).json({ message: "Product deleted successfully", productId });
+        clearImage(productImage.image);
+        yield models_1.db.products.destroy({
+            where: {
+                id: productId,
+                adminId: adminId,
+            },
+        });
+        res
+            .status(200)
+            .json({ message: "Product deleted successfully", productImage });
     }
     catch (error) {
         next(error);

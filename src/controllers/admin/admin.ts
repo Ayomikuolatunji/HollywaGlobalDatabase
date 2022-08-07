@@ -66,9 +66,6 @@ const oneAdmin: RequestHandler = async (req, res, next) => {
         })
         res.status(200).json({ adminid: findAdmin.id, message:"Admin fetch successfully" })
     } catch (error: any) {
-        if (!error.statusCode) {
-            error.statusCode = 500
-        }
         next(error)
     }
 }

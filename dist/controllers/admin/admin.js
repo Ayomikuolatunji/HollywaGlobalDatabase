@@ -78,9 +78,6 @@ const oneAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         res.status(200).json({ adminid: findAdmin.id, message: "Admin fetch successfully" });
     }
     catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
         next(error);
     }
 });
