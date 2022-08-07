@@ -14,13 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cachError_1 = require("../../middleware/cachError");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 const adminModel = (sequelise, Datatypes) => {
-    const Admin = sequelise.define('admin', {
+    const Admin = sequelise.define("admin", {
         id: {
             type: Sequelize.UUID,
             primaryKey: true,
-            defaultValue: Sequelize.UUIDV1
+            defaultValue: Sequelize.UUIDV1,
         },
         username: {
             type: Datatypes.STRING,
@@ -36,8 +36,8 @@ const adminModel = (sequelise, Datatypes) => {
                     if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
                         (0, cachError_1.throwError)("Please provide a valid email", 422);
                     }
-                })
-            }
+                }),
+            },
         },
         password: {
             type: Datatypes.STRING,
@@ -45,24 +45,26 @@ const adminModel = (sequelise, Datatypes) => {
             validate: {
                 customValidator(value) {
                     if (value === null) {
-                        throw new Error("name can't be null unless age is 10");
+                        throw new Error("password can't be null");
                     }
                 }
             },
-            set value(value) {
-                adminModel.prototype.setDataValue("password", bcrypt_1.default.hashSync(value, bcrypt_1.default.genSaltSync()));
-            }
+            set(value) {
+                const hash = bcrypt_1.default.hashSync(value, bcrypt_1.default.genSaltSync());
+                // @ts-ignore
+                this.setDataValue("password", hash);
+            },
         },
         createdAt: {
             type: Datatypes.DATE,
             allowNull: false,
-            defaultValue: Datatypes.NOW
+            defaultValue: Datatypes.NOW,
         },
         updatedAt: {
             type: Datatypes.DATE,
             allowNull: false,
-            defaultValue: Datatypes.NOW
-        }
+            defaultValue: Datatypes.NOW,
+        },
     });
     return Admin;
 };
