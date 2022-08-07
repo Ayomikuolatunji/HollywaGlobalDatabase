@@ -13,11 +13,11 @@ const createAdmin: RequestHandler = async (req, res, next) => {
         if(!password || !username || !email) {
             throwError("Please fill all the fields", 400);
         }
-        const hashedPassword = await bcrypt.hash(password, 12);
+      
         await db.admin.create({
             username,
             email,
-            password: hashedPassword
+            password:password
         })
         res.status(201).json({ message: "Admin created successfully" })
     } catch (error: any) {

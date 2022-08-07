@@ -25,11 +25,10 @@ const createAdmin = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (!password || !username || !email) {
             (0, cachError_1.throwError)("Please fill all the fields", 400);
         }
-        const hashedPassword = yield bcrypt_1.default.hash(password, 12);
         yield models_1.db.admin.create({
             username,
             email,
-            password: hashedPassword
+            password: password
         });
         res.status(201).json({ message: "Admin created successfully" });
     }

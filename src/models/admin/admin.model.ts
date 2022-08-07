@@ -1,4 +1,5 @@
 import { throwError } from "../../middleware/cachError";
+import bcrypt from 'bcrypt';
 
 const { Sequelize } = require('sequelize');
 
@@ -36,7 +37,11 @@ const adminModel = (sequelise: any, Datatypes: any) => {
                     throw new Error("name can't be null unless age is 10");
                   }
                 }
-              }
+            }, 
+            set value(value : string) {
+                adminModel.prototype.setDataValue("password", bcrypt.hashSync(value, bcrypt.genSaltSync()));
+            }
+            
         },
         createdAt: {
             type: Datatypes.DATE,
