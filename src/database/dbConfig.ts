@@ -5,7 +5,7 @@ const config={
     HOST:"localhost",
     USER:"root",
     PASSWORD:"Ayoscript222@",
-    DB:"crud",
+    DB:"carStores",
     dialect:"mysql",
     pool:{
         max:5,
