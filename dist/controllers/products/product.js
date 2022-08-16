@@ -20,7 +20,6 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!req.body.adminId) {
             (0, cachError_1.throwError)("admin is not found", 404);
         }
-        const productAvailable = req.body.productAvailable === true ? "onsale" : "notsale";
         const products = yield models_1.db.products.create({
             name: req.body.name,
             price: req.body.price,
@@ -28,16 +27,13 @@ const createProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             type: req.body.type || "general",
             image: req.body.image,
             adminId: req.body.adminId,
-            productAvailable: productAvailable,
+            status: req.body.status,
             currency: req.body.currency,
         });
         res.status(201).json({ message: "Product created successfully", products });
     }
     catch (error) {
-        clearImage(imageUrl);
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
+        clearImage(imageUrl || "");
         next(error);
     }
 });
@@ -57,9 +53,6 @@ const getProducts = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             .json({ message: "Products retrieved successfully", products });
     }
     catch (error) {
-        if (!error.statusCode) {
-            error.statusCode = 500;
-        }
         next(error);
     }
 });
@@ -94,6 +87,29 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.deleteProduct = deleteProduct;
+const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productId = req.params.productId;
+        const adminId = req.query.adminId;
+        const product = yield models_1.db.products.findAll({
+            include: [{
+                    model: models_1.db.admin,
+                    where: {
+                        adminId: adminId,
+                        productId: productId,
+                    }
+                }]
+        });
+        if (!product) {
+            (0, cachError_1.throwError)("Product not found", 404);
+        }
+        yield models_1.db.products.update({ status: req.body.status }, { where: { id: productId, adminId: adminId } });
+        res.status(200).json({ message: "Product status changed successfully" });
+    }
+    catch (error) {
+        next(error);
+    }
+});
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));

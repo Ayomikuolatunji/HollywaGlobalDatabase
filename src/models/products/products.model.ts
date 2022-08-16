@@ -33,8 +33,8 @@ const productModel = (
       type: DataTypes.STRING,
       allowNull: false,
     },
-    productAvailable: {
-      type: DataTypes.STRING,
+    status: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     currency: {

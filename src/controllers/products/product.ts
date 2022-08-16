@@ -10,8 +10,6 @@ const createProducts: RequestHandler = async (req, res, next) => {
     if (!req.body.adminId) {
       throwError("admin is not found", 404);
     }
-    const productAvailable =
-      req.body.productAvailable === true ? "onsale" : "notsale";
     const products = await db.products.create({
       name: req.body.name,
       price: req.body.price,
@@ -19,15 +17,12 @@ const createProducts: RequestHandler = async (req, res, next) => {
       type: req.body.type || "general",
       image: req.body.image,
       adminId: req.body.adminId,
-      productAvailable: productAvailable,
+      status: req.body.status,
       currency: req.body.currency,
     });
     res.status(201).json({ message: "Product created successfully", products });
   } catch (error: any) {
-    clearImage(imageUrl);
-    if (!error.statusCode) {
-      error.statusCode = 500;
-    }
+    clearImage(imageUrl || "");
     next(error);
   }
 };
@@ -46,9 +41,6 @@ const getProducts: RequestHandler = async (req, res, next) => {
       .status(200)
       .json({ message: "Products retrieved successfully", products });
   } catch (error: any) {
-    if (!error.statusCode) {
-      error.statusCode = 500;
-    }
     next(error);
   }
 };
@@ -81,6 +73,33 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
+
+const changeProductStatus: RequestHandler = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const adminId = req.query.adminId;
+    const product: any = await db.products.findAll({
+       include: [{
+          model: db.admin,
+          where: {
+            adminId: adminId,
+            productId: productId,
+          }
+       }]
+    });
+    if (!product) {
+      throwError("Product not found", 404);
+    }
+    await db.products.update(
+      { status: req.body.status },
+      { where: { id: productId, adminId: adminId } }
+    );
+    res.status(200).json({ message: "Product status changed successfully" });
+  } catch (error) {
+    next(error);
+  }
+}
 
 const clearImage = (filePath: string) => {
   filePath = path.join(__dirname, "../../../", filePath);
