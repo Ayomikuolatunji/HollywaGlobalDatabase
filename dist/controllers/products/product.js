@@ -113,7 +113,7 @@ const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0
         yield Promise.all(updateProduct);
         res
             .status(200)
-            .json({ message: "Product status changed successfully", updateProduct });
+            .json({ message: "Product status changed successfully", product });
     }
     catch (error) {
         next(error);

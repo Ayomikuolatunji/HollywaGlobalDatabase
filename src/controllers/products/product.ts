@@ -103,7 +103,7 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     await Promise.all(updateProduct);
     res
       .status(200)
-      .json({ message: "Product status changed successfully", updateProduct });
+      .json({ message: "Product status changed successfully",product});
   } catch (error) {
     next(error);
   }
