@@ -78,24 +78,32 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
   try {
     const productIds = req.body.productIds;
     const adminId = req.query.adminId;
+    const statuses = req.body.status;
     const product = await db.products.findAll({
       where: {
-        adminId: adminId
+        adminId: adminId,
       },
     });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
-    console.log(req.body);
-    // update using products ids of the admin
-    productIds.forEach((element:any,index:number) => {
-      db.products.update(
-        { status: req.body.status[index]==="Active" ? false :true },
-        { where: { id: element} }
+    // update using products ids of the admin and status  array
+    const updateProduct = statuses.map((ele: any, i: number) => {
+      return db.products.update(
+        {
+          status: ele,
+        },
+        {
+          where: {
+            id: productIds[i],
+          },
+        }
       );
-    })
-    
-    res.status(200).json({ message: "Product status changed successfully" });
+    });
+    await Promise.all(updateProduct);
+    res
+      .status(200)
+      .json({ message: "Product status changed successfully", updateProduct });
   } catch (error) {
     next(error);
   }

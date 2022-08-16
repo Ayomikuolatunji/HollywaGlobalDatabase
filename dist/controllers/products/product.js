@@ -91,20 +91,29 @@ const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0
     try {
         const productIds = req.body.productIds;
         const adminId = req.query.adminId;
+        const statuses = req.body.status;
         const product = yield models_1.db.products.findAll({
             where: {
-                adminId: adminId
+                adminId: adminId,
             },
         });
         if (!product) {
             (0, cachError_1.throwError)("Product not found with adminId provided", 404);
         }
-        console.log(req.body);
-        // update using products ids of the admin
-        productIds.forEach((element, index) => {
-            models_1.db.products.update({ status: req.body.status[index] === "Active" ? false : true }, { where: { id: element } });
+        // update using products ids of the admin and status  array
+        const updateProduct = statuses.map((ele, i) => {
+            return models_1.db.products.update({
+                status: ele,
+            }, {
+                where: {
+                    id: productIds[i],
+                },
+            });
         });
-        res.status(200).json({ message: "Product status changed successfully" });
+        yield Promise.all(updateProduct);
+        res
+            .status(200)
+            .json({ message: "Product status changed successfully", updateProduct });
     }
     catch (error) {
         next(error);
