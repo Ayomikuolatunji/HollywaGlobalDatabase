@@ -23,7 +23,7 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.set("Methods", "GET, POST, PUT, DELETE");
+    res.set("Methods", "GET, POST, PUT, DELETE , PATCH");
     res.set("Access-Control-Allow-Credentials", "true");
     res.set("content-type", "application/json");
     next();

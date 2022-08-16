@@ -57,7 +57,7 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
       },
     });
     if (!productImage) {
-       throwError("Product not found", 404);
+      throwError("Product not found", 404);
     }
     clearImage(productImage.image);
     await db.products.destroy({
@@ -74,36 +74,35 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
-
 const changeProductStatus: RequestHandler = async (req, res, next) => {
   try {
-    const productId = req.params.productId;
+    const productIds = req.body.productIds;
     const adminId = req.query.adminId;
     const product: any = await db.products.findAll({
-       include: [{
-          model: db.admin,
-          where: {
-            adminId: adminId,
-            productId: productId,
-          }
-       }]
+      where: {
+        adminId: adminId
+      },
     });
     if (!product) {
       throwError("Product not found", 404);
     }
-    await db.products.update(
-      { status: req.body.status },
-      { where: { id: productId, adminId: adminId } }
-    );
+    // update using products ids of the admin
+    productIds.forEach((element: { id: any; }) => {
+      db.products.update(
+        { status: req.body.status },
+        { where: { id: element.id} }
+      );
+    })
+    
     res.status(200).json({ message: "Product status changed successfully" });
   } catch (error) {
     next(error);
   }
-}
+};
 
 const clearImage = (filePath: string) => {
   filePath = path.join(__dirname, "../../../", filePath);
   fs.unlink(filePath, (err: any) => console.log(err));
 };
 
-export { createProducts, getProducts, deleteProduct };
+export { createProducts, getProducts, deleteProduct, changeProductStatus };

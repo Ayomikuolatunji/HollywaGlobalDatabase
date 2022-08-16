@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
+exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
 const fs = require("fs");
 const path = require("path");
 const cachError_1 = require("../../middleware/cachError");
@@ -89,27 +89,27 @@ const deleteProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, func
 exports.deleteProduct = deleteProduct;
 const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productId = req.params.productId;
+        const productIds = req.body.productIds;
         const adminId = req.query.adminId;
         const product = yield models_1.db.products.findAll({
-            include: [{
-                    model: models_1.db.admin,
-                    where: {
-                        adminId: adminId,
-                        productId: productId,
-                    }
-                }]
+            where: {
+                adminId: adminId
+            },
         });
         if (!product) {
             (0, cachError_1.throwError)("Product not found", 404);
         }
-        yield models_1.db.products.update({ status: req.body.status }, { where: { id: productId, adminId: adminId } });
+        // update using products ids of the admin
+        productIds.forEach((element) => {
+            models_1.db.products.update({ status: req.body.status }, { where: { id: element.id } });
+        });
         res.status(200).json({ message: "Product status changed successfully" });
     }
     catch (error) {
         next(error);
     }
 });
+exports.changeProductStatus = changeProductStatus;
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));
