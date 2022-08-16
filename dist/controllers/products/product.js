@@ -97,11 +97,12 @@ const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0
             },
         });
         if (!product) {
-            (0, cachError_1.throwError)("Product not found", 404);
+            (0, cachError_1.throwError)("Product not found with adminId provided", 404);
         }
         // update using products ids of the admin
         productIds.forEach((element) => {
-            models_1.db.products.update({ status: req.body.status }, { where: { id: element.id } });
+            console.log(element);
+            models_1.db.products.update({ status: req.body.status }, { where: { id: element } });
         });
         res.status(200).json({ message: "Product status changed successfully" });
     }

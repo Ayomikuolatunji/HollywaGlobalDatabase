@@ -9,7 +9,7 @@ import { changeProductStatus, createProducts, deleteProduct, getProducts } from 
 router.get("/products",authToken,getProducts);
 router.post("/products",authToken, createProducts)
 router.delete("/products/:productId",authToken, deleteProduct)
-router.patch("/product_status/:productId",authToken, changeProductStatus)
+router.patch("/products/product_status",authToken, changeProductStatus)
 
 
 export default router;

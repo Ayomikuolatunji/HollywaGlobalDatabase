@@ -10,5 +10,5 @@ const product_1 = require("../controllers/products/product");
 router.get("/products", authToken_1.default, product_1.getProducts);
 router.post("/products", authToken_1.default, product_1.createProducts);
 router.delete("/products/:productId", authToken_1.default, product_1.deleteProduct);
-router.patch("/product_status/:productId", authToken_1.default, product_1.changeProductStatus);
+router.patch("/products/product_status", authToken_1.default, product_1.changeProductStatus);
 exports.default = router;
