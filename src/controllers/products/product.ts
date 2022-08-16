@@ -86,11 +86,11 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
+    console.log(req.body);
     // update using products ids of the admin
-    productIds.forEach((element:any) => {
-      console.log(element)
+    productIds.forEach((element:any,index:number) => {
       db.products.update(
-        { status: req.body.status },
+        { status: req.body.status[index]==="Active" ? false :true },
         { where: { id: element} }
       );
     })
