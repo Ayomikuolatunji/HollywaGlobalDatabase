@@ -21,7 +21,6 @@ app.use("/images", express_1.default.static(path_1.default.join(__dirname, "imag
 // set headers for all requests
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, PATCH, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.set("Methods", "GET, POST, PUT, DELETE , PATCH");
     res.set("Access-Control-Allow-Credentials", "true");

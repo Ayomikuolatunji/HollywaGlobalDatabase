@@ -88,10 +88,10 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
       throwError("Product not found with adminId provided", 404);
     }
     // update using products ids of the admin and status  array
-    const updateProduct = statuses.map((ele: any, i: number) => {
+    const updateProduct = statuses.map((status: string, i: number) => {
       return db.products.update(
         {
-          status: ele,
+          status: status,
         },
         {
           where: {
@@ -103,7 +103,7 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     await Promise.all(updateProduct);
     res
       .status(200)
-      .json({ message: "Product status changed successfully",product});
+      .json({ message: "Product status changed successfully", product });
   } catch (error) {
     next(error);
   }

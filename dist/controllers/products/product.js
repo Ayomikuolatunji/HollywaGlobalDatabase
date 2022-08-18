@@ -101,9 +101,9 @@ const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0
             (0, cachError_1.throwError)("Product not found with adminId provided", 404);
         }
         // update using products ids of the admin and status  array
-        const updateProduct = statuses.map((ele, i) => {
+        const updateProduct = statuses.map((status, i) => {
             return models_1.db.products.update({
-                status: ele,
+                status: status,
             }, {
                 where: {
                     id: productIds[i],
