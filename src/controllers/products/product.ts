@@ -147,6 +147,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
 const getProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
