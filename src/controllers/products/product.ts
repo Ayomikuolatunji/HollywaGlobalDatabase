@@ -109,9 +109,54 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
   }
 };
 
+const editProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const adminId = req.query.adminId;
+    const product = await db.products.findOne({
+      where: {
+        id: productId,
+        adminId: adminId,
+      },
+    });
+    if (!product) {
+      throwError("Product not found with adminId provided", 404);
+    }
+    const updatedProduct = await db.products.update(
+      {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description.trim(),
+        type: req.body.type || "general",
+        image: req.body.image,
+        adminId: req.body.adminId,
+        status: req.body.status,
+        currency: req.body.currency,
+      },
+      {
+        where: {
+          id: productId,
+          adminId: adminId,
+        },
+      }
+    );
+    res
+      .status(200)
+      .json({ message: "Product updated successfully", updatedProduct });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const clearImage = (filePath: string) => {
   filePath = path.join(__dirname, "../../../", filePath);
   fs.unlink(filePath, (err: any) => console.log(err));
 };
 
-export { createProducts, getProducts, deleteProduct, changeProductStatus };
+export {
+  createProducts,
+  getProducts,
+  deleteProduct,
+  changeProductStatus,
+  editProduct,
+};

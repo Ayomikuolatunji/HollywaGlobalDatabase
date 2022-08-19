@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
+exports.editProduct = exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
 const fs = require("fs");
 const path = require("path");
 const cachError_1 = require("../../middleware/cachError");
@@ -120,6 +120,43 @@ const changeProductStatus = (req, res, next) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.changeProductStatus = changeProductStatus;
+const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productId = req.params.productId;
+        const adminId = req.query.adminId;
+        const product = yield models_1.db.products.findOne({
+            where: {
+                id: productId,
+                adminId: adminId,
+            },
+        });
+        if (!product) {
+            (0, cachError_1.throwError)("Product not found with adminId provided", 404);
+        }
+        const updatedProduct = yield models_1.db.products.update({
+            name: req.body.name,
+            price: req.body.price,
+            description: req.body.description.trim(),
+            type: req.body.type || "general",
+            image: req.body.image,
+            adminId: req.body.adminId,
+            status: req.body.status,
+            currency: req.body.currency,
+        }, {
+            where: {
+                id: productId,
+                adminId: adminId,
+            },
+        });
+        res
+            .status(200)
+            .json({ message: "Product updated successfully", updatedProduct });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.editProduct = editProduct;
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));
