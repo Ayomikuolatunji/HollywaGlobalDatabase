@@ -147,6 +147,26 @@ const editProduct: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+const getProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const adminId = req.query.adminId;
+    const product = await db.products.findOne({
+      where: {
+        id: productId,
+        adminId: adminId,
+      },
+    });
+    if (!product) {
+      throwError("Product not found with adminId provided", 404);
+    }
+    res
+      .status(200)
+      .json({ message: "Product retrieved successfully", product });
+  } catch (error) {
+    next(error);
+  }
+}
 
 const clearImage = (filePath: string) => {
   filePath = path.join(__dirname, "../../../", filePath);
@@ -159,4 +179,5 @@ export {
   deleteProduct,
   changeProductStatus,
   editProduct,
+  getProduct,
 };

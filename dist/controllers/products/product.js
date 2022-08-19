@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.editProduct = exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
+exports.getProduct = exports.editProduct = exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
 const fs = require("fs");
 const path = require("path");
 const cachError_1 = require("../../middleware/cachError");
@@ -157,6 +157,28 @@ const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.editProduct = editProduct;
+const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productId = req.params.productId;
+        const adminId = req.query.adminId;
+        const product = yield models_1.db.products.findOne({
+            where: {
+                id: productId,
+                adminId: adminId,
+            },
+        });
+        if (!product) {
+            (0, cachError_1.throwError)("Product not found with adminId provided", 404);
+        }
+        res
+            .status(200)
+            .json({ message: "Product retrieved successfully", product });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getProduct = getProduct;
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));

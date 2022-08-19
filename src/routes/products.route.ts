@@ -7,10 +7,12 @@ import {
   createProducts,
   deleteProduct,
   editProduct,
+  getProduct,
   getProducts,
 } from "../controllers/products/product";
 
 router.get("/products", authToken, getProducts);
+router.get("/products/:productId", authToken, getProduct);
 router.post("/products", authToken, createProducts);
 router.delete("/products/:productId", authToken, deleteProduct);
 router.patch("/products/product_status", authToken, changeProductStatus);
