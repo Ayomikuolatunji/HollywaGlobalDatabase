@@ -110,10 +110,11 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
 };
 
 const editProduct: RequestHandler = async (req, res, next) => {
+  let imageUrl = req.body.image;
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product = await db.products.findOne({
+    const product:any= await db.products.findOne({
       where: {
         id: productId,
         adminId: adminId,
@@ -121,6 +122,9 @@ const editProduct: RequestHandler = async (req, res, next) => {
     });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
+    }
+    if(product){
+      clearImage(product?.dataValues.image);
     }
     const updatedProduct = await db.products.update(
       {
@@ -144,6 +148,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
       .status(200)
       .json({ message: "Product updated successfully", updatedProduct });
   } catch (error) {
+    clearImage(imageUrl || "");
     next(error);
   }
 };
