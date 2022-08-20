@@ -135,7 +135,10 @@ const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             (0, cachError_1.throwError)("Product not found with adminId provided", 404);
         }
         if (product) {
-            clearImage(product === null || product === void 0 ? void 0 : product.dataValues.image);
+            if (product.image !== req.body.image) {
+                clearImage(product === null || product === void 0 ? void 0 : product.dataValues.image);
+            }
+            ;
         }
         const updatedProduct = yield models_1.db.products.update({
             name: req.body.name,

@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
-const path_1 = __importDefault(require("path"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const models_1 = require("./models");
 const v1Api_1 = __importDefault(require("./services/v1Api"));
@@ -17,7 +16,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use(uploadFile_1.default);
-app.use("/images", express_1.default.static(path_1.default.join(__dirname, "images")));
+app.use("/images", express_1.default.static("images"));
 // set headers for all requests
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");

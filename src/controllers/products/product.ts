@@ -124,7 +124,9 @@ const editProduct: RequestHandler = async (req, res, next) => {
       throwError("Product not found with adminId provided", 404);
     }
     if(product){
-      clearImage(product?.dataValues.image);
+      if(product.image !== req.body.image){
+         clearImage(product?.dataValues.image)
+      };
     }
     const updatedProduct = await db.products.update(
       {
