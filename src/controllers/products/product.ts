@@ -212,8 +212,8 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
         },
       });
     });
-    await Promise.all(destroyBulkyProducts);
-    res.status(200).json({ message: "Bulky deleted successfully" });
+     const sendDestroyed= await Promise.all(destroyBulkyProducts);
+    res.status(200).json({ message: "Bulky deleted successfully", destroyBulkyProducts:sendDestroyed});
   } catch (error) {
     console.log(error);
     next(error);

@@ -220,8 +220,8 @@ const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0
                 },
             });
         });
-        yield Promise.all(destroyBulkyProducts);
-        res.status(200).json({ message: "Bulky deleted successfully" });
+        const sendDestroyed = yield Promise.all(destroyBulkyProducts);
+        res.status(200).json({ message: "Bulky deleted successfully", destroyBulkyProducts: sendDestroyed });
     }
     catch (error) {
         console.log(error);
