@@ -207,7 +207,6 @@ const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0
                 },
             });
         });
-        //  delete
         yield (yield Promise.all(findAllProducts)).map((product) => {
             console.log(product);
             clearImage(product === null || product === void 0 ? void 0 : product.dataValues.image);
@@ -222,7 +221,7 @@ const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0
             });
         });
         yield Promise.all(destroyBulkyProducts);
-        res.status(200).json({ message: "Bulky delete successfully" });
+        res.status(200).json({ message: "Bulky deleted successfully" });
     }
     catch (error) {
         console.log(error);
