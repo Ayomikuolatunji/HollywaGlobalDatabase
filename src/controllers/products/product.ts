@@ -114,7 +114,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product:any= await db.products.findOne({
+    const product: any = await db.products.findOne({
       where: {
         id: productId,
         adminId: adminId,
@@ -123,10 +123,10 @@ const editProduct: RequestHandler = async (req, res, next) => {
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
-    if(product){
-      if(product.image !== req.body.image){
-         clearImage(product?.dataValues.image)
-      };
+    if (product) {
+      if (product.image !== req.body.image) {
+        clearImage(product?.dataValues.image);
+      }
     }
     const updatedProduct = await db.products.update(
       {
@@ -174,7 +174,40 @@ const getProduct: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
+
+const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
+  try {
+    const productIds = req.body.productIds;
+    const adminId = req.query.adminId;
+    // find admin products
+    const adminProducts = await db.products.findAll({
+      where: {
+        adminId: adminId,
+      },
+    });
+    if (!adminProducts) {
+      throwError("admin does not have deletable products", 404);
+    }
+    // productIds.map((element:any)=>{
+    //    clearImage(element.image)
+    // })
+    // destroy bulky products
+    const destroyBulkyProducts = productIds.map((id: string) => {
+      return db.products.destroy({
+        where: {
+          id: id,
+          adminId: adminId,
+        },
+      });
+    });
+    console.log(destroyBulkyProducts)
+    await Promise.all(destroyBulkyProducts);
+    res.status(200).json({ message: "Bulky delete successfully" });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const clearImage = (filePath: string) => {
   filePath = path.join(__dirname, "../../../", filePath);
@@ -188,4 +221,5 @@ export {
   changeProductStatus,
   editProduct,
   getProduct,
+  bulkyDeleteFunction,
 };

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProduct = exports.editProduct = exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
+exports.bulkyDeleteFunction = exports.getProduct = exports.editProduct = exports.changeProductStatus = exports.deleteProduct = exports.getProducts = exports.createProducts = void 0;
 const fs = require("fs");
 const path = require("path");
 const cachError_1 = require("../../middleware/cachError");
@@ -138,7 +138,6 @@ const editProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             if (product.image !== req.body.image) {
                 clearImage(product === null || product === void 0 ? void 0 : product.dataValues.image);
             }
-            ;
         }
         const updatedProduct = yield models_1.db.products.update({
             name: req.body.name,
@@ -187,6 +186,40 @@ const getProduct = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getProduct = getProduct;
+const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const productIds = req.body.productIds;
+        const adminId = req.query.adminId;
+        // find admin products
+        const adminProducts = yield models_1.db.products.findAll({
+            where: {
+                adminId: adminId,
+            },
+        });
+        if (!adminProducts) {
+            (0, cachError_1.throwError)("admin does not have deletable products", 404);
+        }
+        // productIds.map((element:any)=>{
+        //    clearImage(element.image)
+        // })
+        // destroy bulky products
+        const destroyBulkyProducts = productIds.map((id) => {
+            return models_1.db.products.destroy({
+                where: {
+                    id: id,
+                    adminId: adminId,
+                },
+            });
+        });
+        console.log(destroyBulkyProducts);
+        yield Promise.all(destroyBulkyProducts);
+        res.status(200).json({ message: "Bulky delete successfully" });
+    }
+    catch (error) {
+        console.log(error);
+    }
+});
+exports.bulkyDeleteFunction = bulkyDeleteFunction;
 const clearImage = (filePath) => {
     filePath = path.join(__dirname, "../../../", filePath);
     fs.unlink(filePath, (err) => console.log(err));

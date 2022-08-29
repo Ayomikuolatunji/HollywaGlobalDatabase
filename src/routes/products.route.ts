@@ -3,6 +3,7 @@ import authToken from "../middleware/authToken";
 const router = express.Router();
 
 import {
+  bulkyDeleteFunction,
   changeProductStatus,
   createProducts,
   deleteProduct,
@@ -11,6 +12,10 @@ import {
   getProducts,
 } from "../controllers/products/product";
 
+// none protected route
+router.delete("/products/delete_many", authToken, bulkyDeleteFunction);
+
+// protected routes
 router.get("/products", authToken, getProducts);
 router.get("/products/:productId", authToken, getProduct);
 router.post("/products", authToken, createProducts);
