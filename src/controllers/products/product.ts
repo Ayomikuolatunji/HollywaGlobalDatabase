@@ -189,9 +189,21 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     if (!adminProducts) {
       throwError("admin does not have deletable products", 404);
     }
-    // productIds.map((element:any)=>{
-    //    clearImage(element.image)
-    // })
+    const findAllProducts = productIds.map((id: string) => {
+      return db.products.findOne({
+        where: {
+          id: id,
+          adminId: adminId,
+        },
+      });
+    });
+    //  delete
+    await (
+      await Promise.all(findAllProducts)
+    ).map((product) => {
+      console.log(product);
+      clearImage(product?.dataValues.image);
+    });
     // destroy bulky products
     const destroyBulkyProducts = productIds.map((id: string) => {
       return db.products.destroy({
@@ -201,11 +213,11 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
         },
       });
     });
-    console.log(destroyBulkyProducts)
     await Promise.all(destroyBulkyProducts);
     res.status(200).json({ message: "Bulky delete successfully" });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 

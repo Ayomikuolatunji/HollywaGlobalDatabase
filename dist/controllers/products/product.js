@@ -199,9 +199,19 @@ const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0
         if (!adminProducts) {
             (0, cachError_1.throwError)("admin does not have deletable products", 404);
         }
-        // productIds.map((element:any)=>{
-        //    clearImage(element.image)
-        // })
+        const findAllProducts = productIds.map((id) => {
+            return models_1.db.products.findOne({
+                where: {
+                    id: id,
+                    adminId: adminId,
+                },
+            });
+        });
+        //  delete
+        yield (yield Promise.all(findAllProducts)).map((product) => {
+            console.log(product);
+            clearImage(product === null || product === void 0 ? void 0 : product.dataValues.image);
+        });
         // destroy bulky products
         const destroyBulkyProducts = productIds.map((id) => {
             return models_1.db.products.destroy({
@@ -211,12 +221,12 @@ const bulkyDeleteFunction = (req, res, next) => __awaiter(void 0, void 0, void 0
                 },
             });
         });
-        console.log(destroyBulkyProducts);
         yield Promise.all(destroyBulkyProducts);
         res.status(200).json({ message: "Bulky delete successfully" });
     }
     catch (error) {
         console.log(error);
+        next(error);
     }
 });
 exports.bulkyDeleteFunction = bulkyDeleteFunction;
