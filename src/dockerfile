@@ -1,0 +1,23 @@
+FROM node:16-alphine
+
+WORKDIR /home/ayomiku/Desktop/EcommerceProjects/mysql-ecommerce-database
+
+COPY package*.json .
+
+RUN npm install
+
+COPY  . . 
+
+RUN npm run build
+
+FROM node:16-alphine
+
+ARG NODE_ENV=production
+
+ENV=${NODE_ENV}
+
+WORKDIR /home/ayomiku/Desktop/EcommerceProjects/mysql-ecommerce-database
+
+COPY package*.json
+
+RUN install --only=production
