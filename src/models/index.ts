@@ -16,6 +16,7 @@ const sequelize = new Sequelize(
     config.PASSWORD, {
     host: config.HOST,
     dialect: "mysql",
+    port: 3306,
     pool: {
         max: config.pool.max,
         min: config.pool.min,
@@ -24,6 +25,8 @@ const sequelize = new Sequelize(
     }
 }
 )
+
+const more =""
 
 
 const db = {

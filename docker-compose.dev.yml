@@ -1,0 +1,40 @@
+version: '3.8'
+
+
+networks:
+  my-bridge-network:
+    driver: bridge
+
+services:
+  mysql_server:
+    image: mysql
+    environment: 
+      - MYSQL_DATABASE='carStores'
+      - MYSQL_USER='root'
+      - MYSQL_PASSWORD='Ayoscript222'
+      - MYSQL_ROOT_PASSWORD='Ayoscript222@'
+    networks:
+    - my-bridge-network  
+    ports:
+      - '3307:3306'  
+    expose:
+       - '3306'  
+    volumes:
+      # this creates paths on the container 
+      - my-db:/var/lib/mysql
+      - my-db:/docker-entrypoint-initdb.d   
+  api:
+    image: "node:latest"
+    depends_on:
+      - mysql_server
+    build:
+      context: .
+      target: development
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 4000:4000
+    command: npm run dev
+volumes:
+  my-db: 

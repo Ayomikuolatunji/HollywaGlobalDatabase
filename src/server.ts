@@ -1,9 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import path from "path";
 import dotenv from "dotenv";
-import { sequelize, db } from "./models";
+import { sequelize } from "./models";
 import api from "./services/v1Api";
 import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from "./typings/requestErrorTypings";
