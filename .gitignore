@@ -1,2 +1,6 @@
 node_modules
 data/
+
+ sudo docker-compose --f docker-compose.dev.yml up --build
+
+ sudo systemctl start mysql.service
