@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install 
+RUN npm install --force
 
 ONBUILD COPY --chown=app:app Gemfile Gemfile.lock /usr/src/app/
 

@@ -2,56 +2,37 @@ version: '3.4'
 
 services:
   mysqldb:
-    image: mysql:8.0
+    image: mysql
     container_name: mysqlcontainer
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile-mysql
-    command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
-    volumes:
-      - ./mysql:/var/lib/mysql
-    ports:
-      - 3306:3306
-    expose:
-      - 3306
     environment:
       MYSQL_DATABASE: carStores
       MYSQL_USER: admin
       MYSQL_PASSWORD: Ayoscript222@
       MYSQL_ROOT_PASSWORD: Ayoscript222@
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysqldb
-    networks:
-      - internalnet
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - my-db:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d/:rw  
+
 
   api:
     container_name: nodeAPI
-    depends_on:
-      - mysqldb
     build:
       context: .
       target: development
     image: nodeapp:v1  
-    environment:
-      DB_HOST: localhost
-      DB_USER: 'root'
-      DB_PASSWORD: 'Ayoscript222@'
-      DB_NAME: "carStores"
-      DB_PORT: 3306
     ports:
       - 8080:8080
     expose:
-       - 8080    
-    networks:
-      - internalnet     
+       - 8080         
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules 
+    depends_on:
+      - mysqldb  
     command: npm run dev
 
-    
-networks:
-  internalnet:
-    driver: bridge
-        
+
+volumes:
+  my-db:

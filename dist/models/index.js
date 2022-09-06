@@ -25,6 +25,7 @@ const admin_model_1 = __importDefault(require("./admin/admin.model"));
 const sequelize = new sequelize_1.Sequelize(dbConfig_1.default.DB, dbConfig_1.default.USER, dbConfig_1.default.PASSWORD, {
     host: dbConfig_1.default.HOST,
     dialect: "mysql",
+    port: 3360,
     pool: {
         max: dbConfig_1.default.pool.max,
         min: dbConfig_1.default.pool.min,
