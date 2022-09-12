@@ -13,7 +13,7 @@ import adminModel from './admin/admin.model';
 const sequelize = new Sequelize(
     config.DB!,
     config.USER!,
-    config.PASSWORD, {
+    config.PASSWORD!, {
     host: config.HOST!,
     dialect: "mysql",
     pool: {

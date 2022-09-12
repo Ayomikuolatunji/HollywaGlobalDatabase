@@ -6,6 +6,8 @@ import { sequelize } from "./models";
 import api from "./services/v1Api";
 import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from "./typings/requestErrorTypings";
+import path from "path"
+import { pageNotFound } from "./middleware/404";
 
 dotenv.config();
 
@@ -17,6 +19,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(uploadFile);
 app.use("/images", express.static("images"));
+app.use(express.static('public'))
 
 // set headers for all requests
 app.use((req, res, next) => {
@@ -28,6 +31,7 @@ app.use((req, res, next) => {
 
   next();
 });
+
 
 
 // error handling
@@ -55,12 +59,12 @@ app.use(
 
 // version 1 api
 app.use("/api/", api);
+app.use(pageNotFound)
 
-
-// index page
-app.use("/",(req,res,next)=>{
-  res.send('<p>some html</p>');
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname,'/public'))
 })
+
 
 // server start and listen
 app.listen(process.env.SERVER_PORT, () => {
