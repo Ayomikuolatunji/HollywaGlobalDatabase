@@ -30,9 +30,6 @@ app.use((req, res, next) => {
 });
 
 
-// version 1 api
-app.use("/api/", api);
-
 // error handling
 app.use(
   (
@@ -55,6 +52,15 @@ app.use(
     }
   }
 );
+
+// version 1 api
+app.use("/api/", api);
+
+
+// index page
+app.use("/",(req,res,next)=>{
+  res.send('<p>some html</p>');
+})
 
 // server start and listen
 app.listen(process.env.SERVER_PORT, () => {

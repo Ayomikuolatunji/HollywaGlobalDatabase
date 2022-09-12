@@ -11,10 +11,10 @@ import adminModel from './admin/admin.model';
 
 
 const sequelize = new Sequelize(
-    config.DB,
-    config.USER,
+    config.DB!,
+    config.USER!,
     config.PASSWORD, {
-    host: config.HOST,
+    host: config.HOST!,
     dialect: "mysql",
     pool: {
         max: config.pool.max,

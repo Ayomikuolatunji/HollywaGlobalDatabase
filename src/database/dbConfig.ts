@@ -1,8 +1,8 @@
 const config={
-  HOST:"localhost",
-  USER:"root",
-  PASSWORD:"Ayoscript222@",
-  DB:"carStores",
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASSWORD,
+  DB:process.env.DB_NAME,
   dialect:"mysql",
   pool:{
       max:5,
