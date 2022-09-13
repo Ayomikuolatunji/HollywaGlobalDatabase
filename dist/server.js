@@ -52,7 +52,7 @@ app.get('/', function (req, res) {
     res.sendFile(path_1.default.join(__dirname, '/public'));
 });
 // server start and listen
-app.listen(process.env.SERVER_PORT || 8080, () => {
+app.listen(process.env.PORT || 8080, () => {
     models_1.sequelize
         .authenticate()
         .then(() => {
