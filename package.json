@@ -24,8 +24,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "postinstall": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "ts-node-dev src/server.ts",
     "build": "rimraf ./dist && tsc"
   },
