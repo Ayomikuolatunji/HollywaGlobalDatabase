@@ -1,21 +1,14 @@
 version: '3.4'
 
 services:
-  mysqldb:
+  db:
     image: mysql
-    container_name: mysqlcontainer
-    restart: unless-stopped
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
-      MYSQL_DATABASE: carStores
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: Ayoscript222@
       MYSQL_ROOT_PASSWORD: Ayoscript222@
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
-    volumes:
-      - my-db:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d/:rw  
-
-
   api:
     container_name: nodeAPI
     build:
@@ -30,9 +23,9 @@ services:
       - ./:/usr/src/app
       - /usr/src/app/node_modules 
     depends_on:
-      - mysqldb  
+      - db  
     command: npm run dev
 
 
 volumes:
-  my-db:
+  db:
