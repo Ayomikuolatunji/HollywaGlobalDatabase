@@ -67,7 +67,7 @@ app.get('/', function (req, res) {
 
 
 // server start and listen
-app.listen(process.env.SERVER_PORT, () => {
+app.listen(process.env.SERVER_PORT || 8080, () => {
   sequelize
     .authenticate()
     .then(() => {
