@@ -17,3 +17,6 @@ const config={
 }
 
 export default config;
+
+
+// mysql://b881a8411f0503:11a77d9b@us-cdbr-east-06.cleardb.net/heroku_6951c5b574624ec?reconnect=true
