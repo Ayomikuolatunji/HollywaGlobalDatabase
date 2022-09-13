@@ -17,6 +17,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.16",
+    "rimraf": "^3.0.2",
     "sequelize": "^6.20.1"
   },
   "name": "my-sql-crud",
@@ -24,9 +25,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node dist/server.js",
+    "start": "node ./dist/server.js",
     "dev": "ts-node-dev src/server.ts",
-    "build": "rimraf ./dist"
+    "build": "rimraf ./dist && tsc"
   },
   "keywords": [],
   "author": "",
@@ -35,7 +36,6 @@
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8",
     "@types/multer": "^1.4.7",
-    "rimraf": "^3.0.2",
     "ts-node-dev": "^2.0.0"
   }
 }
