@@ -11,8 +11,29 @@ body {
 
 .header-inner {
   width: 100%;
-  background-color: lightskyblue;
+  background-color: #fff;
+}
+
+.nav-link {
+    margin-left: 12px;
 }
 
 
+
+/* Default height for small devices */
+#intro-example {
+  height: 400px;
+}
+
+/* Height for devices larger than 992px */
+@media (min-width: 992px) {
+  #intro-example {
+    height: 600px;
+  }
+}
+
+.mask {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+}
 
