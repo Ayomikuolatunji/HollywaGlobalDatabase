@@ -9,16 +9,12 @@ body {
   padding: inherit;
 }
 
-header {
+.header-inner {
   width: 100%;
   background-color: lightskyblue;
   padding: 12px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between !important;
   align-items: center;
 }
 
-
-.header ul {
-    
-}
