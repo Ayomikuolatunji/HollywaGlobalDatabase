@@ -1,5 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: inherit;
+  padding: inherit;
+}
+
+header {
+  width: 100%;
+  background-color: lightskyblue;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 
-h1 {
-    color: red;
+.header ul {
+    
 }
