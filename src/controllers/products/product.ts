@@ -249,11 +249,7 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
 
 const getAllProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
-    const getAll = await db.produtDepartments.findAll({
-      where: {
-        adminId: req.query.adminId,
-      },
-    });
+    const getAll = await db.produtDepartments.findAll();
     res.status(200).json({
       message: "All available departments fetched successfully",
       departments: getAll,
