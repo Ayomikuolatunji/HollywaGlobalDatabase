@@ -1,4 +1,5 @@
 import { RequestHandler } from "express";
+import { productsDepartments } from "../../data";
 const fs = require("fs");
 const path = require("path");
 import { throwError } from "../../middleware/cachError";
@@ -200,7 +201,6 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     await (
       await Promise.all(findAllProducts)
     ).map((product) => {
-      console.log(product);
       clearImage(product?.dataValues.image);
     });
     // destroy bulky products
@@ -212,10 +212,27 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
         },
       });
     });
-     const sendDestroyed= await Promise.all(destroyBulkyProducts);
-    res.status(200).json({ message: "Bulky deleted successfully", destroyBulkyProducts:sendDestroyed});
+    const sendDestroyed = await Promise.all(destroyBulkyProducts);
+    res
+      .status(200)
+      .json({
+        message: "Bulky deleted successfully",
+        destroyBulkyProducts: sendDestroyed,
+      });
   } catch (error) {
     console.log(error);
+    next(error);    
+  }
+};
+
+const createProductsDepartments: RequestHandler = async (req, res, next) => {
+  try {
+    const industries = await db.produtDepartments.bulkCreate([...productsDepartments]);
+    return res.status(201).json({ industries });
+  } catch (error: any) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
     next(error);
   }
 };
@@ -233,4 +250,5 @@ export {
   editProduct,
   getProduct,
   bulkyDeleteFunction,
+  createProductsDepartments,
 };
