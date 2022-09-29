@@ -213,26 +213,27 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
       });
     });
     const sendDestroyed = await Promise.all(destroyBulkyProducts);
-    res
-      .status(200)
-      .json({
-        message: "Bulky deleted successfully",
-        destroyBulkyProducts: sendDestroyed,
-      });
+    res.status(200).json({
+      message: "Bulky deleted successfully",
+      destroyBulkyProducts: sendDestroyed,
+    });
   } catch (error) {
     console.log(error);
-    next(error);    
+    next(error);
   }
 };
 
 const createProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
-    const adminId=req.query.adminId
+    console.log(req.body)
+    const adminId = req.query.adminId;
     const departments = await db.produtDepartments.create({
-        name:req.body.name,
-        adminId:adminId
+      name: req.body.name,
+      adminId: adminId,
     });
-    return res.status(201).json({message:"Departments created successfully",departments });
+    return res
+      .status(201)
+      .json({ message: "Departments created successfully", departments });
   } catch (error) {
     next(error);
   }

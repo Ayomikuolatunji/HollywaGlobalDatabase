@@ -11,9 +11,15 @@ const productsDepartments = (
       defaultValue: Sequelize.UUIDV1,
     },
     name: {
-      type: Sequelize.UUID,
+      type: Sequelize.STRING,
       primaryKey: true,
-      defaultValue: Sequelize.UUIDV1,
+      validate: {
+        customValidator(value: string) {
+          if (!value) {
+            throw new Error("Cant submit empty name to the db");
+          }
+        }
+      },
     },
   });
 };
