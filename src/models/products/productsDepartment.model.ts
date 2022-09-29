@@ -12,7 +12,7 @@ const productsDepartments = (
     },
     name: {
       type: Sequelize.STRING,
-      primaryKey: true,
+      allowNull:true,
       validate: {
         customValidator(value: string) {
           if (!value) {

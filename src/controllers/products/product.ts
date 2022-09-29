@@ -225,7 +225,6 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
 
 const createProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
-    console.log(req.body)
     const adminId = req.query.adminId;
     const departments = await db.produtDepartments.create({
       name: req.body.name,
