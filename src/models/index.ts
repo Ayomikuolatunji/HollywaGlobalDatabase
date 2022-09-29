@@ -26,7 +26,7 @@ const db = {
   user: userModel(sequelize, DataTypes),
   userPaymentModel: userPaymentModel(sequelize, DataTypes),
   products: productModel(sequelize, DataTypes),
-  produtDepartments:productsDepartments(sequelize, DataTypes),
+  produtDepartments: productsDepartments(sequelize, DataTypes),
   product_category: produtCategory(sequelize, DataTypes),
   industries: industryModel(sequelize, DataTypes),
   userAddressModel: userAddressModel(sequelize, DataTypes),
@@ -43,6 +43,11 @@ db.products.belongsTo(db.admin, {
   onDelete: "CASCADE",
 });
 db.admin.hasMany(db.products, {
+  onDelete: "CASCADE",
+});
+
+db.produtDepartments.belongsTo(db.admin, {
+  foreignKey: "adminId",
   onDelete: "CASCADE",
 });
 

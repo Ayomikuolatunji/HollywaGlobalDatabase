@@ -229,13 +229,11 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
     const adminId=req.query.adminId
     const departments = await db.produtDepartments.create({
-        name:req.body.name
+        name:req.body.name,
+        adminId:adminId
     });
     return res.status(201).json({message:"Departments created successfully",departments });
-  } catch (error: any) {
-    if (!error.statusCode) {
-      error.statusCode = 500;
-    }
+  } catch (error) {
     next(error);
   }
 };
