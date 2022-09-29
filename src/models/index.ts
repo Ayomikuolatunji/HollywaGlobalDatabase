@@ -73,7 +73,7 @@ db.userPaymentModel.belongsTo(db.user, {
 
 const DB = async () => {
   try {
-    await db.sequelize.sync({ force: true });
+    await db.sequelize.sync({ force: false });
     console.log("Tables created successfully.");
   } catch (err: any) {
     console.error("Unable to create tables:", err.message);

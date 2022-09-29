@@ -226,6 +226,15 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
 const createProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
     const adminId = req.query.adminId;
+
+    const findDepartment = await db.produtDepartments.findOne({
+      where: {
+        name: req.body.name,
+      },
+    });
+    if (findDepartment) {
+      throwError("Department already exits", 422);
+    }
     const departments = await db.produtDepartments.create({
       name: req.body.name,
       adminId: adminId,
@@ -233,6 +242,22 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
     return res
       .status(201)
       .json({ message: "Departments created successfully", departments });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllProductsDepartments: RequestHandler = async (req, res, next) => {
+  try {
+    const getAll = await db.produtDepartments.findAll({
+      where: {
+        adminId: req.query.adminId,
+      },
+    });
+    res.status(200).json({
+      message: "All available departments fetched successfully",
+      departments: getAll,
+    });
   } catch (error) {
     next(error);
   }
@@ -252,4 +277,5 @@ export {
   getProduct,
   bulkyDeleteFunction,
   createProductsDepartments,
+  getAllProductsDepartments,
 };
