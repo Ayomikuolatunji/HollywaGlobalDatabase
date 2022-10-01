@@ -3,7 +3,7 @@ import Sequelize  from 'sequelize';
 
 
 const userModel=(sequelize: Sequelize.Sequelize,DataTypes: typeof import("sequelize/types/data-types"))=>{
-    return sequelize.define('user',{
+    return sequelize.define('users',{
         userId:{
             type: Sequelize.UUID,
             defaultValue: Sequelize.UUIDV1,

@@ -1,8 +1,8 @@
-// const path = require('path')
+const path = require('path')
 
-// module.exports = {
-//   'config': path.resolve('config/', "..", 'config'),
-//   'models': path.resolve('/', "..",'models'),
-//   'seeders': path.resolve('/',"..",'seeders'),
-//   'migrations': path.resolve('/', "..", 'migrations')
-// }
+module.exports = {
+  'config': path.resolve('src/migrate-db/config', 'config'),
+  'models': path.resolve('src/migrate-db', "..",'models'),
+  'seeders': path.resolve('src/migrate-db',"..",'seeders'),
+  'migrations': path.resolve('src/migrate-db/', "..", 'migrations')
+}

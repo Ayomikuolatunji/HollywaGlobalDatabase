@@ -41,6 +41,7 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/multer": "^1.4.7",
     "sequelize-cli": "^6.5.1",
+    "sequelize-typescript-migration": "^0.0.1-beta.3",
     "ts-node-dev": "^2.0.0"
   }
 }
