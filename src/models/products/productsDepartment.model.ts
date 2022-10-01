@@ -6,12 +6,12 @@ const productsDepartments = (
 ) => {
   return sequelize.define("productsDepartments", {
     id: {
-      type: Sequelize.UUID,
+      type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV1,
     },
     name: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull:true,
       validate: {
         customValidator(value: string) {
@@ -21,6 +21,10 @@ const productsDepartments = (
         }
       },
     },
+    createdAt: {
+      type:DataTypes.DATE,
+      defaultValue:DataTypes.NOW
+    }
   });
 };
 

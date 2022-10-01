@@ -21,6 +21,8 @@
     "npm": "^8.19.2",
     "rimraf": "^3.0.2",
     "sequelize": "^6.20.1",
+    "sequelize-typescript": "^2.1.3",
+    "sequelize-typescript-migration-lts": "^3.2.3",
     "sequelize-typescript-migration-v2": "^0.0.2-beta.6"
   },
   "name": "my-sql-crud",
@@ -31,7 +33,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/server.js",
     "dev": "ts-node-dev src/server.ts",
-    "build": "rimraf ./dist && tsc"
+    "build": "rimraf ./dist && tsc",
+    "db:migrate":"sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "",
