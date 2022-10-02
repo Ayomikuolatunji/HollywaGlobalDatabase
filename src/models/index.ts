@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Dialect } from "sequelize";
-import { SequelizeTypescriptMigration } from "sequelize-typescript-migration-lts";
-import { Sequelize as SequelizeTypes } from "sequelize-typescript";
+// import { SequelizeTypescriptMigration } from "sequelize-typescript-migration-lts";
+// import { Sequelize as SequelizeTypes } from "sequelize-typescript";
 
 import config from "../database/dbConfig";
 import userModel from "./user/user.model";
@@ -13,7 +13,7 @@ import adminModel from "./admin/admin.model";
 import productsDepartments from "./products/productsDepartment.model";
 import { join } from "path";
 
-const sequelize:any = new Sequelize(
+const sequelize = new Sequelize(
   config.DB!,
   config.USER!,
   config.PASSWORD!,

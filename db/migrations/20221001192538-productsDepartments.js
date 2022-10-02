@@ -6,6 +6,7 @@ module.exports = {
     return queryInterface.createTable("productsDepartments", {
       id: Sequelize.DataTypes.STRING,
       name: Sequelize.DataTypes.STRING,
+      adminId:Sequelize.DataTypes.STRING,
       createdAt: {
         type: Sequelize.DataTypes.DATE,
         defaultValue: Sequelize.DataTypes.NOW,
