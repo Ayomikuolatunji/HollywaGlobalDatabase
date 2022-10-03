@@ -160,18 +160,18 @@ const getProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const products = await db.products.findOne({
+    const product = await db.products.findOne({
       where: {
         id: productId,
         adminId: adminId,
       },
     });
-    if (!products) {
+    if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
     res
       .status(200)
-      .json({ message: "Product retrieved successfully", products });
+      .json({ message: "Product retrieved successfully", product });
   } catch (error) {
     next(error);
   }
@@ -179,13 +179,13 @@ const getProduct: RequestHandler = async (req, res, next) => {
 
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
-    const products = await db.products.findAll();
-    if (!products) {
+    const product = await db.products.findAll();
+    if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
     res
       .status(200)
-      .json({ message: "Product retrieved successfully", products });
+      .json({ message: "Product retrieved successfully", product });
   } catch (error) {
     next(error);
   }
