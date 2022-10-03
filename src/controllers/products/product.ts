@@ -160,18 +160,32 @@ const getProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product = await db.products.findOne({
+    const products = await db.products.findOne({
       where: {
         id: productId,
         adminId: adminId,
       },
     });
-    if (!product) {
+    if (!products) {
       throwError("Product not found with adminId provided", 404);
     }
     res
       .status(200)
-      .json({ message: "Product retrieved successfully", product });
+      .json({ message: "Product retrieved successfully", products });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserProducts: RequestHandler = async (req, res, next) => {
+  try {
+    const products = await db.products.findAll();
+    if (!products) {
+      throwError("Product not found with adminId provided", 404);
+    }
+    res
+      .status(200)
+      .json({ message: "Product retrieved successfully", products });
   } catch (error) {
     next(error);
   }
@@ -274,4 +288,5 @@ export {
   bulkyDeleteFunction,
   createProductsDepartments,
   getAllProductsDepartments,
+  getUserProducts
 };

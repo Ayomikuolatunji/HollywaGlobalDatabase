@@ -12,12 +12,14 @@ import {
   getProducts,
   createProductsDepartments,
   getAllProductsDepartments,
+  getUserProducts,
 } from "../controllers/products/product";
 
 // unprotected routes
 router.get("/all_department", getAllProductsDepartments);
 // protected routes
 router.get("/products", authToken, getProducts);
+router.get("/user_products", getUserProducts)
 router.get("/products/:productId", authToken, getProduct);
 router.post("/products", authToken, createProducts);
 router.delete("/products/:productId", authToken, deleteProduct);
