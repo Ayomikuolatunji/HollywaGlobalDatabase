@@ -30,17 +30,17 @@ const createProducts: RequestHandler = async (req, res, next) => {
 
 const getProducts: RequestHandler = async (req, res, next) => {
   try {
-    const products = await db.products.findAll({
+    const product = await db.products.findAll({
       where: {
         adminId: req.query.adminId,
       },
     });
-    if (!products) {
+    if (!product) {
       throwError("Products not found", 404);
     }
     res
       .status(200)
-      .json({ message: "Products retrieved successfully", products });
+      .json({ message: "Products retrieved successfully", product });
   } catch (error: any) {
     next(error);
   }
@@ -179,7 +179,15 @@ const getProduct: RequestHandler = async (req, res, next) => {
 
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
-    const product = await db.products.findAll();
+    const fieldName=req.params.type
+    if(fieldName){
+      const product = await db.products.findAll({
+          where:{
+            
+          }
+      });
+    }
+    const product = await db.products.findAll({});
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
@@ -190,6 +198,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
+
 
 const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
   try {
