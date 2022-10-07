@@ -179,12 +179,10 @@ const getProduct: RequestHandler = async (req, res, next) => {
 
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
-    const fieldName=req.params.type
-    if(fieldName){
+    const fieldName = req.query.type;
+    if (fieldName) {
       const product = await db.products.findAll({
-          where:{
-            
-          }
+        where: {},
       });
     }
     const product = await db.products.findAll({});
@@ -198,7 +196,6 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
     next(error);
   }
 };
-
 
 const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
   try {
@@ -297,5 +294,5 @@ export {
   bulkyDeleteFunction,
   createProductsDepartments,
   getAllProductsDepartments,
-  getUserProducts
+  getUserProducts,
 };
