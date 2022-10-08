@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
-import { productsDepartments } from "../../data";
+import { StatusCodes } from "http-status-codes";
+const { Op } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 import { throwError } from "../../middleware/cachError";
@@ -179,19 +180,33 @@ const getProduct: RequestHandler = async (req, res, next) => {
 
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
-    const fieldName = req.query.type;
-    if (fieldName) {
+    const fieldType = req.query.product_type;
+    if (fieldType) {
       const product = await db.products.findAll({
-        where: {},
+        where: {
+          [Op.and]: [
+            {
+              type: fieldType,
+            },
+          ],
+        },
+      });
+      if (!product.length) {
+        throwError("query key not found", StatusCodes.NOT_FOUND);
+        return;
+      }
+      res.status(StatusCodes.OK).json({ product });
+    } else {
+      const product = await db.products.findAll({});
+      if (!product) {
+        throwError("Product not found with adminId provided", 404);
+      }
+      res.status(200).json({
+        message: "Product retrieved successfully",
+        product,
+        count: product.length,
       });
     }
-    const product = await db.products.findAll({});
-    if (!product) {
-      throwError("Product not found with adminId provided", 404);
-    }
-    res
-      .status(200)
-      .json({ message: "Product retrieved successfully", product });
   } catch (error) {
     next(error);
   }
