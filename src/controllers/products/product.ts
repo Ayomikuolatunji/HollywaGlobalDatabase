@@ -217,6 +217,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     const productIds = req.body.productIds;
     const adminId = req.query.adminId;
     // find admin products
+    console.log("productIds", productIds);
     const adminProducts = await db.products.findAll({
       where: {
         adminId: adminId,
@@ -247,10 +248,10 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
         },
       });
     });
-    const sendDestroyed = await Promise.all(destroyBulkyProducts);
+    const sendDestroyedproduct = await Promise.all(destroyBulkyProducts);
     res.status(200).json({
       message: "Bulky deleted successfully",
-      destroyBulkyProducts: sendDestroyed,
+      destroyBulkyProducts: sendDestroyedproduct,
     });
   } catch (error) {
     console.log(error);

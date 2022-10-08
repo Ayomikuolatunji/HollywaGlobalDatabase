@@ -18,6 +18,7 @@ import {
 // unprotected routes
 router.get("/all_department", getAllProductsDepartments);
 // protected routes
+router.delete("/products/delete_many", authToken, bulkyDeleteFunction);
 router.get("/products", authToken, getProducts);
 router.get("/user_products", getUserProducts)
 router.get("/products/:productId", authToken, getProduct);
@@ -30,6 +31,6 @@ router.post(
   authToken,
   createProductsDepartments
 );
-router.delete("/products/delete_many", authToken, bulkyDeleteFunction);
+
 
 export default router;
