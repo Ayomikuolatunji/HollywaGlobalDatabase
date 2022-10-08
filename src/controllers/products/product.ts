@@ -181,7 +181,18 @@ const getProduct: RequestHandler = async (req, res, next) => {
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
     const fieldType = req.query.product_type;
-    if (fieldType) {
+    console.log("fieldType", fieldType);
+    if (fieldType === "all") {
+      const product = await db.products.findAll({});
+      if (!product) {
+        throwError("Product not found with adminId provided", 404);
+      }
+      res.status(200).json({
+        message: "Product retrieved successfully",
+        product,
+        count: product.length,
+      });
+    } else if (fieldType !== "all") {
       const product = await db.products.findAll({
         where: {
           [Op.and]: [
@@ -195,15 +206,9 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
         throwError("query key not found", StatusCodes.NOT_FOUND);
         return;
       }
-      res.status(StatusCodes.OK).json({ product });
-    } else {
-      const product = await db.products.findAll({});
-      if (!product) {
-        throwError("Product not found with adminId provided", 404);
-      }
-      res.status(200).json({
-        message: "Product retrieved successfully",
+      res.status(StatusCodes.OK).json({
         product,
+        message: "Product retrieved successfully",
         count: product.length,
       });
     }
