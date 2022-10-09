@@ -203,7 +203,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
         },
       });
       if (!product.length) {
-        throwError("query key not found", StatusCodes.NOT_FOUND);
+        throwError("query key is invalid", StatusCodes.NOT_FOUND);
         return;
       }
       res.status(StatusCodes.OK).json({

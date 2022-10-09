@@ -12,6 +12,7 @@ import produtCategory from "./products/product_category.model";
 import adminModel from "./admin/admin.model";
 import productsDepartments from "./products/productsDepartment.model";
 import { join } from "path";
+import productCart from "./cart/cart.model";
 
 const sequelize = new Sequelize(
   config.DB!,
@@ -39,6 +40,7 @@ const db = {
   industries: industryModel(sequelize, DataTypes),
   userAddressModel: userAddressModel(sequelize, DataTypes),
   admin: adminModel(sequelize, DataTypes),
+  productCart: productCart(sequelize, DataTypes)
 };
 
 /*=============================================
@@ -68,6 +70,9 @@ db.user.hasOne(db.userAddressModel, {
   foreignKey: "userId",
   onDelete: "CASCADE",
 });
+
+
+
 db.userPaymentModel.belongsTo(db.user, {
   foreignKey: "userId",
   onDelete: "CASCADE",
