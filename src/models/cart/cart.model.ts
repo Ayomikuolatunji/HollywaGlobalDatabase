@@ -1,13 +1,16 @@
-import sequelize from "sequelize";
+import Sequelize from "sequelize";
 
 const productCart = (
-  Sequelize: sequelize.Sequelize,
+  sequelize: Sequelize.Sequelize,
   DataTypes: typeof import("sequelize/types/data-types")
 ) => {
-  return Sequelize.define("productCart", {
-     
+  return sequelize.define("productCart", {
+    cartId: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+      defaultValue: Sequelize.UUIDV1,
+    },
   });
 };
 
-
-export default productCart
+export default productCart;

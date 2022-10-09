@@ -14,21 +14,16 @@ import productsDepartments from "./products/productsDepartment.model";
 import { join } from "path";
 import productCart from "./cart/cart.model";
 
-const sequelize = new Sequelize(
-  config.DB!,
-  config.USER!,
-  config.PASSWORD!,
-  {
-    host: config.HOST!,
-    dialect: "mysql",
-    pool: {
-      max: config.pool.max,
-      min: config.pool.min,
-      acquire: config.pool.acquire,
-      idle: config.pool.idle,
-    },
-  }
-);
+const sequelize = new Sequelize(config.DB!, config.USER!, config.PASSWORD!, {
+  host: config.HOST!,
+  dialect: "mysql",
+  pool: {
+    max: config.pool.max,
+    min: config.pool.min,
+    acquire: config.pool.acquire,
+    idle: config.pool.idle,
+  },
+});
 
 const db = {
   sequelize,
@@ -40,7 +35,7 @@ const db = {
   industries: industryModel(sequelize, DataTypes),
   userAddressModel: userAddressModel(sequelize, DataTypes),
   admin: adminModel(sequelize, DataTypes),
-  productCart: productCart(sequelize, DataTypes)
+  productCart: productCart(sequelize, DataTypes),
 };
 
 /*=============================================
@@ -65,13 +60,21 @@ db.products.hasMany(db.product_category, {
   foreignKey: "categoryId",
 });
 
+db.user.hasOne(db.productCart, {
+  foreignKey: "cartId",
+  onDelete: "CASCADE",
+});
+
 // user association here
 db.user.hasOne(db.userAddressModel, {
   foreignKey: "userId",
   onDelete: "CASCADE",
 });
 
-
+db.productCart.hasMany(db.products,{
+    foreignKey:"productId",
+    onDelete: "CASCADE"
+})
 
 db.userPaymentModel.belongsTo(db.user, {
   foreignKey: "userId",
