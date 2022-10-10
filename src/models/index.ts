@@ -95,12 +95,11 @@ const DB = async () => {
   try {
     await db.sequelize.sync({ force: false });
     console.log("Tables created successfully.");
-    const result = await SequelizeTypescriptMigration.makeMigration(sequelize, {
+    await SequelizeTypescriptMigration.makeMigration(sequelize, {
       outDir: path.join(__dirname, "../../db/migrations"),
-      migrationName: "add-awesome-field-in-my-table",
+      migrationName: "add-d",
       preview: false,
     });
-    console.log(result);
   } catch (err: any) {
     console.error("Unable to create tables:", err.message);
   }

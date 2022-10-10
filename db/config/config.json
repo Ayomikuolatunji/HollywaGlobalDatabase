@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Ayoscript222@",
-    "database": "carStores",
+    "database": "hollywyglobal_db",
     "host": "localhost",
     "dialect": "mysql"
   },

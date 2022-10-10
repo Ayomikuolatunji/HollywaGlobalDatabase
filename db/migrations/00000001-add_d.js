@@ -19,8 +19,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 1,
-    "name": "add-awesome-field-in-my-table",
-    "created": "2022-10-10T20:17:21.358Z",
+    "name": "add-d",
+    "created": "2022-10-10T20:39:47.888Z",
     "comment": ""
 };
 
