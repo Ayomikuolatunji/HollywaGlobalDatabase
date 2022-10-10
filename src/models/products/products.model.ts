@@ -5,7 +5,7 @@ const productModel = (
   DataTypes: typeof import("sequelize/types/data-types")
 ) => {
   return sequelize.define("products", {
-    id: {
+    productId: {
       type: Sequelize.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV1,

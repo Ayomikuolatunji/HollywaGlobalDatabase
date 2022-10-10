@@ -2,9 +2,16 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    return queryInterface.addColumn("productCart", "productId", {
-        type: Sequelize.STRING,
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('productCart', {
+      cartId: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
+      id: {
+        type: Sequelize.STRING
+      },
     });
   },
 
@@ -13,7 +20,7 @@ module.exports = {
      * Add reverting commands here.
      *
      * Example:
-     * await queryInterface.dropTable('users');
      */
+     return await queryInterface.dropTable('productCart');
   },
 };
