@@ -1,6 +1,5 @@
 import { Sequelize, DataTypes, Dialect } from "sequelize";
-// import { SequelizeTypescriptMigration } from "sequelize-typescript-migration-lts";
-// import { Sequelize as SequelizeTypes } from "sequelize-typescript";
+import { SequelizeTypescriptMigration } from "sequelize-typescript-migration";
 
 import config from "../database/dbConfig";
 import userModel from "./user/user.model";
@@ -11,19 +10,24 @@ import userAddressModel from "./user/userAddress.model";
 import produtCategory from "./products/product_category.model";
 import adminModel from "./admin/admin.model";
 import productsDepartments from "./products/productsDepartment.model";
-import { join } from "path";
+import path, { join } from "path";
 import productCart from "./cart/cart.model";
 
-const sequelize = new Sequelize(config.DB!, config.USER!, config.PASSWORD!, {
-  host: config.HOST!,
-  dialect: "mysql",
-  pool: {
-    max: config.pool.max,
-    min: config.pool.min,
-    acquire: config.pool.acquire,
-    idle: config.pool.idle,
-  },
-});
+const sequelize: any = new Sequelize(
+  config.DB!,
+  config.USER!,
+  config.PASSWORD!,
+  {
+    host: config.HOST!,
+    dialect: "mysql",
+    pool: {
+      max: config.pool.max,
+      min: config.pool.min,
+      acquire: config.pool.acquire,
+      idle: config.pool.idle,
+    },
+  }
+);
 
 const db = {
   sequelize,
@@ -71,10 +75,10 @@ db.user.hasOne(db.userAddressModel, {
   onDelete: "CASCADE",
 });
 
-db.productCart.hasMany(db.products,{
-    foreignKey:"productId",
-    onDelete: "CASCADE"
-})
+db.productCart.hasMany(db.products, {
+  foreignKey: "productId",
+  onDelete: "CASCADE",
+});
 
 db.userPaymentModel.belongsTo(db.user, {
   foreignKey: "userId",
@@ -91,15 +95,12 @@ const DB = async () => {
   try {
     await db.sequelize.sync({ force: false });
     console.log("Tables created successfully.");
-    // const result = await SequelizeTypescriptMigration.makeMigration(
-    //   sequelize,
-    //   {
-    //     outDir: join(__dirname, "../../db/migrations"),
-    //     migrationName: "init",
-    //     preview: false,
-    //   }
-    // );
-    // console.log(result);
+    const result = await SequelizeTypescriptMigration.makeMigration(sequelize, {
+      outDir: path.join(__dirname, "../../db/migrations"),
+      migrationName: "add-awesome-field-in-my-table",
+      preview: false,
+    });
+    console.log(result);
   } catch (err: any) {
     console.error("Unable to create tables:", err.message);
   }
