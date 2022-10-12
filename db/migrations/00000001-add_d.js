@@ -9,18 +9,18 @@ var Sequelize = require('sequelize');
  * createTable "industries", deps: []
  * createTable "admins", deps: []
  * createTable "userPayments", deps: [users]
- * createTable "productCarts", deps: [users]
+ * createTable "products", deps: [admins]
  * createTable "productsDepartments", deps: [admins]
  * createTable "product_categories", deps: [products]
  * createTable "userAddresses", deps: [users]
- * createTable "products", deps: [productCarts, admins]
+ * createTable "productCarts", deps: [users]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "add-d",
-    "created": "2022-10-12T19:20:20.296Z",
+    "created": "2022-10-12T19:59:58.784Z",
     "comment": ""
 };
 
@@ -217,18 +217,40 @@ var migrationCommands = [
     {
         fn: "createTable",
         params: [
-            "productCarts",
+            "products",
             {
-                "cartId": {
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "references": {
-                        "model": "users",
-                        "key": "userId"
-                    },
+                "productId": {
                     "primaryKey": true,
-                    "allowNull": true,
                     "type": Sequelize.UUID
+                },
+                "name": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "price": {
+                    "allowNull": false,
+                    "type": Sequelize.INTEGER
+                },
+                "description": {
+                    "validate": {},
+                    "allowNull": true,
+                    "type": Sequelize.STRING
+                },
+                "type": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "status": {
+                    "allowNull": false,
+                    "type": Sequelize.BOOLEAN
+                },
+                "currency": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "image": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -237,6 +259,16 @@ var migrationCommands = [
                 "updatedAt": {
                     "allowNull": false,
                     "type": Sequelize.DATE
+                },
+                "adminId": {
+                    "onDelete": "CASCADE",
+                    "onUpdate": "CASCADE",
+                    "references": {
+                        "model": "admins",
+                        "key": "id"
+                    },
+                    "allowNull": true,
+                    "type": Sequelize.UUID
                 }
             },
             {}
@@ -384,45 +416,21 @@ var migrationCommands = [
     {
         fn: "createTable",
         params: [
-            "products",
+            "productCarts",
             {
-                "productId": {
+                "cartId": {
                     "onDelete": "CASCADE",
                     "onUpdate": "CASCADE",
                     "references": {
-                        "model": "productCarts",
-                        "key": "cartId"
+                        "model": "users",
+                        "key": "userId"
                     },
                     "primaryKey": true,
                     "allowNull": true,
                     "type": Sequelize.UUID
                 },
-                "name": {
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "price": {
-                    "allowNull": false,
-                    "type": Sequelize.INTEGER
-                },
-                "description": {
+                "productId": {
                     "validate": {},
-                    "allowNull": true,
-                    "type": Sequelize.STRING
-                },
-                "type": {
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "status": {
-                    "allowNull": false,
-                    "type": Sequelize.BOOLEAN
-                },
-                "currency": {
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "image": {
                     "allowNull": false,
                     "type": Sequelize.STRING
                 },
@@ -433,16 +441,6 @@ var migrationCommands = [
                 "updatedAt": {
                     "allowNull": false,
                     "type": Sequelize.DATE
-                },
-                "adminId": {
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "references": {
-                        "model": "admins",
-                        "key": "id"
-                    },
-                    "allowNull": true,
-                    "type": Sequelize.UUID
                 }
             },
             {}
@@ -456,7 +454,7 @@ var rollbackCommands = [{
     },
     {
         fn: "dropTable",
-        params: ["productCarts"]
+        params: ["products"]
     },
     {
         fn: "dropTable",
@@ -472,7 +470,7 @@ var rollbackCommands = [{
     },
     {
         fn: "dropTable",
-        params: ["products"]
+        params: ["productCarts"]
     },
     {
         fn: "dropTable",

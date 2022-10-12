@@ -51,6 +51,7 @@ db.products.belongsTo(db.admin, {
   foreignKey: "adminId",
   onDelete: "CASCADE",
 });
+
 db.admin.hasMany(db.products, {
   onDelete: "CASCADE",
 });
@@ -65,18 +66,12 @@ db.products.hasMany(db.product_category, {
 });
 
 db.user.hasOne(db.productCart, {
-  foreignKey: "cartId",
   onDelete: "CASCADE",
 });
 
 // user association here
 db.user.hasOne(db.userAddressModel, {
   foreignKey: "userId",
-  onDelete: "CASCADE",
-});
-
-db.productCart.hasMany(db.products, {
-  foreignKey: "productId",
   onDelete: "CASCADE",
 });
 
@@ -93,11 +88,11 @@ db.userPaymentModel.belongsTo(db.user, {
 
 const DB = async () => {
   try {
-    await db.sequelize.sync({ force: false });
+    await db.sequelize.sync({ force: true });
     console.log("Tables created successfully.");
     await SequelizeTypescriptMigration.makeMigration(sequelize, {
       outDir: path.join(__dirname, "../../db/migrations"),
-      migrationName: "add-d",
+      migrationName: "add",
       preview: false,
     });
   } catch (err: any) {

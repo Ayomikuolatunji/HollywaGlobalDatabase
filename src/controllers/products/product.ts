@@ -1,8 +1,8 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-const { Op } = require("sequelize");
-const fs = require("fs");
-const path = require("path");
+import { Op } from "sequelize";
+import fs from "fs";
+import path from "path";
 import { throwError } from "../../middleware/cachError";
 import { db } from "../../models";
 
