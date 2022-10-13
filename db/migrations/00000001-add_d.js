@@ -6,13 +6,13 @@ var Sequelize = require('sequelize');
  * Actions summary:
  *
  * createTable "users", deps: []
+ * createTable "product_categories", deps: []
  * createTable "industries", deps: []
+ * createTable "userAddresses", deps: []
  * createTable "admins", deps: []
  * createTable "userPayments", deps: [users]
  * createTable "products", deps: [admins]
  * createTable "productsDepartments", deps: [admins]
- * createTable "product_categories", deps: [products]
- * createTable "userAddresses", deps: [users]
  * createTable "productCarts", deps: [users]
  *
  **/
@@ -20,7 +20,7 @@ var Sequelize = require('sequelize');
 var info = {
     "revision": 1,
     "name": "add-d",
-    "created": "2022-10-12T19:59:58.784Z",
+    "created": "2022-10-13T19:38:42.517Z",
     "comment": ""
 };
 
@@ -88,6 +88,37 @@ var migrationCommands = [
     {
         fn: "createTable",
         params: [
+            "product_categories",
+            {
+                "id": {
+                    "primaryKey": true,
+                    "type": Sequelize.UUID
+                },
+                "name": {
+                    "unique": true,
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "description": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "type": Sequelize.DATE
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "type": Sequelize.DATE
+                }
+            },
+            {}
+        ]
+    },
+
+    {
+        fn: "createTable",
+        params: [
             "industries",
             {
                 "id": {
@@ -96,6 +127,58 @@ var migrationCommands = [
                     "type": Sequelize.INTEGER
                 },
                 "name": {
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "type": Sequelize.DATE
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "type": Sequelize.DATE
+                }
+            },
+            {}
+        ]
+    },
+
+    {
+        fn: "createTable",
+        params: [
+            "userAddresses",
+            {
+                "id": {
+                    "primaryKey": true,
+                    "type": Sequelize.UUID
+                },
+                "address_line1": {
+                    "validate": {},
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "address_line2": {
+                    "validate": {},
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "city": {
+                    "validate": {},
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "postal_code": {
+                    "validate": {},
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "country": {
+                    "validate": {},
+                    "allowNull": false,
+                    "type": Sequelize.STRING
+                },
+                "telephone": {
+                    "validate": {},
                     "allowNull": false,
                     "type": Sequelize.STRING
                 },
@@ -220,8 +303,9 @@ var migrationCommands = [
             "products",
             {
                 "productId": {
+                    "autoIncrement": true,
                     "primaryKey": true,
-                    "type": Sequelize.UUID
+                    "type": Sequelize.INTEGER
                 },
                 "name": {
                     "allowNull": false,
@@ -313,82 +397,11 @@ var migrationCommands = [
     {
         fn: "createTable",
         params: [
-            "product_categories",
+            "productCarts",
             {
-                "id": {
+                "cartId": {
                     "primaryKey": true,
                     "type": Sequelize.UUID
-                },
-                "name": {
-                    "unique": true,
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "description": {
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "type": Sequelize.DATE
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "type": Sequelize.DATE
-                },
-                "categoryId": {
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "references": {
-                        "model": "products",
-                        "key": "productId"
-                    },
-                    "allowNull": true,
-                    "type": Sequelize.UUID
-                }
-            },
-            {}
-        ]
-    },
-
-    {
-        fn: "createTable",
-        params: [
-            "userAddresses",
-            {
-                "id": {
-                    "primaryKey": true,
-                    "type": Sequelize.UUID
-                },
-                "address_line1": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "address_line2": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "city": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "postal_code": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "country": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "telephone": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
                 },
                 "createdAt": {
                     "allowNull": false,
@@ -411,40 +424,6 @@ var migrationCommands = [
             },
             {}
         ]
-    },
-
-    {
-        fn: "createTable",
-        params: [
-            "productCarts",
-            {
-                "cartId": {
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
-                    "references": {
-                        "model": "users",
-                        "key": "userId"
-                    },
-                    "primaryKey": true,
-                    "allowNull": true,
-                    "type": Sequelize.UUID
-                },
-                "productId": {
-                    "validate": {},
-                    "allowNull": false,
-                    "type": Sequelize.STRING
-                },
-                "createdAt": {
-                    "allowNull": false,
-                    "type": Sequelize.DATE
-                },
-                "updatedAt": {
-                    "allowNull": false,
-                    "type": Sequelize.DATE
-                }
-            },
-            {}
-        ]
     }
 ];
 
@@ -462,14 +441,6 @@ var rollbackCommands = [{
     },
     {
         fn: "dropTable",
-        params: ["product_categories"]
-    },
-    {
-        fn: "dropTable",
-        params: ["userAddresses"]
-    },
-    {
-        fn: "dropTable",
         params: ["productCarts"]
     },
     {
@@ -478,7 +449,15 @@ var rollbackCommands = [{
     },
     {
         fn: "dropTable",
+        params: ["product_categories"]
+    },
+    {
+        fn: "dropTable",
         params: ["industries"]
+    },
+    {
+        fn: "dropTable",
+        params: ["userAddresses"]
     },
     {
         fn: "dropTable",

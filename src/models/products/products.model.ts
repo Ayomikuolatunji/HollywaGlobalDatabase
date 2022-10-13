@@ -6,9 +6,9 @@ const productModel = (
 ) => {
   return sequelize.define("products", {
     productId: {
-      type: Sequelize.UUID,
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
       primaryKey: true,
-      defaultValue: Sequelize.UUIDV1,
     },
     name: {
       type: DataTypes.STRING,
@@ -26,7 +26,7 @@ const productModel = (
           if (value === null) {
             throw new Error("name can't be null unless age is 10");
           }
-        }
+        },
       },
     },
     type: {
