@@ -9,7 +9,16 @@ const productCart = (
       type: Sequelize.UUID,
       primaryKey: true,
       defaultValue: Sequelize.UUIDV1,
-    }
+    },
+    productIds: {
+      type: DataTypes.STRING, 
+      get: function() {
+          return JSON.parse(this.getDataValue('productId'));
+      }, 
+      set: function(val) {
+          return this.setDataValue('productId', JSON.stringify(val));
+      }
+    },
   });
 };
 
