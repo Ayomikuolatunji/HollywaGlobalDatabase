@@ -4,7 +4,7 @@ import { Op } from "sequelize";
 import fs from "fs";
 import path from "path";
 import { throwError } from "../../middleware/cachError";
-import { db } from "../../models";
+import db from "./product.model";
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;
@@ -12,7 +12,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
     if (!req.body.adminId) {
       throwError("admin is not found", 404);
     }
-    const products = await db.products.create({
+    const products = await db.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description.trim(),
@@ -31,7 +31,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
 
 const getProducts: RequestHandler = async (req, res, next) => {
   try {
-    const product = await db.products.findAll({
+    const product = await db.find({
       where: {
         adminId: req.query.adminId,
       },
@@ -52,17 +52,15 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
     // remove image from folder
-    const productImage: any = await db.products.findOne({
-      where: {
-        id: productId,
-        adminId: adminId,
-      },
-    });
+    const productImage: any = await db.findOne(
+      { _id: productId },
+      { adminId: adminId }
+    );
     if (!productImage) {
       throwError("Product not found", 404);
     }
     clearImage(productImage.image);
-    await db.products.destroy({
+    await db.deleteOne({
       where: {
         id: productId,
         adminId: adminId,
@@ -81,24 +79,17 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     const productIds = req.body.productIds;
     const adminId = req.query.adminId;
     const statuses = req.body.status;
-    const product = await db.products.findAll({
-      where: {
-        adminId: adminId,
-      },
-    });
+    const product = await db.find({ adminId: adminId });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
     // update using products ids of the admin and status  array
     const updateProduct = statuses.map((status: string, i: number) => {
-      return db.products.update(
+      return db.updateMany(
+        { _id: productIds[i] },
+        { status: status },
         {
-          status: status,
-        },
-        {
-          where: {
-            id: productIds[i],
-          },
+          upsert: true,
         }
       );
     });
