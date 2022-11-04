@@ -2,12 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import { sequelize } from "./models";
 import api from "./services/v1Api";
 import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from "./typings/requestErrorTypings";
 import path from "path";
 import { pageNotFound } from "./middleware/404";
+import connectFunction from "./database/Database";
 
 dotenv.config();
 
@@ -48,29 +48,22 @@ app.use(
     next: NextFunction
   ) => {
     // check if it is sequelize error
-    if (error.name === "SequelizeValidationError") {
-      console.log(error.errors[0].message);
-      const status = error.statusCode || 500;
-      const message = error.errors[0].message;
-      res.status(status).json({ message });
-    } else {
-      console.log(error.message);
-      const status = error.statusCode || 500;
-      const message = error.message;
-      res.status(status).json({ message });
-    }
+    console.log(error.message);
+    const status = error.statusCode || 500;
+    const message = error.message;
+    res.status(status).json({ message });
   }
 );
 
-// server start and listen
-app.listen(process.env.PORT || 8080, () => {
-  sequelize
-    .authenticate()
-    .then(() => {
-      console.log("Connection has been established successfully.");
-    })
-    .catch((err: { message: string }) => {
-      console.error("Unable to connect to the database:", err.message);
-    });
-  console.log("Server is running on port 8080");
-});
+// connecting server
+const startConnection=async()=>{
+  try {
+    await connectFunction()
+      app.listen(process.env.PORT || 5000,()=>{
+        console.log(`App running on port ${process.env.PORT || 5000}`)
+      })
+  } catch (error:any) {
+    console.log(error.message)
+  }
+}
+startConnection()

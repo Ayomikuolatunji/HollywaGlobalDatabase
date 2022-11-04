@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { throwError } from "../../middleware/cachError";
-import { db } from "../../models";
+
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
