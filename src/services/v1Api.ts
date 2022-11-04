@@ -7,7 +7,7 @@ import cartRouter from "../routes/cart.route"
 // api.use("/v1", userRouter)
 
 // products routes
-// api.use("/v1",productRouter)
+api.use("/v1",productRouter)
 
 // admin routes
 api.use("/v1",adminRouter)

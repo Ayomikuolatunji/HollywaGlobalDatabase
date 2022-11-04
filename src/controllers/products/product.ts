@@ -12,7 +12,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
     if (!req.body.adminId) {
       throwError("admin is not found", 404);
     }
-    const products = await db.create({
+    const products = new db({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description.trim(),
@@ -31,11 +31,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
 
 const getProducts: RequestHandler = async (req, res, next) => {
   try {
-    const product = await db.find({
-      where: {
-        adminId: req.query.adminId,
-      },
-    });
+    const product = await db.find({ adminId: req.query.adminId });
     if (!product) {
       throwError("Products not found", 404);
     }
@@ -107,7 +103,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product: any = await db.products.findOne({
+    const product: any = await db.findOne({
       where: {
         id: productId,
         adminId: adminId,
@@ -121,7 +117,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
         clearImage(product?.dataValues.image);
       }
     }
-    const updatedProduct = await db.products.update(
+    const updatedProduct = await db.updateOne(
       {
         name: req.body.name,
         price: req.body.price,
@@ -152,7 +148,7 @@ const getProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product = await db.products.findOne({
+    const product = await db.findOne({
       where: {
         id: productId,
         adminId: adminId,
@@ -174,7 +170,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
     const fieldType = req.query.product_type;
     console.log("fieldType", fieldType);
     if (fieldType === "all") {
-      const product = await db.products.findAll({});
+      const product = await db.find({});
       if (!product) {
         throwError("Product not found with adminId provided", 404);
       }
@@ -184,7 +180,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
         count: product.length,
       });
     } else if (fieldType !== "all") {
-      const product = await db.products.findAll({
+      const product = await db.find({
         where: {
           [Op.and]: [
             {
@@ -214,7 +210,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     const adminId = req.query.adminId;
     // find admin products
     console.log("productIds", productIds);
-    const adminProducts = await db.products.findAll({
+    const adminProducts = await db.find({
       where: {
         adminId: adminId,
       },
@@ -223,12 +219,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
       throwError("admin does not have deletable products", 404);
     }
     const findAllProducts = productIds.map((id: string) => {
-      return db.products.findOne({
-        where: {
-          id: id,
-          adminId: adminId,
-        },
-      });
+      return db.findOne({ _id: id }, { adminId: adminId });
     });
     await (
       await Promise.all(findAllProducts)
@@ -237,7 +228,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     });
     // destroy bulky products
     const destroyBulkyProducts = productIds.map((id: string) => {
-      return db.products.destroy({
+      return db.deleteMany({
         where: {
           id: id,
           adminId: adminId,
@@ -259,7 +250,7 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
     const adminId = req.query.adminId;
 
-    const findDepartment = await db.produtDepartments.findOne({
+    const findDepartment = await db.findOne({
       where: {
         name: req.body.name,
       },
@@ -267,10 +258,11 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
     if (findDepartment) {
       throwError("Department already exits", 422);
     }
-    const departments = await db.produtDepartments.create({
+    const departments = new db({
       name: req.body.name,
       adminId: adminId,
     });
+    await departments.save();
     return res
       .status(201)
       .json({ message: "Departments created successfully", departments });
@@ -281,7 +273,7 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
 
 const getAllProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
-    const getAll = await db.produtDepartments.findAll();
+    const getAll = await db.find({});
     res.status(200).json({
       message: "All available departments fetched successfully",
       departments: getAll,
