@@ -9,12 +9,10 @@ import path from "path";
 import { pageNotFound } from "./middleware/404";
 import connectFunction from "./database/Database";
 
+
 dotenv.config();
-
 const app = express();
-
 app.use(cors());
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(uploadFile);
 app.use("/images", express.static("images"));

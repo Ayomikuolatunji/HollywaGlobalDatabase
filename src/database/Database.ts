@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 type MongoDBType = string | undefined;
 const MONGODB_KEY: MongoDBType = process.env.MONGODB_KEY;
