@@ -33,7 +33,13 @@ const createProducts: RequestHandler = async (req, res, next) => {
 
 const getProducts: RequestHandler = async (req, res, next) => {
   try {
-    const product = await db.find({ adminId: req.query.adminId });
+    const adminId = req.query.adminId;
+    if (!adminId)
+      throwError(
+        "adminId not passed to the query params",
+        StatusCodes.NOT_FOUND
+      );
+    const product = await db.find({ adminId }).exec();
     if (!product) {
       throwError("Products not found", 404);
     }
