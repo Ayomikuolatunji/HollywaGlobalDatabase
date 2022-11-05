@@ -3,6 +3,7 @@ import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import Jwt from "jsonwebtoken";
 import { throwError } from "../../middleware/cachError";
+import { adminModelTypings } from "../../typings/ModelTypings";
 import db from "./model.admin";
 
 const createAdmin: RequestHandler = async (req, res, next) => {
@@ -13,13 +14,13 @@ const createAdmin: RequestHandler = async (req, res, next) => {
     if (!password || !username || !email) {
       throwError("Please fill all the fields", StatusCodes.BAD_REQUEST);
     }
-    const findAdmin = await db.findOne({ email: email });
+    const findAdmin = await db.findOne<adminModelTypings>({ email: email });
     if (findAdmin) {
       throwError("admin already exits", StatusCodes.CONFLICT);
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const admin = new db({
+    const admin = new db<adminModelTypings>({
       username,
       email,
       password: hashedPassword,

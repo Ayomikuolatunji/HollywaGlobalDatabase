@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { adminModelTypings } from "../../typings/ModelTypings";
 
-const newAdmin = new mongoose.Schema(
+const newAdmin = new mongoose.Schema<adminModelTypings>(
   {
     password: {
       type: String,

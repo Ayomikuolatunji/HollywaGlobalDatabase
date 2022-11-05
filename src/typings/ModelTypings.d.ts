@@ -1,10 +1,10 @@
 export interface adminModelTypings {
-  id: string;
+  _id?: string;
   username: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: date;
+  updatedAt?: date;
 }
 
 export interface productTypes {
@@ -17,4 +17,6 @@ export interface productTypes {
   adminId: string;
   status: boolean;
   currency: string;
+  createdAt?: date;
+  updatedAt?: date;
 }
