@@ -19,3 +19,5 @@ const newAdmin = new mongoose.Schema<adminModelTypings>(
 );
 
 export default mongoose.model("adminModel", newAdmin);
+
+

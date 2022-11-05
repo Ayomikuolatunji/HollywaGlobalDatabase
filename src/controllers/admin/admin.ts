@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import Jwt from "jsonwebtoken";
+import { getMutatedMomgooseField } from "../../helpers/utils";
 import { throwError } from "../../middleware/cachError";
 import { adminModelTypings } from "../../typings/ModelTypings";
 import db from "./model.admin";
@@ -66,23 +67,26 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
   }
 };
 
-const oneAdmin: RequestHandler = async (req, res, next) => {
+const getAdmin: RequestHandler = async (req, res, next) => {
   try {
     const adminId = req.params.adminId;
     if (!adminId) {
       throwError("Admin id is not found", 404);
     }
-    const findAdmin: any = await db.findOne({ _id: adminId });
-    res
-      .status(200)
-      .json({
-        adminid: findAdmin._id,
-        message: "Admin fetch successfully",
-        profileData: findAdmin,
-      });
+    const findAdmin: any = await db
+      .findOne<adminModelTypings>({ _id: adminId })
+      .exec();
+    if (!findAdmin) throwError("Admin not found", StatusCodes.NOT_FOUND);
+    res.status(200).json({
+      adminid: findAdmin!._id,
+      message: "Admin fetch successfully",
+      profileData: getMutatedMomgooseField(findAdmin._doc),
+    });
   } catch (error: any) {
     next(error);
   }
 };
 
-export { createAdmin, signInAdmin, oneAdmin };
+
+
+export { createAdmin, signInAdmin, getAdmin };

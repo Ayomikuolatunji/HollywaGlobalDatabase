@@ -2,7 +2,7 @@ export interface adminModelTypings {
   _id?: string;
   username: string;
   email: string;
-  password: string;
+  password?: string;
   createdAt?: date;
   updatedAt?: date;
 }
