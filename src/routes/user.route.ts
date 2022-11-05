@@ -1,7 +1,7 @@
 import express from 'express';
-import { createUser, getUser, getUsers, loginUser, updateUserEmail, updateUserName } from '../controllers/users/user';
-import { createAdress, getUserAdress, updateUserAddress } from '../controllers/users/userAddress';
-import { createUserPayment, updateUserPayment } from '../controllers/users/userPayment';
+import { createUser, getUser, getUsers, loginUser, updateUserEmail, updateUserName } from '../ModelsControllers/users/user';
+import { createAdress, getUserAdress, updateUserAddress } from '../ModelsControllers/users/userAddress';
+import { createUserPayment, updateUserPayment } from '../ModelsControllers/users/userPayment';
 const router=express.Router();;
 
 

@@ -1,6 +1,10 @@
 import express from "express";
 import authToken from "../middleware/authToken";
-import { createAdmin, getAdmin, signInAdmin } from "../controllers/admin/admin";
+import {
+  createAdmin,
+  getAdmin,
+  signInAdmin,
+} from "../ModelsControllers/admin/admin";
 
 const router = express.Router();
 

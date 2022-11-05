@@ -1,5 +1,5 @@
 import express from "express";
-import { createProductsCart } from "../controllers/cart/ProductCart";
+import { createProductsCart } from "../ModelsControllers/cart/ProductCart";
 import authToken from "../middleware/authToken";
 
 const router = express.Router();
