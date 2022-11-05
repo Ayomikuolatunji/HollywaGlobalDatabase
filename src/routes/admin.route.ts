@@ -4,7 +4,7 @@ import {
   createAdmin,
   getAdmin,
   signInAdmin,
-} from "../ModelsControllers/admin/admin";
+} from "../ModelsControllers/admin/admin.controller";
 
 const router = express.Router();
 

@@ -56,10 +56,9 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
     // remove image from folder
-    const productImage: any = await db.findOne(
-      { _id: productId },
-      { adminId: adminId }
-    );
+    const productImage: any = await db
+      .findOne({ _id: productId, adminId: adminId })
+      .exec();
     if (!productImage) {
       throwError("Product not found", 404);
     }
@@ -111,12 +110,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product: any = await db.findOne({
-      where: {
-        id: productId,
-        adminId: adminId,
-      },
-    });
+    const product: any = await db.findOne({ _id: productId, adminId: adminId });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
@@ -126,6 +120,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
       }
     }
     const updatedProduct = await db.updateOne(
+      { id: productId, adminId: adminId },
       {
         name: req.body.name,
         price: req.body.price,
@@ -135,12 +130,6 @@ const editProduct: RequestHandler = async (req, res, next) => {
         adminId: req.body.adminId,
         status: req.body.status,
         currency: req.body.currency,
-      },
-      {
-        where: {
-          id: productId,
-          adminId: adminId,
-        },
       }
     );
     res
@@ -222,7 +211,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
       throwError("admin does not have deletable products", 404);
     }
     const findAllProducts = productIds.map((id: string) => {
-      return db.findOne({ _id: id }, { adminId: adminId });
+      return db.findOne({ _id: id, adminId: adminId });
     });
     await (
       await Promise.all(findAllProducts)

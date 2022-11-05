@@ -13,7 +13,7 @@ import {
   createProductsDepartments,
   getAllProductsDepartments,
   getUserProducts,
-} from "../ModelsControllers/products/product";
+} from "../ModelsControllers/products/product.controller";
 
 // unprotected routes
 router.get("/all_department", getAllProductsDepartments);
