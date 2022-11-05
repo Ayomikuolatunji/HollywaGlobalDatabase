@@ -201,14 +201,9 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     const productIds = req.body.productIds;
     const adminId = req.query.adminId;
     // find admin products
-    console.log("productIds", productIds);
-    const adminProducts = await db.find({
-      where: {
-        adminId: adminId,
-      },
-    });
+    const adminProducts = await db.find({ adminId: adminId });
     if (!adminProducts) {
-      throwError("admin does not have deletable products", 404);
+      throwError("Admin can't delete products", 404);
     }
     const findAllProducts = productIds.map((id: string) => {
       return db.findOne({ _id: id, adminId: adminId });
@@ -216,16 +211,11 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     await (
       await Promise.all(findAllProducts)
     ).map((product) => {
-      clearImage(product?.dataValues.image);
+      clearImage(product?.image);
     });
     // destroy bulky products
     const destroyBulkyProducts = productIds.map((id: string) => {
-      return db.deleteMany({
-        where: {
-          id: id,
-          adminId: adminId,
-        },
-      });
+      return db.deleteOne({ _id: id, adminId: adminId });
     });
     const sendDestroyedproduct = await Promise.all(destroyBulkyProducts);
     res.status(200).json({
