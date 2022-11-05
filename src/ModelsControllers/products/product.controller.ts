@@ -45,7 +45,10 @@ const getProducts: RequestHandler = async (req, res, next) => {
     }
     res
       .status(200)
-      .json({ message: "Products retrieved successfully", product });
+      .json({
+        message: "Products retrieved successfully",
+        product: product.reverse(),
+      });
   } catch (error: any) {
     next(error);
   }
@@ -167,7 +170,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
       }
       res.status(200).json({
         message: "Product retrieved successfully",
-        product,
+        product: product.reverse(),
         count: product.length,
       });
     } else if (fieldType !== "all") {
