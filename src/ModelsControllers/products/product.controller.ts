@@ -160,7 +160,6 @@ const getProduct: RequestHandler = async (req, res, next) => {
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
     const fieldType = req.query.product_type;
-    console.log("fieldType", fieldType);
     if (fieldType === "all") {
       const product = await db.find({});
       if (!product) {
@@ -172,15 +171,7 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
         count: product.length,
       });
     } else if (fieldType !== "all") {
-      const product = await db.find({
-        where: {
-          [Op.and]: [
-            {
-              type: fieldType,
-            },
-          ],
-        },
-      });
+      const product = await db.find({ type: fieldType });
       if (!product.length) {
         throwError("query key is invalid", StatusCodes.NOT_FOUND);
         return;
