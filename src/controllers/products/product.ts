@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { throwError } from "../../middleware/cachError";
 import db from "./product.model";
+import { productTypes } from "../../typings/ModelTypings";
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;
@@ -12,7 +13,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
     if (!req.body.adminId) {
       throwError("admin is not found", 404);
     }
-    const products = new db({
+    const products = new db<productTypes>({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description.trim(),
@@ -22,6 +23,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
       status: req.body.status,
       currency: req.body.currency,
     });
+    await products.save();
     res.status(201).json({ message: "Product created successfully", products });
   } catch (error: any) {
     clearImage(imageUrl || "");
@@ -148,12 +150,7 @@ const getProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product = await db.findOne({
-      where: {
-        id: productId,
-        adminId: adminId,
-      },
-    });
+    const product = await db.findOne({ _id: productId, adminId });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
