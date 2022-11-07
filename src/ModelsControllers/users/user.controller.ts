@@ -8,6 +8,7 @@ import { getMutatedMomgooseField } from "../../helpers/utils";
 import { throwError } from "../../middleware/cachError";
 import { userModelTypes } from "../../typings/ModelTypings";
 import db from "./user.model";
+import { StatusCodes } from "http-status-codes";
 
 dotenv.config();
 
@@ -17,6 +18,12 @@ export const createUser: RequestHandler = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const last_name = req.body.last_name;
+    const findUser = await db.findOne({ email: email });
+    if (!findUser) {
+      {
+        throwError("user account already exits", StatusCodes.CONFLICT);
+      }
+    }
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = new db({
       first_name,
