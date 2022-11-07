@@ -2,10 +2,14 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { HydratedDocument } from "mongoose";
+import dotenv from "dotenv";
+
 import { getMutatedMomgooseField } from "../../helpers/utils";
 import { throwError } from "../../middleware/cachError";
 import { userModelTypes } from "../../typings/ModelTypings";
 import db from "./user.model";
+
+dotenv.config();
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
@@ -38,11 +42,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const findUser: any = await db.findOne({
-      where: {
-        email: email,
-      },
-    });
+    const findUser: any = await db.findOne({ email: email });
     const passwordCorrect = await bcrypt.compare(password, findUser.password);
     if (!passwordCorrect) {
       throwError("Invalid password", 401);
@@ -50,12 +50,16 @@ export const loginUser: RequestHandler = async (req, res, next) => {
     const token = jwt.sign(
       {
         email: findUser.email,
-        userId: findUser.userId,
+        userId: findUser._id,
       },
       `${process.env.JWT_SECRET}`,
       { expiresIn: "30d" }
     );
-    res.status(200).json({ message: "user logged in successfully", token });
+    res.status(200).json({
+      message: "user logged in successfully",
+      token,
+      userId: findUser._id,
+    });
   } catch (error: any) {
     console.log(error.message);
     if (!error.statusCode) {
