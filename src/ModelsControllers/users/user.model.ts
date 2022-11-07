@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { userModelTypes } from "../../typings/ModelTypings";
 
-const userModel = new mongoose.Schema(
+const userModel = new mongoose.Schema<userModelTypes>(
   {
     first_name: {
       type: String,
@@ -22,4 +23,4 @@ const userModel = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("userSchemas", userModel);
+export default mongoose.model<userModelTypes>("userSchemas", userModel);

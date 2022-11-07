@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { Op } from "sequelize";
+import { HydratedDocument } from "mongoose";
 import fs from "fs";
 import path from "path";
 import { throwError } from "../../middleware/cachError";
@@ -13,7 +13,7 @@ const createProducts: RequestHandler = async (req, res, next) => {
     if (!req.body.adminId) {
       throwError("admin is not found", 404);
     }
-    const products = new db<productTypes>({
+    const products: HydratedDocument<productTypes> = new db({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description.trim(),
@@ -43,12 +43,10 @@ const getProducts: RequestHandler = async (req, res, next) => {
     if (!product) {
       throwError("Products not found", 404);
     }
-    res
-      .status(200)
-      .json({
-        message: "Products retrieved successfully",
-        product: product.reverse(),
-      });
+    res.status(200).json({
+      message: "Products retrieved successfully",
+      product: product.reverse(),
+    });
   } catch (error: any) {
     next(error);
   }

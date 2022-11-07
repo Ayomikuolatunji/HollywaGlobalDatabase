@@ -1,7 +1,10 @@
 import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
+import { HydratedDocument } from "mongoose";
+import { getMutatedMomgooseField } from "../../helpers/utils";
 import { throwError } from "../../middleware/cachError";
+import { userModelTypes } from "../../typings/ModelTypings";
 import db from "./user.model";
 
 export const createUser: RequestHandler = async (req, res, next) => {
@@ -11,15 +14,17 @@ export const createUser: RequestHandler = async (req, res, next) => {
     const password = req.body.password;
     const last_name = req.body.last_name;
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = await db.create({
+    const user = new db({
       first_name,
       last_name,
       email,
       password: hashedPassword,
     });
-    res
-      .status(201)
-      .json({ message: "user account created successfully", user });
+    const createUser: HydratedDocument<userModelTypes> = await user.save();
+    res.status(201).json({
+      message: "user account created successfully",
+      user: getMutatedMomgooseField(createUser?._doc),
+    });
   } catch (error: any) {
     console.log(error.message);
     if (!error.statusCode) {

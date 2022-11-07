@@ -1,19 +1,17 @@
-const api=require('express').Router();
+const api = require("express").Router();
 import userRouter from "../routes/user.route";
 import productRouter from "../routes/products.route";
 import adminRouter from "../routes/admin.route";
-import cartRouter from "../routes/cart.route"
+import cartRouter from "../routes/cart.route";
 // user routes
-// api.use("/v1", userRouter)
+api.use("/v1", userRouter);
 
 // products routes
-api.use("/v1",productRouter)
+api.use("/v1", productRouter);
 
 // admin routes
-api.use("/v1",adminRouter)
+api.use("/v1", adminRouter);
 
 // cart routes
-
-
 
 export default api;

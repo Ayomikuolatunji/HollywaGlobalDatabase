@@ -1,4 +1,7 @@
-export interface adminModelTypings {
+interface DocumentResult<T> {
+  _doc: T;
+}
+export interface adminModelTypings extends DocumentResult<adminModelTypings> {
   _id?: string;
   username: string;
   email: string;
@@ -6,8 +9,15 @@ export interface adminModelTypings {
   createdAt?: date;
   updatedAt?: date;
 }
-
-export interface productTypes {
+export interface adminModelTypes {
+  _id?: string;
+  username: string;
+  email: string;
+  password?: string;
+  createdAt?: date;
+  updatedAt?: date;
+}
+export interface productTypes extends DocumentResult<productTypes> {
   _id?: string;
   name: string;
   price: number;
@@ -19,4 +29,11 @@ export interface productTypes {
   currency: string;
   createdAt?: date;
   updatedAt?: date;
+}
+interface userModelTypes extends DocumentResult<userModelTypes> {
+  _id?: string;
+  first_name: string;
+  email: string;
+  password: string;
+  last_name: string;
 }
