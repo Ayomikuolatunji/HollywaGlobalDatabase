@@ -2,20 +2,18 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 import { throwError } from "../../middleware/cachError";
-
+import db from "./user.model";
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name;
+    const full_name = req.body.full_name;
     const hashedPassword = await bcrypt.hash(password, 12);
-    const user = await db.user.create({
+    const user = await db.create({
       username,
-      first_name,
-      last_name,
+      full_name,
       email,
       password: hashedPassword,
     });
@@ -35,7 +33,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;
-    const findUser: any = await db.user.findOne({
+    const findUser: any = await db.findOne({
       where: {
         email: email,
       },
@@ -64,7 +62,7 @@ export const loginUser: RequestHandler = async (req, res, next) => {
 
 export const getUsers: RequestHandler = async (req, res, next) => {
   try {
-    const allusers = await db.user.findAll({});
+    const allusers = await db.find({});
     res.status(200).json({ allusers });
   } catch (error: any) {
     if (!error.statusCode) {
@@ -77,7 +75,7 @@ export const getUsers: RequestHandler = async (req, res, next) => {
 export const getUser: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const findUser = await db.user.findOne({
+    const findUser = await db.findOne({
       where: {
         userId: userId,
       },
@@ -105,7 +103,7 @@ export const updateUserName: RequestHandler = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const findUser = await db.user.findOne({
+    const findUser = await db.findOne({
       where: {
         userId: userId,
       },
@@ -115,7 +113,7 @@ export const updateUserName: RequestHandler = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const updateuserName = await db.user.update(
+    const updateuserName = await db.updateOne(
       {
         username: username,
       },
@@ -143,7 +141,7 @@ export const updateUserEmail: RequestHandler = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const findUser = await db.user.findOne({
+    const findUser = await db.findOne({
       where: {
         userId: userId,
       },
@@ -153,7 +151,7 @@ export const updateUserEmail: RequestHandler = async (req, res, next) => {
       error.statusCode = 404;
       throw error;
     }
-    const updateEmail = await db.user.update(
+    const updateEmail = await db.updateOne(
       {
         email: email,
       },
