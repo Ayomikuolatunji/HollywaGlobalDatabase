@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const userModel = new mongoose.Schema(
   {
-    name: {
+    first_name: {
       type: String,
       require: true,
     },
@@ -14,7 +14,7 @@ const userModel = new mongoose.Schema(
       type: String,
       require: true,
     },
-    full_name: {
+    last_name: {
       type: String,
       require: true,
     },

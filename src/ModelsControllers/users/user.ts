@@ -6,14 +6,14 @@ import db from "./user.model";
 
 export const createUser: RequestHandler = async (req, res, next) => {
   try {
-    const username = req.body.username;
+    const first_name = req.body.first_name;
     const email = req.body.email;
     const password = req.body.password;
-    const full_name = req.body.full_name;
+    const last_name = req.body.last_name;
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await db.create({
-      username,
-      full_name,
+      first_name,
+      last_name,
       email,
       password: hashedPassword,
     });
