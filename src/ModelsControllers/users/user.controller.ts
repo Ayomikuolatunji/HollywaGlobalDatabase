@@ -91,17 +91,21 @@ export const getUsers: RequestHandler = async (req, res, next) => {
 export const getUser: RequestHandler = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const findUser = await db.findOne({
-      where: {
-        userId: userId,
-      },
-    });
+    const findUser: HydratedDocument<userModelTypes, any, {}> =
+      await db.findOne({
+        where: {
+          userId: userId,
+        },
+      });
     if (!userId) {
       const error: any = new Error("User not found");
       error.statusCode = 404;
       throw error;
     }
-    res.status(200).json({ findUser });
+    res.status(200).json({
+      message: "User data fetched successfully",
+      data: getMutatedMomgooseField(findUser._doc),
+    });
   } catch (error: any) {
     if (!error.statusCode) {
       error.statusCode = 500;

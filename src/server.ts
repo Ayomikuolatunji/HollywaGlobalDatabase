@@ -3,11 +3,11 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import apicache from "apicache";
+import path from "path";
 
 import api from "./services/v1Api";
 import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from "./typings/requestErrorTypings";
-import path from "path";
 import { pageNotFound } from "./middleware/404";
 import connectFunction from "./database/Database";
 
