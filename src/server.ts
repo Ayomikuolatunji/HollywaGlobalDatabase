@@ -2,13 +2,14 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import apicache from "apicache";
+
 import api from "./services/v1Api";
 import uploadFile from "./uploads/uploadFile";
 import { requestErrorTypings } from "./typings/requestErrorTypings";
 import path from "path";
 import { pageNotFound } from "./middleware/404";
 import connectFunction from "./database/Database";
-
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,10 @@ app.use((req, res, next) => {
   res.set("content-type", "application/json");
   next();
 });
+
+// pre caching all routes
+let cache = apicache.middleware;
+app.use(cache("5 minutes"));
 
 // version 1 api
 app.use("/api/", api);
@@ -54,14 +59,14 @@ app.use(
 );
 
 // connecting server
-const startConnection=async()=>{
+const startConnection = async () => {
   try {
-    await connectFunction()
-      app.listen(process.env.PORT || 5000,()=>{
-        console.log(`App running on port ${process.env.PORT || 5000}`)
-      })
-  } catch (error:any) {
-    console.log(error.message)
+    await connectFunction();
+    app.listen(process.env.PORT || 5000, () => {
+      console.log(`App running on port ${process.env.PORT || 5000}`);
+    });
+  } catch (error: any) {
+    console.log(error.message);
   }
-}
-startConnection()
+};
+startConnection();
