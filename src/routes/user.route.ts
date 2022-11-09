@@ -23,7 +23,7 @@ const router = express.Router();
 router.get("/all_users", authToken, getUsers);
 router.post("/create_account", createUser);
 router.post("/login", loginUser);
-router.get("/single_user/:userId", authToken, getUser);
+router.get("/single_user/", authToken, getUser);
 router.patch("/update_user_name/:userId", updateUserName);
 router.patch("/update_user_email/:userId", updateUserEmail);
 

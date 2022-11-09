@@ -90,13 +90,9 @@ export const getUsers: RequestHandler = async (req, res, next) => {
 
 export const getUser: RequestHandler = async (req, res, next) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.query.userId;
     const findUser: HydratedDocument<userModelTypes, any, {}> =
-      await db.findOne({
-        where: {
-          userId: userId,
-        },
-      });
+      await db.findOne({ _id: userId });
     if (!userId) {
       const error: any = new Error("User not found");
       error.statusCode = 404;
