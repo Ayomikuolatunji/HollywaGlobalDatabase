@@ -7,7 +7,6 @@ import { throwError } from "../../middleware/cachError";
 import db from "./product.model";
 import { productTypes } from "../../typings/ModelTypings";
 import { UpdatedAt } from "sequelize-typescript";
-import productModel from "./product.model";
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;
@@ -47,7 +46,8 @@ const getProducts: RequestHandler = async (req, res, next) => {
     }
     res.status(200).json({
       message: "Products retrieved successfully",
-      product: productModel,
+      product: product.sort((a, b) => b.createdAt - a.createdAt),
+      count: product.length,
     });
   } catch (error: any) {
     next(error);
@@ -164,17 +164,19 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
     const fieldType = req.query.product_type;
     if (fieldType === "all") {
-      const product = await db.find({});
+      const product = await db.find({}).sort({ field: "desc", test: -1 });
       if (!product) {
         throwError("Product not found with adminId provided", 404);
       }
       res.status(200).json({
         message: "Product retrieved successfully",
-        product: product.reverse(),
+        product: product,
         count: product.length,
       });
     } else if (fieldType !== "all") {
-      const product = await db.find({ type: fieldType });
+      const product = await db
+        .find({ type: fieldType })
+        .sort({ field: "desc", test: -1 });
       if (!product.length) {
         throwError("query key is invalid", StatusCodes.NOT_FOUND);
         return;

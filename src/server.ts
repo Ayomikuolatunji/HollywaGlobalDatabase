@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
-import apicache from "apicache";
+// import apicache from "apicache";
 import path from "path";
 
 import api from "./services/v1Api";
@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 });
 
 // pre caching all routes
-let cache = apicache.middleware;
-app.use(cache("5 minutes"));
+// let cache = apicache.middleware;
+// app.use(cache("5 minutes"));
 
 // version 1 api
 app.use("/api/", api);
