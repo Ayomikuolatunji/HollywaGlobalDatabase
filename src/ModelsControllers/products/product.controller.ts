@@ -6,6 +6,8 @@ import path from "path";
 import { throwError } from "../../middleware/cachError";
 import db from "./product.model";
 import { productTypes } from "../../typings/ModelTypings";
+import { UpdatedAt } from "sequelize-typescript";
+import productModel from "./product.model";
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;
@@ -45,7 +47,7 @@ const getProducts: RequestHandler = async (req, res, next) => {
     }
     res.status(200).json({
       message: "Products retrieved successfully",
-      product: product.reverse(),
+      product: productModel,
     });
   } catch (error: any) {
     next(error);
