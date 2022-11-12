@@ -8,12 +8,12 @@ interface cartItemTypes {
 const userCartItem = new Schema(
   {
     productId: {
-      type: Schema.Types.ObjectId,
-      ref: "ProductSchema",
+      type: String,
+      require: true,
     },
     userId: {
-      type: Schema.Types.ObjectId,
-      ref: "userSchemas",
+      type: String,
+      require: true,
     },
   },
   { timestamps: true }
