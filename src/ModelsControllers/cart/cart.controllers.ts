@@ -1,8 +1,6 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import { HydratedDocument } from "mongoose";
 import { throwError } from "../../middleware/cacheError";
-import { cartItemTypes } from "../../typings/ModelTypings";
 import cartDb from "./cart.model";
 
 export const createProductsCart: RequestHandler = async (req, res, next) => {
