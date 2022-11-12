@@ -5,7 +5,7 @@ import { HydratedDocument } from "mongoose";
 import dotenv from "dotenv";
 
 import { getMutatedMomgooseField } from "../../helpers/utils";
-import { throwError } from "../../middleware/cachError";
+import { throwError } from "../../middleware/cacheError";
 import { userModelTypes } from "../../typings/ModelTypings";
 import db from "./user.model";
 import { StatusCodes } from "http-status-codes";

@@ -1,7 +1,7 @@
 import { NextFunction, Request,  Response } from "express";
 import  Jwt  from "jsonwebtoken";
 import { Error } from "../typings/requestErrorTypings";
-import { throwError } from "./cachError";
+import { throwError } from "./cacheError";
 
 export default (req:Request | any, res:Response, next:NextFunction) => {
     try {

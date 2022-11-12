@@ -5,7 +5,7 @@ import Jwt from "jsonwebtoken";
 import { HydratedDocument } from "mongoose";
 
 import { getMutatedMomgooseField } from "../../helpers/utils";
-import { throwError } from "../../middleware/cachError";
+import { throwError } from "../../middleware/cacheError";
 import { adminModelTypes, adminModelTypings } from "../../typings/ModelTypings";
 import db from "./model.admin";
 

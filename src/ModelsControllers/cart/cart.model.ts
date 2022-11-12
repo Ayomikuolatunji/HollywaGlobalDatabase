@@ -1,19 +1,19 @@
 import { Schema, model } from "mongoose";
+import { cartItemTypes } from "../../typings/ModelTypings";
 
-interface cartItemTypes {
-  productId: string;
-  userId: string;
-}
-
-const userCartItem = new Schema(
+const userCartItem = new Schema<cartItemTypes>(
   {
     productId: {
-      type: String,
-      require: true,
+      type: Schema.Types.ObjectId,
+      ref: "ProductSchema",
     },
     userId: {
-      type: String,
-      require: true,
+      type: Schema.Types.ObjectId,
+      ref: "userSchemas",
+    },
+    productCount: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }

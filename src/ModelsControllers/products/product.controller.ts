@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { HydratedDocument } from "mongoose";
 import fs from "fs";
 import path from "path";
-import { throwError } from "../../middleware/cachError";
+import { throwError } from "../../middleware/cacheError";
 import db from "./product.model";
 import { productTypes } from "../../typings/ModelTypings";
 import { UpdatedAt } from "sequelize-typescript";

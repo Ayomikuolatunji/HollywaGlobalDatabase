@@ -1,6 +1,13 @@
 interface DocumentResult<T> {
   _doc: T;
 }
+
+export interface cartItemTypes extends DocumentResult<cartItemTypes> {
+  productId: object;
+  userId: object;
+  productCount: number;
+}
+
 export interface adminModelTypings extends DocumentResult<adminModelTypings> {
   _id?: string;
   username: string;
