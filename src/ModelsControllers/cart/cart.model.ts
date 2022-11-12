@@ -15,6 +15,10 @@ const userCartItem = new Schema<cartItemTypes>(
       type: Number,
       default: 0,
     },
+    totalAmount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

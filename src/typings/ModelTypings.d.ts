@@ -6,6 +6,7 @@ export interface cartItemTypes extends DocumentResult<cartItemTypes> {
   productId: object;
   userId: object;
   productCount: number;
+  totalAmount: number;
 }
 
 export interface adminModelTypings extends DocumentResult<adminModelTypings> {

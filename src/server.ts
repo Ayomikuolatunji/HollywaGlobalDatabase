@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
@@ -12,7 +12,8 @@ import { pageNotFound } from "./middleware/404";
 import connectFunction from "./database/Database";
 
 dotenv.config();
-const app = express();
+const app: Application = express();
+
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(uploadFile);
@@ -63,7 +64,7 @@ const startConnection = async () => {
   try {
     await connectFunction();
     app.listen(process.env.PORT || 5000, () => {
-      console.log(`App running on port ${process.env.PORT || 5000}`);
+      console.log(`App running on port ${process.env.PORT || 8080}`);
     });
   } catch (error: any) {
     console.log(error.message);
