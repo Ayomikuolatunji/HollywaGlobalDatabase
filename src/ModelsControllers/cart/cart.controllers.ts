@@ -24,6 +24,7 @@ export const createProductsCart: RequestHandler = async (req, res, next) => {
         totalAmount: findProduct!.price,
       });
       let creatCartItem = await queryProduct.save();
+      await productDb.updateOne({ item_in_cart: true });
       res.status(201).json({
         message: "Product added to cart successfully",
         cartItems: creatCartItem,
@@ -85,8 +86,9 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
       .populate("productId")
       .exec();
     if (productId && findProduct) {
-      let newAmount = +findProduct.totalAmount;
-      newAmount -= +findProduct.productId.price;
+      let newAmount =
+        parseInt(findProduct.totalAmount) -
+        parseInt(findProduct.productId.price);
       await cartDb.updateOne(
         { productId: productId, userId: userId },
         {
@@ -134,7 +136,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
 export const deleteCartProduct: RequestHandler = async (req, res, next) => {
   try {
     const findCartId = req.query.cartId;
-    const findUserId = req.query.userId;
+    const findUserId = req.params.userId;
     if (!findCartId || !findUserId)
       throwError(
         "You are not allowed to delete to cart",
@@ -144,6 +146,7 @@ export const deleteCartProduct: RequestHandler = async (req, res, next) => {
       _id: findCartId,
       userId: findUserId,
     });
+    await productDb.updateOne({ item_in_cart: false });
     res.status(200).json({
       message: "Item deleted successfully",
       cartItem: findcartItem,

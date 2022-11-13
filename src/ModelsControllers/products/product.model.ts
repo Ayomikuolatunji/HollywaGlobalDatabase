@@ -35,6 +35,10 @@ const productSchema = new mongoose.Schema<productTypes>(
       type: String,
       require: true,
     },
+    item_in_cart: {
+      type: Boolean,
+      require: true,
+    },
   },
   { timestamps: true }
 );

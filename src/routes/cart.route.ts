@@ -14,7 +14,7 @@ router.post("/add_product_to_cart/:userId", authToken, createProductsCart);
 
 router.get("/get_user_cartItems/:userId", authToken, getCartProducts);
 
-router.delete("/deleteCartItem", authToken, deleteCartProduct);
+router.delete("/delete_cart_item/:userId", authToken, deleteCartProduct);
 
 router.patch(
   "/increment_product_cartItem/:userId",

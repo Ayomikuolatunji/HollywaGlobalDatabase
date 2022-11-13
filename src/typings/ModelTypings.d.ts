@@ -34,6 +34,7 @@ export interface productTypes extends DocumentResult<productTypes> {
   image: string;
   adminId: string;
   status: boolean;
+  item_in_cart: boolean;
   currency: string;
   createdAt?: date;
   updatedAt?: date;
