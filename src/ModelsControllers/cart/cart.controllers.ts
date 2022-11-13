@@ -24,7 +24,7 @@ export const createProductsCart: RequestHandler = async (req, res, next) => {
         totalAmount: findProduct!.price,
       });
       let creatCartItem = await queryProduct.save();
-      await productDb.updateOne({ item_in_cart: true });
+      await productDb.updateOne({ _id: productId }, { item_in_cart: true });
       res.status(201).json({
         message: "Product added to cart successfully",
         cartItems: creatCartItem,
@@ -125,7 +125,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
       res.status(200).json({
         message: "cartItems fetched successfully",
         cartItems: findUserCartItems,
-        totalAmounts: totalSucessfulCartItems,
+        totalAmounts: Math.ceil(totalSucessfulCartItems),
       });
     }
   } catch (error) {
@@ -136,6 +136,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
 export const deleteCartProduct: RequestHandler = async (req, res, next) => {
   try {
     const findCartId = req.query.cartId;
+    const productId = req.query.productId;
     const findUserId = req.params.userId;
     if (!findCartId || !findUserId)
       throwError(
@@ -146,7 +147,7 @@ export const deleteCartProduct: RequestHandler = async (req, res, next) => {
       _id: findCartId,
       userId: findUserId,
     });
-    await productDb.updateOne({ item_in_cart: false });
+    await productDb.updateOne({ _id: productId }, { item_in_cart: false });
     res.status(200).json({
       message: "Item deleted successfully",
       cartItem: findcartItem,
