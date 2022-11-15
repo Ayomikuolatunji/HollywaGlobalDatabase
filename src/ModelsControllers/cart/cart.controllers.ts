@@ -41,7 +41,8 @@ export const incrementCartItems: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.query.productId;
     const userId = req.params.userId;
-    if (!productId || !userId)
+    const cartId = req.query.cartId;
+    if (!productId || !userId || !cartId)
       throwError(
         "Invalid params or query id",
         StatusCodes.UNPROCESSABLE_ENTITY
@@ -49,9 +50,12 @@ export const incrementCartItems: RequestHandler = async (req, res, next) => {
     const findProduct: any = await cartDb
       .findOne({
         productId: productId,
+        _id: cartId,
       })
       .populate("productId")
       .exec();
+
+    if (!findProduct) throwError("CartItem not found", StatusCodes.NOT_FOUND);
 
     if (productId && findProduct) {
       let newAmount = +findProduct.productId.price;
@@ -74,6 +78,7 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.query.productId;
     const userId = req.params.userId;
+    const cartId = req.query.cartId;
     if (!productId || !userId)
       throwError(
         "Invalid params or query id",
@@ -82,9 +87,11 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
     const findProduct: any = await cartDb
       .findOne({
         productId: productId,
+        _id: cartId,
       })
       .populate("productId")
       .exec();
+    if (!findProduct) throwError("CartItem not found", StatusCodes.NOT_FOUND);
     if (productId && findProduct) {
       let newAmount =
         parseInt(findProduct.totalAmount) -
@@ -106,28 +113,35 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
 export const getCartProducts: RequestHandler = async (req, res, next) => {
   try {
     const findUser = req.params.userId;
+    if (!findUser)
+      throwError(
+        "Please ",
+        StatusCodes.NOT_FOUND
+      );
     const findUserCartItems = await cartDb
       .find({ userId: findUser })
       .populate("productId")
       .exec();
-
-    if (findUserCartItems) {
-      let userTotalProductAmounts: Array<number> = [];
-      findUserCartItems.forEach((ele: any) => {
-        userTotalProductAmounts.push(ele.totalAmount);
-      });
-      let totalSucessfulCartItems = userTotalProductAmounts.reduce(
-        (rev: number, cal: number) => {
-          return rev + cal / 100;
-        },
-        0
+      if (!findUserCartItems)
+      throwError(
+        "User not found or invalid id was passed",
+        StatusCodes.NOT_FOUND
       );
-      res.status(200).json({
-        message: "cartItems fetched successfully",
-        cartItems: findUserCartItems,
-        totalAmounts: Math.ceil(totalSucessfulCartItems),
-      });
-    }
+    let userTotalProductAmounts: Array<number> = [];
+    findUserCartItems.forEach((ele: any) => {
+      userTotalProductAmounts.push(ele.totalAmount);
+    });
+    let totalSucessfulCartItems = userTotalProductAmounts.reduce(
+      (rev: number, cal: number) => {
+        return rev + cal / 100;
+      },
+      0
+    );
+    res.status(200).json({
+      message: "cartItems fetched successfully",
+      cartItems: findUserCartItems,
+      totalAmounts: Math.ceil(totalSucessfulCartItems),
+    });
   } catch (error) {
     next(error);
   }
