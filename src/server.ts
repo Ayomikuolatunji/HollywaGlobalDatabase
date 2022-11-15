@@ -51,7 +51,6 @@ app.use(
     res: Response,
     next: NextFunction
   ) => {
-    // check if it is sequelize error
     console.log(error.message);
     const status = error.statusCode || 500;
     const message = error.message;

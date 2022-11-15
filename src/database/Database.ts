@@ -12,11 +12,12 @@ const connectFunction = async () => {
   if (MONGODB_KEY === undefined) {
     console.log("mongoose key not set");
   } else {
-    console.log("connected to the database");
-    return await mongoose.connect(MONGODB_KEY, <connectTypes>{
+    const conn = await mongoose.connect(MONGODB_KEY, <connectTypes>{
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+    if (conn) console.log("connected to the database");
+    return conn;
   }
 };
 
