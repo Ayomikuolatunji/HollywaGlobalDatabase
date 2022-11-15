@@ -13,6 +13,7 @@ import {
   createProductsDepartments,
   getAllProductsDepartments,
   getUserProducts,
+  getUserSingleProduct,
 } from "../ModelsControllers/products/product.controller";
 
 // unprotected routes
@@ -20,7 +21,8 @@ router.get("/all_department", getAllProductsDepartments);
 // protected routes
 router.delete("/products/delete_many", authToken, bulkyDeleteFunction);
 router.get("/products", authToken, getProducts);
-router.get("/user_products", getUserProducts)
+router.get("/user_products", getUserProducts);
+router.get("/user_product/:productId", getUserSingleProduct);
 router.get("/products/:productId", authToken, getProduct);
 router.post("/products", authToken, createProducts);
 router.delete("/products/:productId", authToken, deleteProduct);
@@ -31,6 +33,5 @@ router.post(
   authToken,
   createProductsDepartments
 );
-
 
 export default router;

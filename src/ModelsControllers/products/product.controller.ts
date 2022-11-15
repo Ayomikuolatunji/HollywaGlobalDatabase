@@ -192,6 +192,21 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const getUserSingleProduct: RequestHandler = async (req, res, next) => {
+  try {
+    const productId = req.params.productId;
+    const product = await db.findOne({ _id: productId });
+    if (!product) {
+      throwError("Product not found with adminId provided", 404);
+    }
+    res
+      .status(200)
+      .json({ message: "Product retrieved successfully", product });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
   try {
     const productIds = req.body.productIds;
