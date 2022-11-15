@@ -41,8 +41,7 @@ export const incrementCartItems: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.query.productId;
     const userId = req.params.userId;
-    const cartId = req.query.cartId;
-    if (!productId || !userId || !cartId)
+    if (!productId || !userId)
       throwError(
         "Invalid params or query id",
         StatusCodes.UNPROCESSABLE_ENTITY
@@ -50,7 +49,6 @@ export const incrementCartItems: RequestHandler = async (req, res, next) => {
     const findProduct: any = await cartDb
       .findOne({
         productId: productId,
-        _id: cartId,
       })
       .populate("productId")
       .exec();
@@ -78,7 +76,6 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.query.productId;
     const userId = req.params.userId;
-    const cartId = req.query.cartId;
     if (!productId || !userId)
       throwError(
         "Invalid params or query id",
@@ -87,7 +84,6 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
     const findProduct: any = await cartDb
       .findOne({
         productId: productId,
-        _id: cartId,
       })
       .populate("productId")
       .exec();
@@ -113,16 +109,12 @@ export const decrementCartItems: RequestHandler = async (req, res, next) => {
 export const getCartProducts: RequestHandler = async (req, res, next) => {
   try {
     const findUser = req.params.userId;
-    if (!findUser)
-      throwError(
-        "Please ",
-        StatusCodes.NOT_FOUND
-      );
+    if (!findUser) throwError("Please ", StatusCodes.NOT_FOUND);
     const findUserCartItems = await cartDb
       .find({ userId: findUser })
       .populate("productId")
       .exec();
-      if (!findUserCartItems)
+    if (!findUserCartItems)
       throwError(
         "User not found or invalid id was passed",
         StatusCodes.NOT_FOUND
