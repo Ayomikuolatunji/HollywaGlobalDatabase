@@ -21,7 +21,6 @@ const createAdmin: RequestHandler = async (req, res, next) => {
     if (findAdmin) {
       throwError("admin already exits", StatusCodes.CONFLICT);
     }
-
     const hashedPassword = bcrypt.hashSync(password, 10);
     const admin: HydratedDocument<adminModelTypings> = new db({
       username,

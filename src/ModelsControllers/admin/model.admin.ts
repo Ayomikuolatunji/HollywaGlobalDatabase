@@ -18,6 +18,4 @@ const newAdmin = new mongoose.Schema<adminModelTypings>(
   { timestamps: true }
 );
 
-export default mongoose.model("adminModel", newAdmin);
-
-
+export default mongoose.model<adminModelTypings>("adminModel", newAdmin);

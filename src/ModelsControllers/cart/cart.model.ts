@@ -23,4 +23,4 @@ const userCartItem = new Schema<cartItemTypes>(
   { timestamps: true }
 );
 
-export default model("userCartItems", userCartItem);
+export default model<cartItemTypes>("userCartItems", userCartItem);

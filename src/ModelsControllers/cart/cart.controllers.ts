@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { throwError } from "../../middleware/cacheError";
 import cartDb from "./cart.model";
 import productDb from "../products/product.model";
+import { cartItemTypes } from "../../typings/ModelTypings";
 
 export const createProductsCart: RequestHandler = async (req, res, next) => {
   try {
@@ -120,7 +121,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
         StatusCodes.NOT_FOUND
       );
     let userTotalProductAmounts: Array<number> = [];
-    findUserCartItems.forEach((ele: any) => {
+    findUserCartItems.forEach((ele: cartItemTypes) => {
       userTotalProductAmounts.push(ele.totalAmount);
     });
     let totalSucessfulCartItems = userTotalProductAmounts.reduce(
