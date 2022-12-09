@@ -197,7 +197,7 @@ export const getUserSingleProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
     const product = await db.findOne({ _id: productId });
     if (!product) {
-      throwError("Product not found with adminId provided", 404);
+      throwError("Product not found with id provided", 404);
     }
     res
       .status(200)

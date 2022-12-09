@@ -124,7 +124,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
     findUserCartItems.forEach((ele: cartItemTypes) => {
       userTotalProductAmounts.push(ele.totalAmount);
     });
-    let totalSucessfulCartItems = userTotalProductAmounts.reduce(
+    let totalSuccessfulCartItems = userTotalProductAmounts.reduce(
       (rev: number, cal: number) => {
         return rev + cal / 100;
       },
@@ -133,7 +133,7 @@ export const getCartProducts: RequestHandler = async (req, res, next) => {
     res.status(200).json({
       message: "cartItems fetched successfully",
       cartItems: findUserCartItems,
-      totalAmounts: Math.ceil(totalSucessfulCartItems),
+      totalAmounts: Math.ceil(totalSuccessfulCartItems),
     });
   } catch (error) {
     next(error);
