@@ -31,10 +31,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// pre caching all routes
-// let cache = apicache.middleware;
-// app.use(cache("5 minutes"));
-
 // version 1 api
 app.use("/api/", api);
 app.use(pageNotFound);
