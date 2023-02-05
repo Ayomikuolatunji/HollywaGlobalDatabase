@@ -1,12 +1,11 @@
 import { RequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
-import Paystack from "paystack";
 
 import { throwError } from "../../middleware/cacheError";
 import userModel from "../users/user.model";
 import paymentsModel from "./payments.model";
 
-const paystack = new Paystack(
+var paystack = require("paystack")(
   "sk_test_4ea7cac25305df8697626eb659fc625a5a400446"
 );
 

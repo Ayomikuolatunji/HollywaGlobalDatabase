@@ -26,7 +26,8 @@
     "nodemon": "^2.0.16",
     "npm": "^8.19.2",
     "paystack": "^2.0.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.5"
   },
   "name": "my-sql-crud",
   "version": "1.0.0",
