@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userAdressModel = new mongoose.Schema({
+const userAddressModel = new mongoose.Schema({
   address_line1: {
     type: String,
     require: true,
@@ -26,9 +26,9 @@ const userAdressModel = new mongoose.Schema({
     require: true,
   },
   userId: {
-    type: String,
-    require: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "userSchemas",
   },
 });
 
-export default mongoose.model("userAddressModel", userAdressModel);
+export default mongoose.model("userAddressModel", userAddressModel);

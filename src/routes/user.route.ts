@@ -1,5 +1,6 @@
 import express from "express";
 import authToken from "../middleware/authToken";
+import { PaymentGateWay } from "../ModelsControllers/payments/payment.controller";
 import {
   createUser,
   getUser,
@@ -9,8 +10,8 @@ import {
   updateUserName,
 } from "../ModelsControllers/users/user.controller";
 import {
-  createAdress,
-  getUserAdress,
+  createAddress,
+  getuserAddress,
   updateUserAddress,
 } from "../ModelsControllers/users/userAddress.controller";
 import {
@@ -28,13 +29,12 @@ router.patch("/update_user_name/:userId", updateUserName);
 router.patch("/update_user_email/:userId", updateUserEmail);
 
 // user address routes
-router.post("/create_user_address", createAdress);
-router.get("/get_user_address/:userId", getUserAdress);
+router.post("/create_user_address", createAddress);
+router.get("/get_user_address/:userId", getuserAddress);
 router.patch("/update_user_address/:userId", updateUserAddress);
 
-// user payement routes
-
-router.post("/create_user_payment", createUserPayment);
+// user payments routes
+router.post("/create_user_payment/:userId", PaymentGateWay);
 router.patch("/update_user_payment/:userId", updateUserPayment);
 
 export default router;

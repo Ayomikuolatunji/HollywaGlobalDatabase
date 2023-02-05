@@ -1,18 +1,16 @@
 import { RequestHandler } from "express";
+import { StatusCodes } from "http-status-codes";
+import { throwError } from "../../middleware/cacheError";
 import db from "./userAddress.model";
 
-const createAdress: RequestHandler = async (req, res, next) => {
+const createAddress: RequestHandler = async (req, res, next) => {
   try {
     // check if user already has an adress using userid
-    const findUser = await db.findOne({
-      where: {
-        userId: req.body.userId,
-      },
+    const findUser = await db.findById({
+      _id: req.body.userId,
     });
     if (findUser) {
-      const error: any = new Error("User already has an adress");
-      error.statusCode = 404;
-      throw error;
+      throwError("User not found", StatusCodes.NOT_FOUND);
     }
     const address_line1 = req.body.address_line1;
     const address_line2 = req.body.address_line2;
@@ -21,7 +19,7 @@ const createAdress: RequestHandler = async (req, res, next) => {
     const country = req.body.country;
     const telephone = req.body.telephone;
 
-    const userAdress = await db.create({
+    const userAddress = await db.create({
       address_line1,
       address_line2,
       city,
@@ -32,7 +30,7 @@ const createAdress: RequestHandler = async (req, res, next) => {
     });
     res
       .status(201)
-      .json({ userAdress, message: "Address created successfully" });
+      .json({ userAddress, message: "Address created successfully" });
   } catch (error: any) {
     if (!error.statusCode) {
       error.statusCode = 500;
@@ -41,7 +39,7 @@ const createAdress: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getUserAdress: RequestHandler = async (req, res, next) => {
+const getuserAddress: RequestHandler = async (req, res, next) => {
   try {
     // check if user already has an adress using userid
     const findUser = await db.findOne({
@@ -99,4 +97,4 @@ const updateUserAddress: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { createAdress, getUserAdress, updateUserAddress };
+export { createAddress, getuserAddress, updateUserAddress };
