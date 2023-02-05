@@ -6,7 +6,6 @@ import path from "path";
 import { throwError } from "../../middleware/cacheError";
 import productDB from "./product.model";
 import { productTypes } from "../../typings/ModelTypings";
-import { UpdatedAt } from "sequelize-typescript";
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;

@@ -2,12 +2,12 @@ import { Schema, model } from "mongoose";
 
 const PaymentGateWay = new Schema(
   {
-    productIds: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "ProductSchema",
-      },
-    ],
+    // productIds: [
+    //   {
+    //     type: Schema.Types.ObjectId,
+    //     ref: "ProductSchema",
+    //   },
+    // ],
     userId: {
       type: Schema.Types.ObjectId,
       ref: "userSchemas",
