@@ -40,14 +40,14 @@ const getProducts: RequestHandler = async (req, res, next) => {
         "adminId not passed to the query params",
         StatusCodes.NOT_FOUND
       );
-    const product = await productDB.find({ adminId }).exec();
-    if (!product) {
+    const products = await productDB.find({ adminId }).exec();
+    if (!products) {
       throwError("Products not found", 404);
     }
     res.status(200).json({
       message: "Products retrieved successfully",
-      product: product.sort((a, b) => b.createdAt - a.createdAt),
-      count: product.length,
+      products: products.sort((a, b) => b.createdAt - a.createdAt),
+      count: products.length,
     });
   } catch (error: any) {
     next(error);
@@ -113,7 +113,10 @@ const editProduct: RequestHandler = async (req, res, next) => {
   try {
     const productId = req.params.productId;
     const adminId = req.query.adminId;
-    const product: any = await productDB.findOne({ _id: productId, adminId: adminId });
+    const product: any = await productDB.findOne({
+      _id: productId,
+      adminId: adminId,
+    });
     if (!product) {
       throwError("Product not found with adminId provided", 404);
     }
@@ -164,14 +167,16 @@ const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
     const fieldType = req.query.product_type;
     if (fieldType === "all") {
-      const product = await productDB.find({}).sort({ field: "desc", test: -1 });
-      if (!product) {
-        throwError("Product not found with adminId provided", 404);
+      const products = await productDB
+        .find({})
+        .sort({ field: "desc", test: -1 });
+      if (!products) {
+        throwError("Products not found with adminId provided", 404);
       }
       res.status(200).json({
         message: "Product retrieved successfully",
-        product: product,
-        count: product.length,
+        products: products,
+        count: products.length,
       });
     } else if (fieldType !== "all") {
       const products = await productDB
