@@ -1,15 +1,22 @@
-import mongoose from "mongoose";
-import { adminModelTypings } from "../../typings/ModelTypings";
+import mongoose, { Document, Schema } from 'mongoose';
 
-const newAdmin = new mongoose.Schema<adminModelTypings>(
+interface AdminModel {
+  password: string;
+  username: string;
+  email?: string;
+}
+
+interface AdminDocument extends AdminModel, Document {}
+
+const adminSchema = new Schema<AdminDocument>(
   {
     password: {
       type: String,
-      require: true,
+      required: true,
     },
     username: {
       type: String,
-      require: true,
+      required: true,
     },
     email: {
       type: String,
@@ -18,4 +25,6 @@ const newAdmin = new mongoose.Schema<adminModelTypings>(
   { timestamps: true }
 );
 
-export default mongoose.model<adminModelTypings>("adminModel", newAdmin);
+const AdminModel = mongoose.model<AdminDocument>('adminModel', adminSchema);
+
+export default AdminModel;
