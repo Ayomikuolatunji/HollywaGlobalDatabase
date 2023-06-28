@@ -1,13 +1,13 @@
-import bcrypt from "bcrypt";
-import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
-import Jwt from "jsonwebtoken";
-import { HydratedDocument } from "mongoose";
+import bcrypt from 'bcrypt';
+import { RequestHandler } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import Jwt from 'jsonwebtoken';
+import { HydratedDocument } from 'mongoose';
 
-import { getMutatedMomgooseField } from "../../helpers/utils";
-import { throwError } from "../../middleware/cacheError";
-import { adminModelTypes, adminModelTypings } from "../../typings/ModelTypings";
-import db from "./model.admin";
+import { getMutatedMomgooseField } from '../../helpers/utils';
+import { throwError } from '../../middleware/cacheError';
+import { adminModelTypes, adminModelTypings } from '../../types/ModelTypings';
+import { Admin } from './model.admin';
 
 const createAdmin: RequestHandler = async (req, res, next) => {
   try {
@@ -15,20 +15,21 @@ const createAdmin: RequestHandler = async (req, res, next) => {
     const username = req.body.username;
     const email = req.body.email;
     if (!password || !username || !email) {
-      throwError("Please fill all the fields", StatusCodes.BAD_REQUEST);
+      throwError('Please fill all the fields', StatusCodes.BAD_REQUEST);
     }
-    const findAdmin = await db.findOne<adminModelTypings>({ email: email });
+    const findAdmin = await Admin.findOne<adminModelTypings>({ email: email });
     if (findAdmin) {
-      throwError("admin already exits", StatusCodes.CONFLICT);
+      throwError('admin already exits', StatusCodes.CONFLICT);
     }
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const admin: HydratedDocument<adminModelTypings> = new db({
+
+    const admin = await Admin.create({
       username,
       email,
-      password: hashedPassword,
-    });
+      password: hashedPassword
+    })
     await admin.save();
-    res.status(201).json({ message: "Admin created successfully" });
+    res.status(201).json({ message: 'Admin created successfully' });
   } catch (error: any) {
     next(error);
   }
@@ -38,18 +39,18 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
   try {
     const password = req.body.password;
     const email = req.body.email;
-    const loginAdmin = await db.findOne<adminModelTypings>({
+    const loginAdmin = await Admin.findOne<adminModelTypings>({
       email: email,
     });
     if (!loginAdmin) {
-      throwError("Admin not found with the email provided", 404);
+      throwError('Admin not found with the email provided', 404);
     } else {
       const comparePassword = await bcrypt.compare(
         password,
         loginAdmin.password!
       );
       if (!comparePassword) {
-        throw new Error("Invalid password");
+        throw new Error('Invalid password');
       }
       const token = Jwt.sign(
         {
@@ -57,11 +58,11 @@ const signInAdmin: RequestHandler = async (req, res, next) => {
           id: loginAdmin._id,
         },
         `${process.env.JWT_SECRET}`,
-        { expiresIn: "30 days" }
+        { expiresIn: '30 days' }
       );
 
       res.status(200).json({
-        message: "Admin logged in successfully",
+        message: 'Admin logged in successfully',
         token,
         adminId: loginAdmin._id,
       });
@@ -75,15 +76,15 @@ const getAdmin: RequestHandler = async (req, res, next) => {
   try {
     const adminId = req.params.adminId;
     if (!adminId) {
-      throwError("Admin id is not found", 404);
+      throwError('Admin id is not found', 404);
     }
-    const findAdmin: any = await db
+    const findAdmin: any = await Admin
       .findOne<adminModelTypes>({ _id: adminId })
       .exec();
-    if (!findAdmin) throwError("Admin not found", StatusCodes.NOT_FOUND);
+    if (!findAdmin) throwError('Admin not found', StatusCodes.NOT_FOUND);
     res.status(200).json({
       adminid: findAdmin!._id,
-      message: "Admin fetch successfully",
+      message: 'Admin fetch successfully',
       profileData: getMutatedMomgooseField(findAdmin._doc),
     });
   } catch (error: any) {

@@ -1,32 +1,32 @@
-import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
-import { HydratedDocument } from "mongoose";
-import fs from "fs";
-import path from "path";
-import { throwError } from "../../middleware/cacheError";
-import productDB from "./product.model";
-import { productTypes } from "../../typings/ModelTypings";
+import { RequestHandler } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { HydratedDocument } from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { throwError } from '../../middleware/cacheError';
+import productDB from './product.model';
+import { productTypes } from '../../types/ModelTypings';
 
 const createProducts: RequestHandler = async (req, res, next) => {
   let imageUrl = req.body.image;
   try {
     if (!req.body.adminId) {
-      throwError("admin is not found", 404);
+      throwError('admin is not found', 404);
     }
     const products: HydratedDocument<productTypes> = new productDB({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description.trim(),
-      type: req.body.type || "general",
+      type: req.body.type || 'general',
       image: req.body.image,
       adminId: req.body.adminId,
       status: req.body.status,
       currency: req.body.currency,
     });
     await products.save();
-    res.status(201).json({ message: "Product created successfully", products });
+    res.status(201).json({ message: 'Product created successfully', products });
   } catch (error: any) {
-    clearImage(imageUrl || "");
+    clearImage(imageUrl || '');
     next(error);
   }
 };
@@ -36,15 +36,15 @@ const getProducts: RequestHandler = async (req, res, next) => {
     const adminId = req.query.adminId;
     if (!adminId)
       throwError(
-        "adminId not passed to the query params",
+        'adminId not passed to the query params',
         StatusCodes.NOT_FOUND
       );
     const products = await productDB.find({ adminId }).exec();
     if (!products) {
-      throwError("Products not found", 404);
+      throwError('Products not found', 404);
     }
     res.status(200).json({
-      message: "Products retrieved successfully",
+      message: 'Products retrieved successfully',
       products: products.sort((a, b) => b.createdAt - a.createdAt),
       count: products.length,
     });
@@ -62,7 +62,7 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
       .findOne({ _id: productId, adminId: adminId })
       .exec();
     if (!productImage) {
-      throwError("Product not found", 404);
+      throwError('Product not found', 404);
     }
     clearImage(productImage.image);
     await productDB.deleteOne({
@@ -73,7 +73,7 @@ const deleteProduct: RequestHandler = async (req, res, next) => {
     });
     res
       .status(200)
-      .json({ message: "Product deleted successfully", productImage });
+      .json({ message: 'Product deleted successfully', productImage });
   } catch (error) {
     next(error);
   }
@@ -86,7 +86,7 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     const statuses = req.body.status;
     const product = await productDB.find({ adminId: adminId });
     if (!product) {
-      throwError("Product not found with adminId provided", 404);
+      throwError('Product not found with adminId provided', 404);
     }
     // update using products ids of the admin and status  array
     const updateProduct = statuses.map((status: string, i: number) => {
@@ -101,7 +101,7 @@ const changeProductStatus: RequestHandler = async (req, res, next) => {
     await Promise.all(updateProduct);
     res
       .status(200)
-      .json({ message: "Product status changed successfully", product });
+      .json({ message: 'Product status changed successfully', product });
   } catch (error) {
     next(error);
   }
@@ -117,7 +117,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
       adminId: adminId,
     });
     if (!product) {
-      throwError("Product not found with adminId provided", 404);
+      throwError('Product not found with adminId provided', 404);
     }
     if (product) {
       if (product.image !== req.body.image) {
@@ -130,7 +130,7 @@ const editProduct: RequestHandler = async (req, res, next) => {
         name: req.body.name,
         price: req.body.price,
         description: req.body.description.trim(),
-        type: req.body.type || "general",
+        type: req.body.type || 'general',
         image: req.body.image,
         adminId: req.body.adminId,
         status: req.body.status,
@@ -139,9 +139,9 @@ const editProduct: RequestHandler = async (req, res, next) => {
     );
     res
       .status(200)
-      .json({ message: "Product updated successfully", updatedProduct });
+      .json({ message: 'Product updated successfully', updatedProduct });
   } catch (error) {
-    clearImage(imageUrl || "");
+    clearImage(imageUrl || '');
     next(error);
   }
 };
@@ -152,11 +152,11 @@ const getProduct: RequestHandler = async (req, res, next) => {
     const adminId = req.query.adminId;
     const product = await productDB.findOne({ _id: productId, adminId });
     if (!product) {
-      throwError("Product not found with adminId provided", 404);
+      throwError('Product not found with adminId provided', 404);
     }
     res
       .status(200)
-      .json({ message: "Product retrieved successfully", product });
+      .json({ message: 'Product retrieved successfully', product });
   } catch (error) {
     next(error);
   }
@@ -165,29 +165,29 @@ const getProduct: RequestHandler = async (req, res, next) => {
 const getUserProducts: RequestHandler = async (req, res, next) => {
   try {
     const fieldType = req.query.product_type;
-    if (fieldType === "all") {
+    if (fieldType === 'all') {
       const products = await productDB
         .find({})
-        .sort({ field: "desc", test: -1 });
+        .sort({ field: 'desc', test: -1 });
       if (!products) {
-        throwError("Products not found with adminId provided", 404);
+        throwError('Products not found with adminId provided', 404);
       }
       res.status(200).json({
-        message: "Product retrieved successfully",
+        message: 'Product retrieved successfully',
         products: products,
         count: products.length,
       });
-    } else if (fieldType !== "all") {
+    } else if (fieldType !== 'all') {
       const products = await productDB
         .find({ type: fieldType })
-        .sort({ field: "desc", test: -1 });
+        .sort({ field: 'desc', test: -1 });
       if (!products.length) {
-        throwError("query key is invalid", StatusCodes.NOT_FOUND);
+        throwError('query key is invalid', StatusCodes.NOT_FOUND);
         return;
       }
       res.status(StatusCodes.OK).json({
         products,
-        message: "Product retrieved successfully",
+        message: 'Product retrieved successfully',
         count: products.length,
       });
     }
@@ -201,11 +201,11 @@ export const getUserSingleProduct: RequestHandler = async (req, res, next) => {
     const productId = req.params.productId;
     const product = await productDB.findOne({ _id: productId });
     if (!product) {
-      throwError("Product not found with id provided", 404);
+      throwError('Product not found with id provided', 404);
     }
     res
       .status(200)
-      .json({ message: "Product retrieved successfully", product });
+      .json({ message: 'Product retrieved successfully', product });
   } catch (error) {
     next(error);
   }
@@ -234,7 +234,7 @@ const bulkyDeleteFunction: RequestHandler = async (req, res, next) => {
     });
     const sendDestroyedproduct = await Promise.all(destroyBulkyProducts);
     res.status(200).json({
-      message: "Bulky deleted successfully",
+      message: 'Bulky deleted successfully',
       destroyBulkyProducts: sendDestroyedproduct,
     });
   } catch (error) {
@@ -253,7 +253,7 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
       },
     });
     if (findDepartment) {
-      throwError("Department already exits", 422);
+      throwError('Department already exits', 422);
     }
     const departments = new productDB({
       name: req.body.name,
@@ -262,7 +262,7 @@ const createProductsDepartments: RequestHandler = async (req, res, next) => {
     await departments.save();
     return res
       .status(201)
-      .json({ message: "Departments created successfully", departments });
+      .json({ message: 'Departments created successfully', departments });
   } catch (error) {
     next(error);
   }
@@ -272,7 +272,7 @@ const getAllProductsDepartments: RequestHandler = async (req, res, next) => {
   try {
     const getAll = await productDB.find({});
     res.status(200).json({
-      message: "All available departments fetched successfully",
+      message: 'All available departments fetched successfully',
       departments: getAll,
     });
   } catch (error) {
@@ -281,7 +281,7 @@ const getAllProductsDepartments: RequestHandler = async (req, res, next) => {
 };
 
 const clearImage = (filePath: string) => {
-  filePath = path.join(__dirname, "../../../", filePath);
+  filePath = path.join(__dirname, '../../../', filePath);
   fs.unlink(filePath, (err: any) => console.log(err));
 };
 

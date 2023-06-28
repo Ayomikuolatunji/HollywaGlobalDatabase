@@ -1,15 +1,15 @@
-import express, { Application, NextFunction, Request, Response } from "express";
-import cors from "cors";
-import bodyParser from "body-parser";
-import dotenv from "dotenv";
+import express, { Application, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 // import apicache from "apicache";
-import path from "path";
+import path from 'path';
 
-import api from "./services/v1Api";
-import uploadFile from "./uploads/uploadFile";
-import { requestErrorTypings } from "./typings/requestErrorTypings";
-import { pageNotFound } from "./middleware/404";
-import connectFunction from "./database/Database";
+import api from './services/v1Api';
+import uploadFile from './uploads/uploadFile';
+import { requestErrorTypings } from './types/requestErrorTypings';
+import { pageNotFound } from './middleware/404';
+import connectFunction from './database/Database';
 
 dotenv.config();
 const app: Application = express();
@@ -17,26 +17,26 @@ const app: Application = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(uploadFile);
-app.use("/images", express.static("images"));
-app.use(express.static("public"));
+app.use('/images', express.static('images'));
+app.use(express.static('public'));
 app.use(express.json());
 
 // set headers for all requests
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.set("Methods", "GET, POST, PUT, DELETE , PATCH");
-  res.set("Access-Control-Allow-Credentials", "true");
-  res.set("content-type", "application/json");
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.set('Methods', 'GET, POST, PUT, DELETE , PATCH');
+  res.set('Access-Control-Allow-Credentials', 'true');
+  res.set('content-type', 'application/json');
   next();
 });
 
 // version 1 api
-app.use("/api/", api);
+app.use('/api/', api);
 app.use(pageNotFound);
 
-app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "/public"));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '/public'));
 });
 
 // error handling

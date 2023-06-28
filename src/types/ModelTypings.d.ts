@@ -9,7 +9,22 @@ export interface cartItemTypes extends DocumentResult<cartItemTypes> {
   totalAmount: number;
 }
 
-
+export interface adminModelTypings extends DocumentResult<adminModelTypings> {
+  _id?: string;
+  username: string;
+  email: string;
+  password?: string;
+  createdAt?: date;
+  updatedAt?: date;
+}
+export interface adminModelTypes {
+  _id?: string;
+  username: string;
+  email: string;
+  password?: string;
+  createdAt?: date;
+  updatedAt?: date;
+}
 
 
 export interface productTypes extends DocumentResult<productTypes> {

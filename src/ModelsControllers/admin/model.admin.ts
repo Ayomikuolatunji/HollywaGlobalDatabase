@@ -1,14 +1,16 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema, Model } from 'mongoose';
 
-interface AdminModel {
+interface AdminModel extends Document{
   password: string;
   username: string;
   email?: string;
 }
 
-interface AdminDocument extends AdminModel, Document {}
+interface AdminemailTaken extends Model<AdminModel> {
+  emailTaken: (email: string) => Promise<boolean>;
+}
 
-const adminSchema = new Schema<AdminDocument>(
+const adminSchema = new Schema<AdminModel, AdminemailTaken>(
   {
     password: {
       type: String,
@@ -25,6 +27,10 @@ const adminSchema = new Schema<AdminDocument>(
   { timestamps: true }
 );
 
-const AdminModel = mongoose.model<AdminDocument>('adminModel', adminSchema);
+adminSchema.statics.emailTaken = async function (email: string) {
+  const admin = await this.findOne({ email });
+  return !!admin;
+};
 
-export default AdminModel;
+export const Admin: AdminemailTaken = mongoose.model<AdminModel, AdminemailTaken>('admin', adminSchema);
+

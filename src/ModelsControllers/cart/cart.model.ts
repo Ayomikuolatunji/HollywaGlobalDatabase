@@ -1,15 +1,15 @@
-import { Schema, model } from "mongoose";
-import { cartItemTypes } from "../../typings/ModelTypings";
+import { Schema, model } from 'mongoose';
+import { cartItemTypes } from '../../types/ModelTypings';
 
 const userCartItem = new Schema<cartItemTypes>(
   {
     productId: {
       type: Schema.Types.ObjectId,
-      ref: "ProductSchema",
+      ref: 'ProductSchema',
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "userSchemas",
+      ref: 'userSchemas',
     },
     productCount: {
       type: Number,
@@ -23,4 +23,4 @@ const userCartItem = new Schema<cartItemTypes>(
   { timestamps: true }
 );
 
-export default model<cartItemTypes>("userCartItems", userCartItem);
+export default model<cartItemTypes>('userCartItems', userCartItem);

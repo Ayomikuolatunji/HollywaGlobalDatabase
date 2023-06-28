@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { productTypes } from "../../typings/ModelTypings";
+import mongoose from 'mongoose';
+import { productTypes } from '../../types/ModelTypings';
 
 const productSchema = new mongoose.Schema<productTypes>(
   {
@@ -43,4 +43,4 @@ const productSchema = new mongoose.Schema<productTypes>(
   { timestamps: true }
 );
 
-export default mongoose.model("ProductSchema", productSchema);
+export default mongoose.model('ProductSchema', productSchema);
