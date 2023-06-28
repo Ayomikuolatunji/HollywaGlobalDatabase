@@ -2,32 +2,37 @@ import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Jwt from 'jsonwebtoken';
-import { HydratedDocument } from 'mongoose';
 
 import { getMutatedMomgooseField } from '../../helpers/utils';
 import { throwError } from '../../middleware/cacheError';
 import { adminModelTypes, adminModelTypings } from '../../types/ModelTypings';
 import { Admin } from './model.admin';
 
-const createAdmin: RequestHandler = async (req, res, next) => {
+export const createAdmin: RequestHandler = async (req, res, next) => {
+  const { email: adminEmail } = req?.body;
+
   try {
     const password = req.body.password;
     const username = req.body.username;
     const email = req.body.email;
+
     if (!password || !username || !email) {
       throwError('Please fill all the fields', StatusCodes.BAD_REQUEST);
     }
-    const findAdmin = await Admin.findOne<adminModelTypings>({ email: email });
-    if (findAdmin) {
-      throwError('admin already exits', StatusCodes.CONFLICT);
-    }
-    const hashedPassword = bcrypt.hashSync(password, 10);
 
+    if (await Admin?.emailTaken(adminEmail)) {
+      throwError(
+        'You are already registered, just log in to your account',
+        StatusCodes.BAD_REQUEST
+      );
+    }
+
+    const hashedPassword = bcrypt.hashSync(password, 10);
     const admin = await Admin.create({
       username,
       email,
-      password: hashedPassword
-    })
+      password: hashedPassword,
+    });
     await admin.save();
     res.status(201).json({ message: 'Admin created successfully' });
   } catch (error: any) {
@@ -78,9 +83,9 @@ const getAdmin: RequestHandler = async (req, res, next) => {
     if (!adminId) {
       throwError('Admin id is not found', 404);
     }
-    const findAdmin: any = await Admin
-      .findOne<adminModelTypes>({ _id: adminId })
-      .exec();
+    const findAdmin: any = await Admin.findOne<adminModelTypes>({
+      _id: adminId,
+    }).exec();
     if (!findAdmin) throwError('Admin not found', StatusCodes.NOT_FOUND);
     res.status(200).json({
       adminid: findAdmin!._id,
@@ -92,4 +97,4 @@ const getAdmin: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { createAdmin, signInAdmin, getAdmin };
+export { signInAdmin, getAdmin };
